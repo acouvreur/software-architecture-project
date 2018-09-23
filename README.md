@@ -4,15 +4,23 @@
 
 Teacher in charge : *Guilhem Molines* - [guilhem.molines@unice.fr](mailto:guilhem.molines@unice.fr)
 
-## Useful links
+## Groupe H
 
-* Listing students and affected projects [here](https://docs.google.com/spreadsheets/d/1s27Nwi3a-YaX5BVjEn8ClXoEYl3VWulP8UUKwemW7Dw)
-* Semester 1 Project Kanban [here](https://github.com/acouvreur/software-architecture-project/projects/1)
-* Issues Project [here](https://github.com/acouvreur/software-architecture-project/projects/3)
-
-## Contributors
+### Members
 
 * Alexis Couvreur
 * Andreina Simonett Wilhelm garcia
 * Aurélien Spinéli
 * Joanna Swiderska
+
+### Subject *V4 : Mobile tracking app*
+
+> Follow your goods along the way
+
+## Useful links
+
+* Listing students and affected projects [here](https://docs.google.com/spreadsheets/d/1s27Nwi3a-YaX5BVjEn8ClXoEYl3VWulP8UUKwemW7Dw)
+* Courses and project's details [here](https://github.com/gmolines/AL5A)
+* Semester 1 Project Kanban [here](https://github.com/acouvreur/software-architecture-project/projects/1)
+* Issues Project [here](https://github.com/acouvreur/software-architecture-project/projects/3)
+
