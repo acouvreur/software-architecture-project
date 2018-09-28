@@ -10,7 +10,7 @@ Teacher in charge : *Guilhem Molines* - [guilhem.molines@unice.fr](mailto:guilhe
 
 * Alexis Couvreur
 * Andreina Simonett Wilhelm garcia
-* Aurélien Spinéli
+* Aurélien Spinelli
 * Joanna Swiderska
 
 ### Subject *V4 : Mobile tracking app*
