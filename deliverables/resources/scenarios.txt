@@ -1,0 +1,37 @@
+Scenario 1:
+1) Student registers
+2) Student logs in
+3) Student publishes his/her announcement with that goods to be transported (with departure/destination)
+4) System assigns a driver with the same departure/destination (one route)
+5) Student gives goods to driver and driver transports them to destination
+
+
+Scenario 2:
+1) Student logs in
+2) Student publishes his/her announcement with that goods to be transported (with departure/destination)
+3) System assigns a driver with same departure/destination (one route)
+4) Student gives goods to driver and driver transports them to destination
+5) Student tracks the goods
+6) Goods arrive at destination without a problem
+
+
+Scenario 3:
+1) Student logs in
+2) Student publishes his/her announcement with that goods to be transported (with departure/destination)
+3) System assigns the first driver with same departure (combination of routes)
+4) Student gives goods to driver and driver transports them to the point of change (where other driver will receive the goods and continue the transportation)
+5) Student tracks the goods and sees every change of driver
+6) Goods arrive at destination without a problem
+
+
+Scenario 4:
+1) Student logs in
+2) Student publishes his/her announcement with that goods to be transported (with departure/destination)
+3) System shows route catalog
+4) Student chooses a driver (one route)
+5) Driver accepts the transportation
+6) Student give goods to driver and driver transports them
+7) Student track the goods and sees every change or problem
+8) Driver informs a problem and he can no longer deliver
+9) System shows the student route catalog with new departure and same destination
+10) 4, 5, 6 and goods arrive at destination without a problem

@@ -9,7 +9,7 @@ Teacher in charge : *Guilhem Molines* - [guilhem.molines@unice.fr](mailto:guilhe
 ### Members
 
 * Alexis Couvreur
-* Andreina Simonett Wilhelm garcia
+* Andreina Wilhelm
 * Aurélien Spinelli
 * Joanna Swiderska
 

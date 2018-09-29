@@ -1,11 +1,10 @@
 # Project's status
 
-Last updated : *Wednesday, September 26*
+Last updated : *Saturday, September 29*
 
 ## Summary
 
 - [Week 1](#week-1)
-- [Week 2]()
 
 ## Template
 
@@ -21,10 +20,6 @@ Last updated : *Wednesday, September 26*
 
 * we will do this
 * and this
-
-### Why the difference from last week
-
-??
 
 ### Issues
 
@@ -48,19 +43,20 @@ Last updated : *Wednesday, September 26*
 
 ### What was done
 
-* System's architecture as a [flow diagram](./resources/Architecture%20Diagram.pdf) ;
-* goal anticipation / reflexion about our variant :
-    * tracking service ;
-    * student vs participant
-* user stories 
+* System's architecture as a [flow diagram](./resources/Architecture%20Diagram.pdf)
+* Defined:
+	* [Use cases](./resources/system_use_case.jpg) of the system
+	* Users of the system: student and driver
+	* Scope of our variant
+* Started to define the different [scenarios](./resources/scenarios.txt) to be developed
+* Started doing an activity diagram for our potential first scenario
 
 ### What is planned for next week
 
-__n/a__
-
-### Why the difference from last week
-
-__n/a__
+* Refine and decide for final scenarios to be developed
+* Determine the general architecture
+* Decide about the technologies to be used
+* Create? Code? external interfaces
 
 ### Issues
 
@@ -69,3 +65,6 @@ __n/a__
 ### Risk
 
 __n/a__
+
+### RYG
+Green
