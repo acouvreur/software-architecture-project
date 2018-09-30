@@ -1,6 +1,6 @@
 # Project's status
 
-Last updated : *Saturday, September 29*
+Last updated : *Sunday, September 30*
 
 ## Summary
 
