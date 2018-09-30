@@ -43,13 +43,14 @@ Last updated : *Saturday, September 29*
 
 ### What was done
 
-* System's architecture as a [flow diagram](./resources/Architecture%20Diagram.pdf)
+* System's architecture as a [use case that exposes interfaces for users, students and drivers](./resources/Software%20Architecture%20Project.vpp)
 * Defined:
-	* [Use cases](./resources/system_use_case.jpg) of the system
+	* [Use cases](./resources/Student_User_Driver.png) of the system
 	* Users of the system: student and driver
 	* Scope of our variant
 * Started to define the different [scenarios](./resources/scenarios.txt) to be developed
 * Started doing an activity diagram for our potential first scenario
+* [ORM Diagram](./resources/Class%20Diagram1) that represents our entities (WIP)
 
 ### What is planned for next week
 
