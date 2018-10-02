@@ -1,0 +1,16 @@
+SCOPE:
+Account manager- enables account creation, possibility to login/logout and profile management
+Tracking manager- tracks goods that are on the move, gives to it’s owner the possibility to check it’s exact position and announce it’s arrival 
+Announcement manager - for the both kind of users(student and driver) gives the possibility to post the announcement (accordingly: a need to move goods, an offert of free space for transportation)  and subsequently edit this announcement or remove it 
+Browsing manager : enables browsing catalogue of announcement in order to find a goods to transport(for the driver)/space onboard car(for users that want to move their goods)
+Billing manager - attributions of point for effectuated service (mock)
+Volume assessment manager- estimates the volume of goods (mock)
+Matching announcement manager- matches the announcement  
+
+USERS:
+-ordinary student
+-student that wants to transport goods in more than one car
+-driver that pick up goods from student
+-driver that pick up goods from another driver
+-driver that encounter the problem on it’s way
+-driver that changes his given route (tracking system trigger notification addressed to student)
