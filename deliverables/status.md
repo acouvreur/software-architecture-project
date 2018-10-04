@@ -52,6 +52,73 @@ Last updated : *Sunday, September 30*
 * Started doing an activity diagram for our potential first scenario
 * [ORM Diagram](./resources/Class%20Diagram1) that represents our entities (WIP)
 
+#### Scope
+
+- [x] __Account managing__ : account creation, possibility to login/logout and profile management
+- [x] __Manage announcement__ : for the both kind of users(student and driver) gives the possibility to post the announcement (accordingly: a need to move goods, an offers of free space for transportation)  and subsequently edit this announcement or remove it 
+- [ ] __Matching system goods/routes__ : assign a driver to a good delivery **mocked naive way**
+- __Good tracking__ :
+	- [x] notifications on start
+	- [x] notifications on "waypoints"
+	- [x] notifications when another driver picks up the good
+	- [x] notifications on incidents
+	- [x] notifications on arrival
+	- [x] send message to the driver and vice versa
+	- [x] receiver can also track the goods
+- [ ] __Billing__ : users have credit and can exchange it to create announcement and get matched  **mocked**
+- [ ] __Volume assessment__ : estimates the volume of goods **mocked**
+
+#### Personae 
+
+- *Lucas* is a student living in **Sophia** that needs to send his bike to his brother *Charles* in **Paris**
+- *Charles* is *Lucas*'s brother living in **Paris**
+- *Austin* is a student living in **Nice**, leaving to **Lyon** soon
+- *Mila* is a student living in **Lyon**, leaving to **Paris** soon
+- *Hope* is a student living in **Nice**, leaving to **Paris** soon
+
+#### Scenarios
+
+##### Good tracking simple route
+
+1. *Lucas* create an announcement stating :
+	- Bike 2 wheels, 8kgs
+	- Sophia, 10km radius, before October the 12th
+	- Paris 10th arrondissement, before December the 24th
+	- picked up by *Charles*
+2. Systems find a matching route with *Hope*
+3. *Lucas* and *Hope* are notified and agree, all the announcements change status
+4. *Lucas* meets *Hope* and gives the Bike
+5. *Hope* leaves the day after and notifies on the app that he is leaving
+6. *Hope* meets *Charles* and proceed to exchange the bike
+	1. *Hope* notifies that he has completed his job
+	2. *Charles* notifies she has received the bike, *Hope* get points
+
+##### Good tracking combined route
+
+1. *Lucas* create an announcement stating :
+	- Bike 2 wheels, 8kgs
+	- Sophia, 10km radius, before October the 12th
+	- Paris 10th arrondissement, before December the 24th
+	- picked up by *Charles*
+2. Systems find a matching route combination with *Austin* then *Mila*
+3. *Lucas*, *Austin* and *Mila* are notified and agree, all the announcements change status
+4. *Lucas* meets *Austin* and gives the Bike
+5. *Austin* leaves the day after and notifies on the app that he is leaving
+6. *Austin* meets *Mila* and proceed to exchange the bike
+	1. *Austin* notifies that he has completed his job
+	2. *Mila* notifies she has received the bike, *Austin* get points
+7. *Mila* leaves the day after and notifies on the app that he is leaving
+8. *Mila* drives through **Dijon** and notifies the waypoint
+9. *Mila* arrives at **Paris** and meet *Charles*
+	1. *Mila* notifies that he has completed his job
+	2. *Charles* notifies she has received the bike, *Mila* get points 
+
+
+##### Good tracking without notifying departure
+
+##### Good tracking without notifying arrival
+
+
 ### What is planned for next week
 
 * Refine and decide for final scenarios to be developed
@@ -68,4 +135,5 @@ __n/a__
 __n/a__
 
 ### RYG
-Green
+
+![alt text](./resources/yellow-flag-transparent.png "We might focus just a little bit more !")
