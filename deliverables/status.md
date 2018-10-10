@@ -4,6 +4,7 @@ Last updated : *Sunday, September 30*
 
 ## Summary
 
+- [Week 2](#week-2)
 - [Week 1](#week-1)
 
 ## Template
@@ -16,7 +17,7 @@ Last updated : *Sunday, September 30*
 * we did this
 * and this
 
-### What is planned for week n+1
+### What is planned for next week
 
 * we will do this
 * and this
@@ -37,6 +38,33 @@ Last updated : *Sunday, September 30*
 ![alt text](./resources/red-flag-transparent.png "We'll not make it, send help !")
 
 ```
+
+
+## Week 2 
+
+### What was done
+
+* Scope of the project defined and approved
+* Defined first two scenarios and selected the one to be developed 
+* Created the component diagram of the system
+* Created the planning for the following weeks
+* Starting thinking about the possible technologies to be used
+
+### What is planned for next week
+
+* Decide for final technologies to be used
+* External and internal interfaces
+* Mocked external systems
+
+### Issues
+__n/a__
+
+### Risk
+__n/a__
+
+### RYG
+Green
+
 
 
 ## Week 1
