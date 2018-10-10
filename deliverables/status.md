@@ -83,7 +83,7 @@ Green
 #### Scope
 
 - [x] __Account managing__ : account creation, possibility to login/logout and profile management
-- [x] __Manage announcement__ : for the both kind of users(student and driver) gives the possibility to post the announcement (accordingly: a need to move goods, an offers of free space for transportation)  and subsequently edit this announcement or remove it 
+- [x] __Announcement managing__ : for the both kind of users(student and driver) gives the possibility to post the announcement (accordingly: a need to move goods, an offers of free space for transportation)  and subsequently edit this announcement or remove it 
 - [ ] __Matching system goods/routes__ : assign a driver to a good delivery **mocked naive way**
 - __Good tracking__ :
 	- [x] notifications on start
