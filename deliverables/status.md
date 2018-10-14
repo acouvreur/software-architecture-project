@@ -4,6 +4,7 @@ Last updated : *Sunday, September 30*
 
 ## Summary
 
+- [Week 3](#week-3)
 - [Week 2](#week-2)
 - [Week 1](#week-1)
 
@@ -38,6 +39,17 @@ Last updated : *Sunday, September 30*
 ![alt text](./resources/red-flag-transparent.png "We'll not make it, send help !")
 
 ```
+
+## Week 3
+
+### What was done
+
+* Created the class diagram of the system to see relation
+* We have established that we will start by the integration of our services by defining interfaces, etc. (critical part)
+* Then we will look at the implementation of traking (second critical part)
+
+### What is planned for next week
+
 
 
 ## Week 2 
