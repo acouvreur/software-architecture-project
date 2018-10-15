@@ -1,6 +1,6 @@
 # Project's status
 
-Last updated : *Sunday, September 30*
+Last updated : *Monday, October 15*
 
 ## Summary
 
@@ -46,11 +46,28 @@ Last updated : *Sunday, September 30*
 
 * Created the class diagram of the system to see relation
 * We have established that we will start by the integration of our services by defining interfaces, etc. (critical part)
-* Then we will look at the implementation of traking (second critical part)
+* Then we will look at the implementation of tracking (second critical part)
 
 ### What is planned for next week
 
+* walking skeleton operational
+* unit test
+* interaction between services is done
+* integration tests is planned
+* all tests are already under a CI/CD Tool control (Travis)
 
+### Issues
+
+__n/a__
+
+### Risk
+
+Coordination, rigorous tests are needed, this is where we built the bottom of the application, if we fail this it could be a problem.
+But as we have multiple services, the issue can be easily identified and corrected.
+
+### RYG
+
+![alt text](./resources/green-flag-transparent.png "Everything is fine !")
 
 ## Week 2 
 
@@ -75,7 +92,8 @@ __n/a__
 __n/a__
 
 ### RYG
-Green
+
+![alt text](./resources/green-flag-transparent.png "Everything is fine !")
 
 
 
