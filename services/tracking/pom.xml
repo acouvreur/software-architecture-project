@@ -6,14 +6,13 @@
 
     <parent>
         <groupId>fr.unice.polytech.al</groupId>
-        <artifactId>blablamove</artifactId>
+        <artifactId>services</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>fr.unice.polytech.al</groupId>
-    <artifactId>blablamove-accounting</artifactId>
+    <artifactId>tracking</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>AL :: BlablaMove :: Accounting</name>
+    <name>AL :: BlablaMove :: Tracking</name>
 
     
 </project>

@@ -12,9 +12,11 @@
   <url>https://github.com/acouvreur/software-architecture-project</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <versions.maven.compiler>3.6.1</versions.maven.compiler>
+      <versions.java>1.8</versions.java>
   </properties>
 
   <parent>
@@ -24,43 +26,10 @@
   </parent>
 
   <modules>
-    <module>blablamove-tracking</module>
-    <module>blablamove-course</module>
-    <module>blablamove-announcement</module>
-    <module>blablamove-matching</module>
-    <module>blablamove-accounting</module>
-    <module>blablamove-billing</module>
+    <module>services</module>
   </modules>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-rest</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-hateoas</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <build>
+   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>

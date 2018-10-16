@@ -6,12 +6,11 @@
 
     <parent>
         <groupId>fr.unice.polytech.al</groupId>
-        <artifactId>blablamove</artifactId>
+        <artifactId>services</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>fr.unice.polytech.al</groupId>
-    <artifactId>blablamove-announcement</artifactId>
+    <artifactId>announcement</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>AL :: BlablaMove :: Announcement</name>
 
