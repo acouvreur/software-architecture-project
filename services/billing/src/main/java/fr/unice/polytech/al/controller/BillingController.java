@@ -1,0 +1,71 @@
+package fr.unice.polytech.al.controller;
+
+import fr.unice.polytech.al.assembler.BillingResourceAssembler;
+import fr.unice.polytech.al.model.Billing;
+import fr.unice.polytech.al.repository.BillingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+
+@RestController
+public class BillingController {
+
+    private BillingRepository repository;
+    private BillingResourceAssembler assembler;
+    private Random rand = new Random();
+
+    @Autowired
+    public BillingController(BillingRepository repository, BillingResourceAssembler assembler) {
+        this.repository = repository;
+        this.assembler = assembler;
+    }
+
+    @GetMapping("/billing")
+    public Resources<Resource<Billing>> findAll() {
+        return new Resources<>(
+                repository.findAll().stream()
+                        .map(assembler::toResource)
+                        .collect(Collectors.toList()),
+                linkTo(methodOn( BillingController.class).findAll()).withSelfRel()
+        );
+    }
+
+    @GetMapping("/billing/{clientId}")
+    public Resource<Billing> findOne(@PathVariable long clientId) {
+        return new Resource(repository.findById(clientId).get());
+    }
+
+    @PostMapping("/billing/{clientId}")
+    public Billing newBilling(@RequestBody Billing billing, @PathVariable long clientId) {
+        if (!repository.findById(clientId).isPresent()) {
+            billing.setClientId( clientId );
+            billing.setPoints( (int) (rand.nextInt(100) + 50) );
+            return repository.save( billing );
+        } else { return repository.findById(clientId).get(); }
+    }
+
+
+    @PostMapping("/billing/withdraw/{clientId}")
+    public Billing withdrawPointFromClientWithId(@PathVariable long clientId) {
+        repository.deleteById(clientId);
+        return repository.save(new Billing(clientId, rand.nextInt(100) + 10));
+    }
+
+    @PostMapping("/billing/pay/{clientId}")
+    public Billing payPointsToClientWithId(@PathVariable long clientId) {
+        repository.deleteById(clientId);
+        return repository.save(new Billing(clientId, rand.nextInt(100) + 10));
+    }
+
+
+
+
+}

@@ -6,31 +6,18 @@ import javax.persistence.*;
 public class Billing {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
     private Long clientId;
 
     @Column(unique = true, nullable = false)
     private double points;
 
-    public Long getTest() {
-        return test;
-    }
-
-    public void setTest(Long test) {
-        this.test = test;
-    }
-
-    @Column(unique = true, nullable = false)
-    private Long test;
-
     public Billing () {}
 
-    public Billing (Long clientid) {
+    public Billing (Long clientid, int points) {
         this.clientId = clientid;
+        this.points = points;
     }
+
 
     public Long getClientId() {
         return clientId;
@@ -44,17 +31,8 @@ public class Billing {
         return points;
     }
 
-    public void setPoints(double points) {
+    public void setPoints(int points) {
         this.points = points;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
 }
