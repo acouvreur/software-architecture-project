@@ -1,0 +1,70 @@
+package fr.unice.polytech.al.controller;
+
+import fr.unice.polytech.al.assembler.BillingResourceAssembler;
+import fr.unice.polytech.al.model.Billing;
+import fr.unice.polytech.al.repository.BillingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+
+@RestController
+public class BillingController {
+
+    private BillingRepository repository;
+    private BillingResourceAssembler assembler;
+
+    @Autowired
+    public BillingController(BillingRepository repository, BillingResourceAssembler assembler) {
+        this.repository = repository;
+        this.assembler = assembler;
+    }
+
+    @GetMapping("/billing")
+    public Resources<Resource<Billing>> findAll() {
+        return new Resources<>(
+                repository.findAll().stream()
+                        .map(assembler::toResource)
+                        .collect(Collectors.toList()),
+                linkTo(methodOn( BillingController.class).findAll()).withSelfRel()
+        );
+    }
+
+    @PostMapping("/billingnew")
+    Billing newEmployee(@RequestBody Billing newEmployee) {
+        return repository.save(new Billing());
+    }
+
+  /*  @RequestMapping(value = "/persistPerson", method = RequestMethod.POST)
+    public ResponseEntity < String > persistPerson(@RequestBody Billing billing) {
+        if (r$.isValid(person)) {
+            personRepository.persist(person);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        return ResponseEntity.status( HttpStatus.I_AM_A_TEAPOT).build();
+    }*/
+
+
+    /*@GetMapping("/billing/{clientId}")
+    public Resources findOne(@PathVariable long id) {
+        return new Resources<>(
+                StreamSupport.stream((repository.findAll().spliterator()), false)//stream
+                        .findFirst()
+                        .filter(s -> s.getClientId().equals(id)).map(assembler::toResource).
+                        .collect(Collectors.toList()),
+                linkTo(methodOn(BillingController.class).findAll()).withSelfRel()
+        );
+    }
+*/
+
+
+
+}
