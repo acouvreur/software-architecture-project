@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface AnnouncementRepository extends CrudRepository<Announcement, Long> {
 
     List<Announcement> findByStartPoint(String startPoint);
+    List<Announcement> findByEndPoint(String endPoint);
 }
