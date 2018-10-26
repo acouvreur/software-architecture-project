@@ -40,6 +40,14 @@ public class Announcement implements Serializable {
         this.type = type;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Transmitter getTransmitter() {
         return transmitter;
     }
