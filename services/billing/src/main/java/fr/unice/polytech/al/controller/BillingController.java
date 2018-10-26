@@ -45,24 +45,17 @@ public class BillingController {
 
     @PostMapping("/billing/{clientId}")
     public Billing newBilling(@RequestBody Billing billing, @PathVariable long clientId) {
-        if (!repository.findById(clientId).isPresent()) {
-            billing.setClientId( clientId );
-            billing.setPoints( (int) (rand.nextInt(100) + 50) );
-            return repository.save( billing );
-        } else { return repository.findById(clientId).get(); }
+        billing.setClientId( clientId );
+        billing.setPoints( (int) (rand.nextInt(100) + 50) );
+        return repository.save( billing );
     }
 
 
-    @PostMapping("/billing/withdraw/{clientId}")
+    @PatchMapping ("/billing/{clientId}/balance")
     public Billing withdrawPointFromClientWithId(@PathVariable long clientId) {
-        repository.deleteById(clientId);
-        return repository.save(new Billing(clientId, rand.nextInt(100) + 10));
-    }
-
-    @PostMapping("/billing/pay/{clientId}")
-    public Billing payPointsToClientWithId(@PathVariable long clientId) {
-        repository.deleteById(clientId);
-        return repository.save(new Billing(clientId, rand.nextInt(100) + 10));
+        Billing billingTmp = repository.findById(clientId).get();
+        billingTmp.setPoints(rand.nextInt(100) + 10);
+        return repository.save(billingTmp);
     }
 
 
