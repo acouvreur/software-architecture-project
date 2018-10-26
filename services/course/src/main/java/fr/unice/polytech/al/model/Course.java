@@ -30,6 +30,13 @@ public class Course implements Serializable {
     private String idAnnouncement;
 
     /**
+     * Référence vers la prochaine course (Liste chainée)
+     */
+
+    @Column(name = "id_next_course")
+    private String idNextCourse;
+
+    /**
      * On définit le point de départ, d'arrivé, etc... car une course
      * peut être juste un étape dans une announcement ; Une announcement peut
      * matcher avec un ensemble de course.
@@ -49,15 +56,25 @@ public class Course implements Serializable {
 
     public Course() {}
 
-    public Course(String idClient, String idDriver, String idAnnouncement, String startPoint, String endPoint, Date startDate, Date endDate){
+    public Course(String idClient, String idDriver, String idAnnouncement, String idNextCourse, String startPoint, String endPoint, Date startDate, Date endDate){
         this.idClient = idClient;
         this.idDriver = idDriver;
         this.idAnnouncement = idAnnouncement;
+        this.idNextCourse = idNextCourse;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public String getIdClient() {
         return idClient;
@@ -75,13 +92,20 @@ public class Course implements Serializable {
         this.idDriver = idDriver;
     }
 
-
     public String getIdAnnouncement() {
         return idAnnouncement;
     }
 
     public void setIdAnnouncement(String idAnnouncement) {
         this.idAnnouncement = idAnnouncement;
+    }
+
+    public String getIdNextCourse() {
+        return idNextCourse;
+    }
+
+    public void setIdNextCourse(String idNextCourse) {
+        this.idNextCourse = idNextCourse;
     }
 
     public String getStartPoint() {
@@ -120,15 +144,7 @@ public class Course implements Serializable {
     public String toString() {
         return String.format(
                 "Course[id=%d, idClient='%s', idDriver='%s', idAnnouncement='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.getId(), this.idClient, this.idDriver, this.idAnnouncement, this.startPoint, this.endPoint, this.startDate.toString(), this.endDate.toString());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+                this.id, this.idClient, this.idDriver, this.idAnnouncement, this.startPoint, this.endPoint, this.startDate.toString(), this.endDate.toString());
     }
 
 }
