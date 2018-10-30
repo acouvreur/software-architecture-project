@@ -6,10 +6,11 @@ import javax.persistence.*;
 public class Billing {
 
     @Id
+    @Column(unique = true, nullable = false)
     private Long clientId;
 
-    @Column(unique = true, nullable = false)
-    private double points;
+    @Column(unique = false, nullable = false)
+    private int points;
 
     public Billing () {}
 
@@ -27,7 +28,7 @@ public class Billing {
         this.clientId = clientId;
     }
 
-    public double getPoints() {
+    public int getPoints() {
         return points;
     }
 
