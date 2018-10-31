@@ -1,9 +1,10 @@
 # Project's status
 
-Last updated : *Monday, October 15*
+Last updated : *Wednesday, October 24*
 
 ## Summary
 
+- [Week 4](#week-4)
 - [Week 3](#week-3)
 - [Week 2](#week-2)
 - [Week 1](#week-1)
@@ -39,6 +40,34 @@ Last updated : *Monday, October 15*
 ![alt text](./resources/red-flag-transparent.png "We'll not make it, send help !")
 
 ```
+## Week 4
+
+### What was done
+
+* Basic interface were implemented
+* Each service is implemented on its own branch (see feature/theService), which helps validate code independently
+* Each service must be validated/reviewed by the team before getting merged 
+* Initial tests are written down and tested through a CI tool
+* Accounting, matching(mock), announcement, billing(mock), course are done for a walking skeleton
+
+### What is planned for next week
+
+* Main service tracking being developed by 2 people
+* 2 other people on Kafka integration and Cucumber tests
+* merge finished services
+
+
+### Issues
+
+__n/a__
+
+### Risk
+
+This week may be harder than the others, we need to get it done with rigorous tests or we might see new issues later.
+
+### RYG
+
+![alt text](./resources/green-flag-transparent.png "Everything is fine !")
 
 ## Week 3
 
