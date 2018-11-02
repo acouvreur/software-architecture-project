@@ -1,5 +1,6 @@
 package fr.unice.polytech.al.controller;
 
+import com.jayway.jsonpath.JsonPath;
 import fr.unice.polytech.al.repository.CourseRepository;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
@@ -40,7 +42,7 @@ public class CourseControllerTest {
     public void create() throws Exception {
         mockMvc.perform(post("/courses")
                 .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
-                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2014-11-02\"}")
+                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -51,14 +53,14 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.startPoint")   .value("Nice"))
                 .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
                 .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
-                .andExpect(jsonPath("$.endDate")   .value("2014-11-02"));
+                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"));
     }
 
     @Test
     public void createNullNextCourse() throws Exception {
         mockMvc.perform(post("/courses")
                 .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898," +
-                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2014-11-02\"}")
+                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -69,6 +71,73 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.startPoint")   .value("Nice"))
                 .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
                 .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
-                .andExpect(jsonPath("$.endDate")   .value("2014-11-02"));
+                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"));
     }
+
+    @Test
+    public void findAll() throws Exception {
+
+        mockMvc.perform(post("/courses")
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/courses")
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                        " \"startPoint\":\"Marseille\", \"endPoint\":\"Paris\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/courses"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.courses", hasSize(2)));
+    }
+
+    @Test
+    public void findById() throws Exception {
+        MvcResult res = mockMvc.perform(post("/courses")
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andReturn();
+        String id = JsonPath.parse(res.getResponse().getContentAsString()).read("$.id").toString();
+        mockMvc.perform(get("/courses/" + id))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void findByIdAnnouncement() throws Exception {
+        mockMvc.perform(post("/courses")
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/courses")
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9878, \"idNextCourse\":23," +
+                        " \"startPoint\":\"Marseille\", \"endPoint\":\"Paris\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/courses")
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                        " \"startPoint\":\"Marseille\", \"endPoint\":\"Paris\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+        mockMvc.perform(get("/courses?announcement=9898"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.courses", hasSize(2)));
+    }
+
 }

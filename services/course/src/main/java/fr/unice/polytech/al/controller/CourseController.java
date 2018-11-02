@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -28,19 +29,18 @@ public class CourseController {
         this.assembler = assembler;
     }
 
-    @GetMapping(value = "/courses",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resources<Resource<Course>> findAll() {
+    @GetMapping(value = "/courses", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resources<Resource<Course>> findAll(
+            @RequestParam(value = "announcement", required = false) Long idAnnouncement) {
         return new Resources<>(
-                repository.findAll().stream()
+                repository.findAll().stream().filter(c -> idAnnouncement == null || c.getIdAnnouncement().equals(idAnnouncement))
                         .map(assembler::toResource)
                         .collect(Collectors.toList()),
-                linkTo(methodOn(CourseController.class).findAll()).withSelfRel()
+                linkTo(methodOn(CourseController.class).findAll(null)).withSelfRel()
         );
     }
 
-    @GetMapping(value = "/courses/{idCourse}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/courses/{idCourse}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resource<Course> find(@PathVariable Long idCourse) {
         return assembler.toResource(
                 repository.findById(idCourse)
@@ -49,8 +49,7 @@ public class CourseController {
     }
 
 
-    @PostMapping(value = "/courses",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/courses", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Resource<Course>> create(@RequestBody Course course) {
 
         repository.save(course);

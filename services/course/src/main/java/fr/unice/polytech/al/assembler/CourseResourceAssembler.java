@@ -16,7 +16,7 @@ public class CourseResourceAssembler implements ResourceAssembler<Course, Resour
     public Resource<Course> toResource(Course entity) {
         return new Resource<>(entity,
                 linkTo(methodOn(CourseController.class).find(entity.getId())).withSelfRel(),
-                linkTo(methodOn(CourseController.class).findAll()).withRel("courses")
+                linkTo(methodOn(CourseController.class).findAll(null)).withRel("courses")
         );
     }
 }
