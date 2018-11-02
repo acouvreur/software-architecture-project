@@ -1,0 +1,94 @@
+version: "3.6"
+
+services:
+  blablamove-announcement:
+    build:
+      context: services/announcement
+      dockerfile: docker/Dockerfile
+    image: al-blablamove-announcement
+    container_name: blablamove-announcement
+    ports:
+    - "127.0.0.1:8080:8080"
+    links:
+    - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  blablamove-accounting:
+    build:
+      context: services/accounting
+      dockerfile: docker/Dockerfile
+    image: al-blablamove-accounting
+    container_name: blablamove-accounting
+    ports:
+    - "127.0.0.1:8081:8080"
+    links:
+    - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  blablamove-billing:
+    build:
+      context: services/billing
+      dockerfile: docker/Dockerfile
+    image: al-blablamove-billing
+    container_name: blablamove-billing
+    ports:
+    - "127.0.0.1:8082:8080"
+    links:
+    - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  blablamove-course:
+    build:
+      context: services/course
+      dockerfile: docker/Dockerfile
+    image: al-blablamove-course
+    container_name: blablamove-course
+    ports:
+    - "127.0.0.1:8083:8080"
+    links:
+    - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  blablamove-matching:
+    build:
+      context: services/matching
+      dockerfile: docker/Dockerfile
+    image: al-blablamove-matching
+    container_name: blablamove-matching
+    ports:
+    - "127.0.0.1:8084:8080"
+    links:
+    - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  blablamove-tracking:
+    build:
+      context: services/tracking
+      dockerfile: docker/Dockerfile
+    image: al-blablamove-tracking
+    container_name: blablamove-tracking
+    ports:
+    - "127.0.0.1:8085:8080"
+    links:
+    - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+    - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka:latest
+    links:
+    - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
