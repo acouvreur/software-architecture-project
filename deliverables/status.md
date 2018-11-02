@@ -40,6 +40,31 @@ Last updated : *Wednesday, October 24*
 ![alt text](./resources/red-flag-transparent.png "We'll not make it, send help !")
 
 ```
+
+## Week 5
+
+### What was done
+
+* We focused on implementing Kafka and integration tests
+* integration tests are written following our stories, from start to the end
+* payload exchanges are now defined to end message to Kafka
+
+### What is planned for next week
+
+* All is ready, demo
+
+### Issues
+
+__n/a__
+
+### Risk
+
+Critical stage, because the next week is the presentation
+
+### RYG
+
+![alt text](./resources/green-flag-transparent.png "Everything is fine !")
+
 ## Week 4
 
 ### What was done
