@@ -135,9 +135,6 @@ public class BillingControllerTest {
     @Test
     public void changeValueOfExistingBilling() throws Exception {
 
-        String patternString = "^(200)$";
-        Pattern pattern = Pattern.compile(patternString);
-
 
         this.mockMvc.perform(post("/billing/123").content("{\"clientId\": 123, \"points\": 200}")
                 .contentType(MediaType.APPLICATION_JSON))

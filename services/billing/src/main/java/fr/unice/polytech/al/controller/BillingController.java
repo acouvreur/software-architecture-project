@@ -3,6 +3,7 @@ package fr.unice.polytech.al.controller;
 import fr.unice.polytech.al.assembler.BillingResourceAssembler;
 import fr.unice.polytech.al.model.Billing;
 import fr.unice.polytech.al.repository.BillingRepository;
+import fr.unice.polytech.al.service.BillingService;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -24,6 +25,7 @@ public class BillingController {
 
     private BillingRepository repository;
     private BillingResourceAssembler assembler;
+    private BillingService service;
     private Random rand = new Random();
 
     @Autowired
@@ -53,7 +55,6 @@ public class BillingController {
     }
 
 
-
     @GetMapping("/billing/{clientId}")
     public ResponseEntity<Billing> findOne(@PathVariable long clientId) {
         Billing billing1 = repository.findById(clientId).get();
@@ -70,9 +71,7 @@ public class BillingController {
 
     @PatchMapping ("/billing/{clientId}/balance")
     public ResponseEntity<Billing> withdrawPointFromClientWithId(@PathVariable long clientId) {
-        Billing billingTmp = repository.findById(clientId).get();
-        billingTmp.setPoints(rand.nextInt(100) + 10);
-        repository.save(billingTmp);
+        Billing billingTmp = service.setNewBallanceForClient(clientId);
         return new ResponseEntity<Billing>(billingTmp, HttpStatus.OK);
     }
 
