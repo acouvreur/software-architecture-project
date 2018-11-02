@@ -2,6 +2,8 @@ package fr.unice.polytech.al.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -16,25 +18,25 @@ public class Course implements Serializable {
      * accounting comme le numéro de téléphone...
      */
 
-    @Column(name = "id_client", nullable = false)
-    private String idClient;
+    @Column(nullable = false)
+    private Long idClient;
 
-    @Column(name = "id_driver", nullable = false)
-    private String idDriver;
+    @Column(nullable = false)
+    private Long idDriver;
 
     /**
      * Référence à une annonce ; Pas besoin d'autre chose ici.
      */
 
-    @Column(name = "id_announcement", nullable = false)
-    private String idAnnouncement;
+    @Column(nullable = false)
+    private Long idAnnouncement;
 
     /**
      * Référence vers la prochaine course (Liste chainée)
      */
 
-    @Column(name = "id_next_course")
-    private String idNextCourse;
+    @Column()
+    private Long idNextCourse;
 
     /**
      * On définit le point de départ, d'arrivé, etc... car une course
@@ -42,29 +44,30 @@ public class Course implements Serializable {
      * matcher avec un ensemble de course.
      */
 
-    @Column(name = "course_start_point", nullable = false)
+    @Column(nullable = false)
     private String startPoint;
 
-    @Column(name = "course_end_point", nullable = false)
+    @Column(nullable = false)
     private String endPoint;
 
-    @Column(name = "course_start_date", nullable = false)
-    private Date startDate;
+    @Column(nullable = false)
+    private String startDate;
 
-    @Column(name = "course_end_date", nullable = false)
-    private Date endDate;
+    @Column(nullable = false)
+    private String endDate;
 
     public Course() {}
 
-    public Course(String idClient, String idDriver, String idAnnouncement, String idNextCourse, String startPoint, String endPoint, Date startDate, Date endDate){
+    public Course(Long idClient, Long idDriver, Long idAnnouncement, Long idNextCourse, String startPoint, String endPoint, Date startDate, Date endDate){
         this.idClient = idClient;
         this.idDriver = idDriver;
         this.idAnnouncement = idAnnouncement;
         this.idNextCourse = idNextCourse;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        this.startDate = dateFormat.format(startDate);
+        this.endDate = dateFormat.format(endDate);
     }
 
     public Long getId() {
@@ -76,35 +79,35 @@ public class Course implements Serializable {
     }
 
 
-    public String getIdClient() {
+    public Long getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(String idClient) {
+    public void setIdClient(Long idClient) {
         this.idClient = idClient;
     }
 
-    public String getIdDriver() {
+    public Long getIdDriver() {
         return idDriver;
     }
 
-    public void setIdDriver(String idDriver) {
+    public void setIdDriver(Long idDriver) {
         this.idDriver = idDriver;
     }
 
-    public String getIdAnnouncement() {
+    public Long getIdAnnouncement() {
         return idAnnouncement;
     }
 
-    public void setIdAnnouncement(String idAnnouncement) {
+    public void setIdAnnouncement(Long idAnnouncement) {
         this.idAnnouncement = idAnnouncement;
     }
 
-    public String getIdNextCourse() {
+    public Long getIdNextCourse() {
         return idNextCourse;
     }
 
-    public void setIdNextCourse(String idNextCourse) {
+    public void setIdNextCourse(Long idNextCourse) {
         this.idNextCourse = idNextCourse;
     }
 
@@ -124,27 +127,28 @@ public class Course implements Serializable {
         this.endPoint = endPoint;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
     @Override
     public String toString() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         return String.format(
                 "Course[id=%d, idClient='%s', idDriver='%s', idAnnouncement='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.id, this.idClient, this.idDriver, this.idAnnouncement, this.startPoint, this.endPoint, this.startDate.toString(), this.endDate.toString());
+                this.id, this.idClient, this.idDriver, this.idAnnouncement, this.startPoint, this.endPoint, dateFormat.format(this.startDate), dateFormat.format(this.endDate));
     }
 
 }

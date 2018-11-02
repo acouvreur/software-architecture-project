@@ -43,12 +43,12 @@ public class CourseController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resource<Course> find(@PathVariable Long idCourse) {
         return assembler.toResource(
-                repository.findByIdCourse(idCourse)
+                repository.findById(idCourse)
                         .orElseThrow(() -> new EntityNotFoundException(idCourse.toString()))
         );
     }
-    
-    /*
+
+
     @PostMapping(value = "/courses",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Resource<Course>> create(@RequestBody Course course) {
@@ -56,9 +56,8 @@ public class CourseController {
         repository.save(course);
 
         return ResponseEntity
-                .created(linkTo(methodOn(CourseController.class).find(course.getId()).toUri()))
+                .created(linkTo(methodOn(CourseController.class).find(course.getId())).toUri())
                 .body(assembler.toResource(course));
     }
-    */
 
 }
