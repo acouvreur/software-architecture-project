@@ -3,29 +3,27 @@ package fr.unice.polytech.al.model;
 import org.json.JSONObject;
 import java.util.Date;
 
-public class Course {
+public class Announcement {
 
     private Long id;
-    private String idClient;
-    private String idDriver;
-    private String idAnnouncement;
+    private Transmitter transmitter;
     private String startPoint;
     private String endPoint;
     private Date startDate;
     private Date endDate;
+    private AnnouncementType type;
 
-    public Course(long id) {
+    public Announcement(long id) {
         this.id = id;
     }
 
-    public Course(String idClient, String idDriver, String idAnnouncement, String startPoint, String endPoint, Date startDate, Date endDate){
-        this.idClient = idClient;
-        this.idDriver = idDriver;
-        this.idAnnouncement = idAnnouncement;
+    public Announcement(Transmitter t, String startPoint, String endPoint, Date startDate, Date endDate, AnnouncementType type){
+        this.transmitter = t;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.type = type;
     }
 
     public JSONObject toJson() {

@@ -1,6 +1,6 @@
 package fr.unice.polytech.al.controller;
 
-import fr.unice.polytech.al.model.Course;
+import fr.unice.polytech.al.model.Announcement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +19,10 @@ public class MatchingController
     {
         JSONArray coursesMocked = new JSONArray();
 
-        coursesMocked.put((new Course(idAnnonce)).toJson());
-        coursesMocked.put((new Course(2)).toJson());
-        coursesMocked.put((new Course(3)).toJson());
+        coursesMocked.put((new Announcement(idAnnonce)).toJson());
+        coursesMocked.put((new Announcement(2)).toJson());
+        coursesMocked.put((new Announcement(3)).toJson());
 
-       return new JSONObject().put("courses", coursesMocked).toString();
+       return new JSONObject().put("announcements", coursesMocked).toString();
     }
 }
