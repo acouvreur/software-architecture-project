@@ -25,7 +25,7 @@ public class MatchingKafkaListener
         String result = matchList.toJson().toString();
 
         if (matchList.size() > 1) {
-             kafkaSender.send("announcement_matched", result);
+            kafkaSender.send("announcement_matched", result);
              /*for(int i=0; i < matchList.size(); i++) {
                  JSONObject status = new JSONObject().put("announcementId", matchList.get(i)).put("status", "matched");
                  kafkaSender.send("announcement_status", status.toString());

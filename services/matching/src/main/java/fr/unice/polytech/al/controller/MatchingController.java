@@ -17,9 +17,9 @@ public class MatchingController
     private Match matchList = new Match();
 
     /*
-    * Input: Id of the announcement created
-    * Output: List of matching announcement
-    */
+     * Input: Id of the announcement created
+     * Output: List of matching announcement
+     */
     @GetMapping("/match/{idAnnonce}")
     public String match(@PathVariable String idAnnonce)
     {
@@ -28,14 +28,19 @@ public class MatchingController
         matchList.add(idAnnonce);
         String result = matchList.toJson().toString();
 
-      //  if (matchList.size() > 1) {
-           // kafkaSender.send("create_announcement", result);
-      //  }
+        //  if (matchList.size() > 1) {
+        // kafkaSender.send("create_announcement", result);
+        //  }
 
         if (matchList.size() == 3) {
             matchList.empty();
         }
 
+        if (matchList.size() == 1) {
+            return "";
+        }
+
+        System.out.println("match : " + result);
         return result;
     }
 }
