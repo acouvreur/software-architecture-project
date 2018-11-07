@@ -2,6 +2,8 @@ package fr.unice.polytech.al.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -11,32 +13,37 @@ public class Announcement implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Embedded
-    private Transmitter transmitter;
+    @Column(name = "idTransmistter", nullable = false)
+    private int idTransmitter;
 
-    @Column(name = "start_point", nullable = false)
+    @Column(name = "nameTransmistter", nullable = false)
+    private String nameTransmitter;
+
+    @Column(name = "startPoint", nullable = false)
     private String startPoint;
 
-    @Column(name = "end_point", nullable = false)
+    @Column(name = "endPoint", nullable = false)
     private String endPoint;
 
-    @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    @Column(name = "startDate", nullable = false)
+    private String startDate;
 
-    @Column(name = "end_date", nullable = false)
-    private Date endDate;
+    @Column(name = "endDate", nullable = false)
+    private String endDate;
 
     @Enumerated(EnumType.STRING)
     private AnnouncementType type;
 
     public Announcement() {}
 
-    public Announcement(Transmitter t, String startPoint, String endPoint, Date startDate, Date endDate, AnnouncementType type){
-        this.transmitter = t;
+    public Announcement(int idTransmitter, String nameTransmitter, String startPoint, String endPoint, Date startDate, Date endDate, AnnouncementType type){
+        this.setIdTransmitter(idTransmitter);
+        this.setNameTransmitter(nameTransmitter);
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        this.startDate = dateFormat.format(startDate);
+        this.endDate = dateFormat.format(endDate);
         this.type = type;
     }
 
@@ -48,12 +55,20 @@ public class Announcement implements Serializable {
         this.id = id;
     }
 
-    public Transmitter getTransmitter() {
-        return transmitter;
+    public int getIdTransmitter() {
+        return idTransmitter;
     }
 
-    public void setTransmitter(Transmitter transmitter) {
-        this.transmitter = transmitter;
+    public void setIdTransmitter(int idTransmitter) {
+        this.idTransmitter = idTransmitter;
+    }
+
+    public String getNameTransmitter() {
+        return nameTransmitter;
+    }
+
+    public void setNameTransmitter(String nameTransmitter) {
+        this.nameTransmitter = nameTransmitter;
     }
 
     public String getStartPoint() {
@@ -72,19 +87,19 @@ public class Announcement implements Serializable {
         this.endPoint = endPoint;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -99,7 +114,9 @@ public class Announcement implements Serializable {
     @Override
     public String toString() {
         return String.format(
-                "Announcement[id=%d, transmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.id, this.transmitter.toString(), this.startPoint, this.endPoint, this.startDate.toString(), this.endDate.toString());
+                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
+                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate);
     }
+
+
 }
