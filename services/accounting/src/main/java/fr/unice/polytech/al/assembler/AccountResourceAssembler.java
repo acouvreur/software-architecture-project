@@ -14,9 +14,9 @@ public class AccountResourceAssembler implements ResourceAssembler<Account, Reso
 
     @Override
     public Resource<Account> toResource(Account entity) {
-        return new Resource<>(entity/*,
-                linkTo(methodOn(AccountController.class).findOne(entity.getId())).withSelfRel(),
-                linkTo(methodOn(AccountController.class).findAll()).withRel("accounts")*/
+        return new Resource<>(entity,
+                linkTo(methodOn(AccountController.class).find(entity.getUsername())).withSelfRel(),
+                linkTo(methodOn(AccountController.class).findAll()).withRel("accounts")
         );
     }
 }
