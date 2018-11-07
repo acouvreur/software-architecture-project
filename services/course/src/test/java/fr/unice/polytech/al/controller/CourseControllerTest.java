@@ -41,7 +41,7 @@ public class CourseControllerTest {
     @Test
     public void create() throws Exception {
         mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -49,25 +49,7 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.idClient")      .value(1234))
                 .andExpect(jsonPath("$.idDriver")   .value(666))
                 .andExpect(jsonPath("$.idAnnouncement")  .value(9898))
-                .andExpect(jsonPath("$.idNextCourse")   .value(23))
-                .andExpect(jsonPath("$.startPoint")   .value("Nice"))
-                .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
-                .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
-                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"));
-    }
-
-    @Test
-    public void createNullNextCourse() throws Exception {
-        mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898," +
-                        " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.idClient")      .value(1234))
-                .andExpect(jsonPath("$.idDriver")   .value(666))
-                .andExpect(jsonPath("$.idAnnouncement")  .value(9898))
-                .andExpect(jsonPath("$.idNextCourse").isEmpty())
+                .andExpect(jsonPath("$.statusCourse").value("WAITING"))
                 .andExpect(jsonPath("$.startPoint")   .value("Nice"))
                 .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
                 .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
@@ -78,14 +60,14 @@ public class CourseControllerTest {
     public void findAll() throws Exception {
 
         mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Marseille\", \"endPoint\":\"Paris\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -100,7 +82,7 @@ public class CourseControllerTest {
     @Test
     public void findById() throws Exception {
         MvcResult res = mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -115,21 +97,21 @@ public class CourseControllerTest {
     @Test
     public void findByIdAnnouncement() throws Exception {
         mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9878, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9878, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Marseille\", \"endPoint\":\"Paris\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         mockMvc.perform(post("/courses")
-                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"idNextCourse\":23," +
+                .content("{\"idClient\":1234, \"idDriver\":666, \"idAnnouncement\":9898, \"statusCourse\":\"WAITING\"," +
                         " \"startPoint\":\"Marseille\", \"endPoint\":\"Paris\", \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

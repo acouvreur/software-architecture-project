@@ -31,12 +31,11 @@ public class Course implements Serializable {
     @Column(nullable = false)
     private Long idAnnouncement;
 
-    /**
-     * Référence vers la prochaine course (Liste chainée)
-     */
 
-    @Column()
-    private Long idNextCourse;
+    //WAITING, END, INPROGRESS
+    @Column(nullable = false)
+    private String statusCourse;
+
 
     /**
      * On définit le point de départ, d'arrivé, etc... car une course
@@ -58,11 +57,11 @@ public class Course implements Serializable {
 
     public Course() {}
 
-    public Course(Long idClient, Long idDriver, Long idAnnouncement, Long idNextCourse, String startPoint, String endPoint, Date startDate, Date endDate){
+    public Course(Long idClient, Long idDriver, Long idAnnouncement, String statusCourse, String startPoint, String endPoint, Date startDate, Date endDate){
         this.idClient = idClient;
         this.idDriver = idDriver;
         this.idAnnouncement = idAnnouncement;
-        this.idNextCourse = idNextCourse;
+        this.statusCourse = statusCourse;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -103,12 +102,12 @@ public class Course implements Serializable {
         this.idAnnouncement = idAnnouncement;
     }
 
-    public Long getIdNextCourse() {
-        return idNextCourse;
+    public String getStatusCourse() {
+        return statusCourse;
     }
 
-    public void setIdNextCourse(Long idNextCourse) {
-        this.idNextCourse = idNextCourse;
+    public void setStatusCourse(String statusCourse) {
+        this.statusCourse = statusCourse;
     }
 
     public String getStartPoint() {
@@ -147,8 +146,9 @@ public class Course implements Serializable {
     public String toString() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         return String.format(
-                "Course[id=%d, idClient='%s', idDriver='%s', idAnnouncement='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.id, this.idClient, this.idDriver, this.idAnnouncement, this.startPoint, this.endPoint, dateFormat.format(this.startDate), dateFormat.format(this.endDate));
+                "Course[id=%d, idClient='%s', idDriver='%s', idAnnouncement='%s', statusCourse='%s' startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
+                this.id, this.idClient, this.idDriver, this.idAnnouncement, this.statusCourse, this.startPoint, this.endPoint, dateFormat.format(this.startDate), dateFormat.format(this.endDate));
     }
+
 
 }
