@@ -14,5 +14,11 @@
     <version>1.0-SNAPSHOT</version>
     <name>AL :: BlablaMove :: Matching</name>
 
-    
+    <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20170516</version>
+        </dependency>
+    </dependencies>
 </project>
