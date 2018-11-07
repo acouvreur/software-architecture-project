@@ -1,5 +1,9 @@
 package fr.unice.polytech.al.model;
 
-public enum AnnouncementType {
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
+@Embeddable
+public enum AnnouncementType implements Serializable{
     COURSE, GOOD;
 }
