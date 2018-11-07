@@ -42,7 +42,7 @@ public class AnnouncementControllerTest {
     public void create() throws Exception {
         mockMvc.perform(post("/announcements")
                 .content("{\"idTransmitter\":1234, \"nameTransmitter\":\"Jacky\", \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\","
-                        + " \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\"}")
+                        + " \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\", \"type\":\"GOOD\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -51,7 +51,8 @@ public class AnnouncementControllerTest {
                 .andExpect(jsonPath("$.startPoint")   .value("Nice"))
                 .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
                 .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
-                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"));
+                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"))
+                .andExpect(jsonPath("$.type")   .value("GOOD"));
     }
 
 }
