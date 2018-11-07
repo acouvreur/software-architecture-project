@@ -1,4 +1,4 @@
-package fr.unice.polytech.al;
+package fr.unice.polytech.al.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
