@@ -3,11 +3,13 @@ package fr.unice.polytech.al.controller;
 import fr.unice.polytech.al.assembler.AccountResourceAssembler;
 import fr.unice.polytech.al.model.Account;
 import fr.unice.polytech.al.repository.AccountRepository;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,11 +23,13 @@ public class AccountController {
 
     private AccountRepository repository;
     private AccountResourceAssembler assembler;
+    private KafkaTemplate<String, Account> kafkaTemplate;
 
     @Autowired
-    public AccountController(AccountRepository repository, AccountResourceAssembler assembler) {
+    public AccountController(AccountRepository repository, AccountResourceAssembler assembler, KafkaTemplate<String, Account> kafkaTemplate) {
         this.repository = repository;
         this.assembler = assembler;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @GetMapping(value = "/accounts", 
@@ -53,6 +57,8 @@ public class AccountController {
     public ResponseEntity<Resource<Account>> create(@RequestBody Account account) {
 
         repository.save(account);
+
+        kafkaTemplate.send("account_created", account);
 
         return ResponseEntity
                         .created(linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())
