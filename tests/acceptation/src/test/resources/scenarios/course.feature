@@ -1,10 +1,10 @@
-Feature: Couse
+#Feature: Couse
 
     #Background:
     #    Given test
 
-    Scenario: Test
-        Given test
+#    Scenario: Test
+#        Given test
      #       And is assigned to Pablo
      #       And id order is 34
      #   When the VALIDATE action is run
