@@ -42,9 +42,20 @@ public class TrackingController {
         public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody State state, @RequestBody Long idCourseAnnouncement) {
             Announcement a  = repository.findById(idGoodAnnouncement).get();
             a.setStatusDriver(idCourseAnnouncement,state);
+            repository.save(a);
             return new ResponseEntity<Announcement>(a, HttpStatus.OK);
         }
 
+        @PostMapping(value = "/tracking", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        public ResponseEntity<Announcement> ChangeTrackingStatus(@RequestBody Announcement announcement) {
+            repository.save(announcement);
+            return new ResponseEntity<Announcement>(announcement, HttpStatus.OK);
+        }
+
+    @PostMapping(value = "/tracking", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Integer> ChangeTrackingStatus2(@RequestBody Integer bla) {
+        return new ResponseEntity<Integer>(bla, HttpStatus.OK);
+    }
 
 
 }
