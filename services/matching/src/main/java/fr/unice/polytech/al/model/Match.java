@@ -33,4 +33,14 @@ public class Match {
         }
         return new JSONObject().put("matchingAnnonceIDs", contents);
     }
+
+
+    public String toString() {
+        String result = "";
+        for(int i=0; i < listMatch.size() - 1; i++) {
+            result += listMatch.get(i) + ";";
+        }
+        result += listMatch.get(listMatch.size() - 1);
+        return result;
+    }
 }

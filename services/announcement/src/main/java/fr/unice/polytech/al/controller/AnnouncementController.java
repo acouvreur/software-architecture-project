@@ -1,6 +1,7 @@
 package fr.unice.polytech.al.controller;
 
 import fr.unice.polytech.al.assembler.AnnouncementResourceAssembler;
+import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.AnnouncementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 public class AnnouncementController {
+
+    @Autowired
+    AnnouncementKafkaSender kafkaSender;
 
     private AnnouncementRepository repository;
     private AnnouncementResourceAssembler assembler;
@@ -53,6 +57,9 @@ public class AnnouncementController {
     public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) {
 
         repository.save(announcement);
+
+        // Send message to matching service
+        kafkaSender.send("announcement_created", announcement.getId().toString());
 
         return ResponseEntity.created(
                 linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())

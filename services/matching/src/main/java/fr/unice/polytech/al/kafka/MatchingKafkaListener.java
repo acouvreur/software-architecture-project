@@ -17,14 +17,15 @@ public class MatchingKafkaListener
     @KafkaListener(topics = "announcement_created")
     public void receiveAnnouncementCreated(String data)
     {
-        String announcementId = (new JSONObject(data)).getString("announcementId");
-        System.out.println("\n\nReceiver on announcement_created: " + announcementId);
+        //String announcementId = (new JSONObject(data)).getString("announcementId");
+        System.out.println("\nService Matching. Received Message. Topic: announcement_created  - Message: " + data);
 
 
-        matchList.add(announcementId);
-        String result = matchList.toJson().toString();
+        matchList.add(data);
+        String result = matchList.toString();
 
         if (matchList.size() > 1) {
+            System.out.println("\n\nService Matching. Course Matched " +  result);
             kafkaSender.send("announcement_matched", result);
              /*for(int i=0; i < matchList.size(); i++) {
                  JSONObject status = new JSONObject().put("announcementId", matchList.get(i)).put("status", "matched");

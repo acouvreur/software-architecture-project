@@ -23,14 +23,13 @@ public class MatchingController
     @GetMapping("/match/{idAnnonce}")
     public String match(@PathVariable String idAnnonce)
     {
+        kafkaSender.send("announcement_created", idAnnonce);
+
         //kafkaSender.send("announcement_created", (new JSONObject().put("announcementId", 10)).toString());
 
+        /*
         matchList.add(idAnnonce);
-        String result = matchList.toJson().toString();
-
-        //  if (matchList.size() > 1) {
-        // kafkaSender.send("create_announcement", result);
-        //  }
+        String result = matchList.toString();
 
         if (matchList.size() == 3) {
             matchList.empty();
@@ -39,8 +38,9 @@ public class MatchingController
         if (matchList.size() == 1) {
             return "";
         }
-
-        System.out.println("match : " + result);
         return result;
+        */
+
+        return idAnnonce;
     }
 }
