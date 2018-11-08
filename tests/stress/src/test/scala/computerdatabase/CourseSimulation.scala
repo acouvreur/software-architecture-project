@@ -43,7 +43,6 @@ class CourseSimulation extends Simulation{
          "idClient":456,
          "idDriver":2345,
          "idAnnouncement":42,
-         "statusCourse":"WAITING",
          "idNextCourse":3,
          "startPoint":"Paris",
          "endPoint":"Nice",
