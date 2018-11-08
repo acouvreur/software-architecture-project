@@ -1,6 +1,7 @@
 package fr.unice.polytech.al.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,7 @@ public class Announcement implements Serializable {
     private String endDate;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private AnnouncementType type;
 
     public Announcement() {}
