@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.json.JSONObject;
 
 @RestController
 public class AccountController {
@@ -63,5 +64,11 @@ public class AccountController {
         return ResponseEntity
                         .created(linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())
                 .body(assembler.toResource(account));
+    }
+
+    @DeleteMapping(value = "/accounts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public JSONObject deleteAll() {
+        repository.deleteAll();
+        return new JSONObject().put("allAccountDeleted", true);
     }
 }

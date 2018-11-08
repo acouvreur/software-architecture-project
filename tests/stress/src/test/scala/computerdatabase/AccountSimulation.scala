@@ -30,13 +30,8 @@ class AccountSimulation extends Simulation{
               .check(status.is(201))
           )
           .pause(1 seconds)
-          .exec(
-            http("Consult_Account")
-              .get("accounts/AlexLeBoss")
-              .check(status.is(200))
-          )
-          .pause(1 seconds)
       }
+
 
   def buildAccount(session: Session): String = {
     val mail = session("mail").as[String]
@@ -46,4 +41,5 @@ class AccountSimulation extends Simulation{
 
   setUp(stressSample.inject(constantConcurrentUsers(100) during (10 seconds), // 1
     rampConcurrentUsers(100) to (200) during (10 seconds)).protocols(httpProtocol))
+
 }

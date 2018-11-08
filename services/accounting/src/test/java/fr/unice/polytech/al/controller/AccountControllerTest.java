@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -82,5 +83,24 @@ public class AccountControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.accounts", hasSize(2)));
+    }
+
+    @Test
+    public void deleteAll() throws Exception {
+
+        mockMvc.perform(post("/accounts")
+                .content("{\"email\":\"alexis.couvreur@etu.unice.fr\", \"username\":\"AlexLeBoss\", \"firstName\":\"Alexis\", \"lastName\":\"Couvreur\"}").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/accounts")
+                .content("{\"email\":\"jean.didier@etu.unice.fr\", \"username\":\"JDLeBoss\", \"firstName\":\"Jean\", \"lastName\":\"Didier\"}").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(delete("/accounts"));
+        mockMvc.perform(get("/accounts"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
