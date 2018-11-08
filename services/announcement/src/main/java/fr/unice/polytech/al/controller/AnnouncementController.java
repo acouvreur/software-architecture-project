@@ -4,6 +4,7 @@ import fr.unice.polytech.al.assembler.AnnouncementResourceAssembler;
 import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.AnnouncementRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -32,14 +33,14 @@ public class AnnouncementController {
         this.assembler = assembler;
     }
 
-    @GetMapping(value = "/announcements",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resources<Resource<Announcement>> findAll() {
-        return new Resources<Resource<Announcement>>(
-                repository.findAll().stream()
+    @GetMapping(value = "/announcements", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resources<Resource<Announcement>> findAll(
+            @RequestParam(value = "transmitter", required = false) Long idTransmitter) {
+        return new Resources<>(
+                repository.findAll().stream().filter(c -> idTransmitter == null || c.getIdTransmitter() == idTransmitter)
                         .map(assembler::toResource)
                         .collect(Collectors.toList()),
-                linkTo(methodOn(AnnouncementController.class).findAll()).withSelfRel()
+                linkTo(methodOn(AnnouncementController.class).findAll(null)).withSelfRel()
         );
     }
 
@@ -64,5 +65,11 @@ public class AnnouncementController {
         return ResponseEntity.created(
                 linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())
                 .body(assembler.toResource(announcement));
+    }
+
+    @DeleteMapping(value = "/announcements", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public JSONObject deleteAll() {
+        repository.deleteAll();
+        return new JSONObject().put("allAnnouncementDeleted", true);
     }
 }

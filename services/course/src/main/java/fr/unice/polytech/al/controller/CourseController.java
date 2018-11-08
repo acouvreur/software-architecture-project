@@ -3,6 +3,7 @@ package fr.unice.polytech.al.controller;
 import fr.unice.polytech.al.assembler.CourseResourceAssembler;
 import fr.unice.polytech.al.model.Course;
 import fr.unice.polytech.al.repository.CourseRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -57,6 +58,12 @@ public class CourseController {
         return ResponseEntity
                 .created(linkTo(methodOn(CourseController.class).find(course.getId())).toUri())
                 .body(assembler.toResource(course));
+    }
+
+    @DeleteMapping(value = "/courses", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public JSONObject deleteAll() {
+        repository.deleteAll();
+        return new JSONObject().put("allCourseDeleted", true);
     }
 
 }

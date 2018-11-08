@@ -17,7 +17,7 @@ public class AnnoucementDefinition {
     private JSONObject announcement;
     private JSONObject answer;
 
-    private JSONObject call(JSONObject request) {
+    private JSONObject callAnnouncement(JSONObject request) {
         String raw =
                 WebClient.create("http://" + host + ":" + port + "/announcements")
                         .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -43,7 +43,7 @@ public class AnnoucementDefinition {
         announcement.put("startDate", "2018-11-01");
         announcement.put("endDate", "2018-11-02");
         announcement.put("type", "GOOD");
-        JSONObject ans = call(announcement);
+        JSONObject ans = callAnnouncement(announcement);
         assertEquals(1234, ans.getInt("idTransmitter"));
         assertEquals("Jacky", ans.getString("nameTransmitter"));
         assertEquals("Marseille", ans.getString("endPoint"));
@@ -54,6 +54,11 @@ public class AnnoucementDefinition {
         announcement = new JSONObject();
         announcement.put("idTransmitter", 67); //connue lors de l'exécution la on fait en dur
         announcement.put("nameTransmitter", name);
+    }
+
+    @Given("^the id of (.*) is (.*)$")
+    public void init_id_transmitter(String name, int id){
+        announcement.put("idTransmitter", id);
     }
     /*
     @Given("^the object is a (.*)$")
@@ -87,6 +92,12 @@ public class AnnoucementDefinition {
     @Given("^the announcement type is (.*)$")
     public void init_type(String type){
         announcement.put("type", type);
+        System.out.println("\n\n\n----------------VOICI L'ENTITÉ QUE PRENDRA NOTRE SERVICE ANNOUNCEMENT----------------\n\n\n");
         System.out.println(announcement.toString());
+        System.out.println("\n\n\n-------------------------------------------------------------------------------------\n\n\n");
+        System.out.println("\n\n\n----------------APPEL DU SERVICE----------------\n\n\n");
+        JSONObject ans = callAnnouncement(announcement);
+        System.out.println(ans.toString());
+        System.out.println("\n\n\n------------------------------------------------\n\n\n");
     }
 }

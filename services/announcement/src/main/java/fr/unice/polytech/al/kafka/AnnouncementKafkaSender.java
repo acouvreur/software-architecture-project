@@ -11,7 +11,7 @@ public class AnnouncementKafkaSender
     private KafkaTemplate<String, String> kafkaTemplate;
 
     public void send(String topic, String data) {
-        kafkaTemplate.send(topic, data);
+        //kafkaTemplate.send(topic, data);
         System.out.println("\n\nService Announcement. Send Message. Topic: " + topic + " - Message: " + data);
     }
 }

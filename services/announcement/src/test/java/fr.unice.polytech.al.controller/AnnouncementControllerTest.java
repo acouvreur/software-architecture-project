@@ -55,4 +55,38 @@ public class AnnouncementControllerTest {
                 .andExpect(jsonPath("$.type")   .value("GOOD"));
     }
 
+    @Test
+    public void findByIdTransmitter() throws Exception {
+        mockMvc.perform(post("/announcements")
+                .content("{\"idTransmitter\":1234, \"nameTransmitter\":\"Jacky\", \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\","
+                        + " \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\", \"type\":\"GOOD\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idTransmitter")      .value(1234))
+                .andExpect(jsonPath("$.nameTransmitter")   .value("Jacky"))
+                .andExpect(jsonPath("$.startPoint")   .value("Nice"))
+                .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
+                .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
+                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"))
+                .andExpect(jsonPath("$.type")   .value("GOOD"));
+        mockMvc.perform(post("/announcements")
+                .content("{\"idTransmitter\":34, \"nameTransmitter\":\"Jacky\", \"startPoint\":\"Nice\", \"endPoint\":\"Marseille\","
+                        + " \"startDate\":\"2018-11-01\", \"endDate\":\"2018-11-02\", \"type\":\"GOOD\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idTransmitter")      .value(34))
+                .andExpect(jsonPath("$.nameTransmitter")   .value("Jacky"))
+                .andExpect(jsonPath("$.startPoint")   .value("Nice"))
+                .andExpect(jsonPath("$.endPoint")   .value("Marseille"))
+                .andExpect(jsonPath("$.startDate")   .value("2018-11-01"))
+                .andExpect(jsonPath("$.endDate")   .value("2018-11-02"))
+                .andExpect(jsonPath("$.type")   .value("GOOD"));
+        mockMvc.perform(get("/announcements?transmitter=1234"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.announcements", hasSize(1)));
+    }
+
 }

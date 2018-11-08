@@ -11,7 +11,7 @@ public class CourseKafkaSender
     private KafkaTemplate<String, String> kafkaTemplate;
 
     public void send(String topic, String data) {
-        kafkaTemplate.send(topic, data);
+        //kafkaTemplate.send(topic, data);
         System.out.println("\n\nService Course. Send Message. Topic: " + topic + " - Message: " + data);
     }
 }

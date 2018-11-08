@@ -16,7 +16,7 @@ public class AnnouncementResourceAssembler implements ResourceAssembler<Announce
     public Resource<Announcement> toResource(Announcement entity) {
         return new Resource<>(entity,
                 linkTo(methodOn(AnnouncementController.class).find(entity.getId())).withSelfRel(),
-                linkTo(methodOn(AnnouncementController.class).findAll()).withRel("announcements")
+                linkTo(methodOn(AnnouncementController.class).findAll(null)).withRel("announcements")
         );
     }
 }
