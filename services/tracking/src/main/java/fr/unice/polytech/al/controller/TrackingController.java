@@ -29,20 +29,19 @@ public class TrackingController {
         }
 
 
-        @GetMapping(value = "/tracking/history/{idDriverAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-        public ResponseEntity<Announcement> getTrackingInformations(@PathVariable Long idDriverAnnouncement) {
-            Optional<Announcement> an = repository.findAll().stream().findFirst().filter( x -> x.ifExistsDriverAnnouncementStatus(idDriverAnnouncement));
-            Announcement a = an.orElse(null);
+        //retrive the informations about tracking(in form of Announcement object) :
+        @GetMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        public ResponseEntity<Announcement> getTrackingInformations(@PathVariable Long idGoodAnnouncement) {
+            Announcement a  = repository.findById(idGoodAnnouncement).get();
             return new ResponseEntity<Announcement>(a, HttpStatus.OK);
         }
 
 
 
-        @PatchMapping(value = "/tracking/history/{idDriverAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-        public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idDriverAnnouncement, @RequestBody State state) {
-            Optional<Announcement> an = repository.findAll().stream().findFirst().filter( x -> x.ifExistsDriverAnnouncementStatus(idDriverAnnouncement));
-            an.get().setStatusDriver(idDriverAnnouncement,state);
-            Announcement a = an.orElse(null);
+        @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody State state, @RequestBody Long idCourseAnnouncement) {
+            Announcement a  = repository.findById(idGoodAnnouncement).get();
+            a.setStatusDriver(idCourseAnnouncement,state);
             return new ResponseEntity<Announcement>(a, HttpStatus.OK);
         }
 

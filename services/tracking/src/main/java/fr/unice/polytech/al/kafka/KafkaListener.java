@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Random;
 
+import static fr.unice.polytech.al.State.STARTED;
+
 @Component
 public class KafkaListener {
 
@@ -26,18 +28,15 @@ public class KafkaListener {
     }
 
 
-    /*@org.springframework.kafka.annotation.KafkaListener(topics = "announcement-tracking")
-    public void getNewCourseToTrack(List<Announcement> , Acknowledgment acknowledgment) {
-        Announcement announcement = new Announcement();
-        tracking.setCourses(courses);
-        tracking.setClientId(courses.get(0).getId());
-        repository.save(tracking);
-    }*/
-
-    /*@org.springframework.kafka.annotation.KafkaListener(topics = "billing-balance-modifications")
-    public void getBalanceAfterCourse(int billing, Acknowledgment acknowledgment) {
-        System.out.print(billing);
-    }*/
+    // where string ids has format:  IdAnnonceGood;IdAnnoceCourse
+    //
+    @org.springframework.kafka.annotation.KafkaListener(topics = "announcement_matched")
+    public void getIdsOfGoodAndCarAnnouncement(String ids, Acknowledgment acknowledgment) {
+        String [] stringArray = ids.split(";");
+        Long IdAnnonceGood = Long.parseLong(stringArray[0]);
+        Long IdAnnoceCourse = Long.parseLong(stringArray[1]);
+        repository.findById(IdAnnonceGood).get().setStatusDriver(IdAnnoceCourse, STARTED);
+    }
 
 
 }
