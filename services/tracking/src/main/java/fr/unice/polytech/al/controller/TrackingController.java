@@ -1,6 +1,5 @@
 package fr.unice.polytech.al.controller;
 
-import fr.unice.polytech.al.State;
 import fr.unice.polytech.al.assembler.TrackingResourceAssembler;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
@@ -38,7 +37,7 @@ public class TrackingController {
 
 
     @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state, @RequestBody Long idCourseAnnouncement) {
+    public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) {
         Announcement a = repository.findById( idGoodAnnouncement ).get();
         a.setState(state);
         repository.save(a);
