@@ -17,31 +17,36 @@ echo "The good is assigned to Hope for delivery through a course"
 
 # Irrelevant ? Obviously he know she received it, but maybe it is need on the app
 echo "Hope notifies that she received the good"
-curl -s -d '{"status": "RECEIVED"}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/${lucas_announcement}
+
+
+curl -s -d '{"idGoodAnnouncement":2,"idDriverAnnouncement":2,"state":"STARTED"}' -H "Content-Type: application/json" -X POST http://localhost:8085/tracking > tracking_lucas.json
+cat tracking_lucas.json
+
+curl -s -d '{RECEIVED}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
 echo "Lucas check the status of his good" # Lucas poll the results
-curl -s http://localhost:8085/tracking/${lucas_announcement} > annonce_lucas_etat.json
+curl -s http://localhost:8085/tracking/2 > annonce_lucas_etat.json
 cat annonce_lucas_etat.json
 
 echo "Hope notifies that she starts the course"
-curl -s -d '{"status": "STARTED"}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/${lucas_announcement}
+curl -s -d '{STARTED}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
 echo "Lucas check the status of his good" # Lucas poll the results
-curl -s http://localhost:8085/tracking/${lucas_announcement} > annonce_lucas_etat.json
+curl -s http://localhost:8085/tracking/2 > annonce_lucas_etat.json
 cat annonce_lucas_etat.json
 
 echo "Hope notifies that she has arrived in Paris and can deliver the good"
-curl -s -d '{"status": "DELIVERING"}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/${lucas_announcement}
+curl -s -d '{DELIVERING}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
 echo "Charles check the status of the good to receive" # Lucas poll the results
-curl -s http://localhost:8085/tracking/${lucas_announcement} > annonce_lucas_etat.json
+curl -s http://localhost:8085/tracking/2 > annonce_lucas_etat.json
 cat annonce_lucas_etat.json
 
 echo "Hope notifies that she delivered the good"
-curl -s -d '{"status": "DELIVERED"}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/${lucas_announcement}
+curl -s -d '{DELIVERED}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
 echo "Charles confirms that he received the good"
-curl -s -d '{"status": "CONFIRMED"}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/${lucas_announcement}
+curl -s -d '{CONFIRMED}' -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
 echo "Hope check that he has been credited"
-curl http://localhost:8082/tracking/${hope}
+curl http://localhost:8082/tracking/2
