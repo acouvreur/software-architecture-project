@@ -1,5 +1,7 @@
 package fr.unice.polytech.al.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.assembler.AnnouncementResourceAssembler;
 import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
 import fr.unice.polytech.al.model.Announcement;
@@ -55,12 +57,13 @@ public class AnnouncementController {
 
     @PostMapping(value = "/announcements",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) {
+    public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) throws JsonProcessingException {
 
         repository.save(announcement);
 
         // Send message to matching service
-        kafkaSender.send("announcement_created", announcement.getId().toString());
+        ObjectMapper mapper = new ObjectMapper();
+        kafkaSender.send("announcement_created",  mapper.writeValueAsString(announcement));
 
         return ResponseEntity.created(
                 linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())
