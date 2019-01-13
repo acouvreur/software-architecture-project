@@ -55,6 +55,8 @@ public class MatchingKafkaListener
                  kafkaSender.send("announcement_status", status.toString());
              }*/
 
+             //KAFKA -> TRACKING
+
             Object obj = deSerializedData(data);
             String json = (String)obj;
             System.out.println("object message value : " + obj);

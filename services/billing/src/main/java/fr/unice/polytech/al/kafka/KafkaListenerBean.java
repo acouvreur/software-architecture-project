@@ -27,10 +27,10 @@ public class KafkaListenerBean {
     @KafkaListener(topics = "tracking-finished")
     public void modificationOfNumberOfPoints(String usersId, Acknowledgment acknowledgment) {
         String[] ids = usersId.split( ";" );
-        long id1 = Integer.parseInt(ids[0]);
-        long id2 = Integer.parseInt(ids[1]);
-        service.setNewBallanceForClient(id1);
-        service.setNewBallanceForClient(id2);
+        long idGood = Integer.parseInt(ids[0]);
+        long driverId = Integer.parseInt(ids[1]);
+        service.setNewBallanceForClient(idGood);
+        service.setNewBallanceForClient(driverId);
     }
 
 

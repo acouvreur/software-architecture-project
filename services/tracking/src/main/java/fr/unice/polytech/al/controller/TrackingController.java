@@ -3,6 +3,7 @@ package fr.unice.polytech.al.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.unice.polytech.al.State;
 import fr.unice.polytech.al.assembler.TrackingResourceAssembler;
+import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static fr.unice.polytech.al.State.DELIVERED;
+
 @RestController
 public class TrackingController {
 
     private TrackingRepository repository;
     private TrackingResourceAssembler assembler;
+
+    @Autowired
+    AnnouncementKafkaSender kafkaSender;
 
     @Autowired
     public TrackingController(TrackingRepository repository, TrackingResourceAssembler assembler) {
@@ -60,6 +66,16 @@ public class TrackingController {
         Announcement a = repository.findById( idGoodAnnouncement ).get();
         a.setState(State.valueOf(state));
         repository.save(a);
+
+        //KAFKA --> BILLING
+        if (state.equals(DELIVERED)) {
+            Long idGood = a.getIdGoodAnnouncement();
+            Long driverId = a.getIdDriverAnnouncement();
+            String data = idGood + ";" + driverId;
+            kafkaSender.send("tracking-finished", data);
+        }
+
+
         return new ResponseEntity<Announcement>( a, HttpStatus.OK );
     }
 
