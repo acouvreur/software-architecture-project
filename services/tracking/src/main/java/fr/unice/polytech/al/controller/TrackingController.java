@@ -1,5 +1,7 @@
 package fr.unice.polytech.al.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.unice.polytech.al.State;
 import fr.unice.polytech.al.assembler.TrackingResourceAssembler;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
@@ -31,15 +33,32 @@ public class TrackingController {
 
     @PostMapping(value = "/tracking", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> ChangeTrackingStatus(@RequestBody Announcement announcement) {
-        repository.save( announcement );
+        repository.save(announcement);
         return new ResponseEntity<Announcement>( announcement, HttpStatus.OK );
     }
 
 
+
+    /*@PostMapping(value = "/announcements",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) throws JsonProcessingException {
+
+        repository.save(announcement);
+
+        // Send message to matching service
+        ObjectMapper mapper = new ObjectMapper();
+        kafkaSender.send("announcement_created",  mapper.writeValueAsString(announcement));
+
+        return ResponseEntity.created(
+                linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())
+                .body(assembler.toResource(announcement));
+    }*/
+
+
     @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) {
+    public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) throws JsonProcessingException {
         Announcement a = repository.findById( idGoodAnnouncement ).get();
-        a.setState(state);
+        a.setState(State.valueOf(state));
         repository.save(a);
         return new ResponseEntity<Announcement>( a, HttpStatus.OK );
     }
