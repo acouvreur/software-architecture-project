@@ -1,0 +1,18 @@
+@startuml useCase
+actor User as user
+actor Student as student
+actor Driver as driver
+
+rectangle "BlablaMove Application" {    
+  (Manage Account) as (manageAcc)
+  
+  student -- (Place Good Announcement)
+  user -- (manageAcc)
+  (manageAcc) -.> (Register) : include
+  (manageAcc) -.> (Login) : include
+  (manageAcc) -.> (Manage Profile) : include
+
+  user -- (Browse Courses)
+}
+
+@enduml

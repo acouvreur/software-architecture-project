@@ -1,0 +1,47 @@
+@startuml Server
+
+
+package "Server" {
+    [Accounting]
+    [Announcement]
+    [Billing]
+    [Matching]
+    [Notification]
+    [Tracking]
+    [VolumeAssessment]
+
+    node "Chaos Broker" {
+        queue Kafka
+        Kafka <.. [Chaos Broker] : use
+    }
+
+    note right of [Chaos Broker]
+    'ChaosBroker' act
+    as a proxy
+    in front of the
+    real message
+    broker 'kafka'
+    end note
+    Message - [Chaos Broker]
+
+    [Accounting] ..> Message : account creation
+    [Announcement] ..> Message : annoucement creation
+    Kafka ..> [Billing] : billing deduction
+    Message <.. [Matching] : test
+    [Matching] <.. Kafka
+    [Notification] <.> Message
+    [Tracking] <.> Message
+    [VolumeAssessment] <.> Message
+
+}
+
+node "Other Groups" {
+    FTP - [Second Component]
+    [First Component] --> FTP
+}
+
+
+cloud {
+    [Example 1]
+}
+@enduml
