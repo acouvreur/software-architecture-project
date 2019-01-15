@@ -7,6 +7,8 @@ rectangle "BlablaMove Application" {
   (Manage Account) as (manageAcc)
   
   student -- (Place Good Announcement)
+  (manageAcc) -.> (Register) : include
+
   user -- (manageAcc)
   (manageAcc) -.> (Register) : include
   (manageAcc) -.> (Login) : include

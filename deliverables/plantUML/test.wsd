@@ -1,0 +1,22 @@
+@startuml
+title Sequence Diagram : Kafka
+actor Alice
+actor Bob
+Alice -> Announcement : create_announcement()
+Announcement -> Matching : announcement_created()
+Bob -> Announcement : create_announncement()
+Announcement -> Matching : announcement_created()
+Matching -> Notification : match_found()
+Notification -[#0000FF]-> Alice : do_you_agree()
+Notification -[#0000FF]-> Bob : do_you_agree()
+Bob -> Notification : agree()
+Alice -> Notification : agree()
+Notification -> Matching : match_accepted()
+Matching -> Tracking : create_tracking()
+Tracking -> Tracking : tracking()
+Bob -> Notification : course_done()
+Notification -> Announcement : change_status()
+Notification -[#0000FF]-> Alice : course_done()
+Billing -> Bob : money_time()
+@enduml
+
