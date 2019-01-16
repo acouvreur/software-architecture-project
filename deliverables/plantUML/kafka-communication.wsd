@@ -3,16 +3,34 @@ title Sequence Diagram : Kafka
 actor Alice
 actor Bob
 Alice -> Announcement : create_announcement()
-Announcement -> Matching : announcement_created
+activate Announcement
+Announcement -[#00DD00]> Matching : announcement_created
+deactivate Announcement
 Bob -> Announcement : create_announncement()
-Announcement -> Matching : announcement_created
-Matching -> Notification : match_found
-Notification -> Alice : do_you_agree()
-Notification -> Bob : do_you_agree()
+activate Announcement
+Announcement -[#00DD00]> Matching : announcement_created
+deactivate Announcement
+Matching -[#00DD00]> Notification : match_found
+Notification -[#0000FF]-> Alice : do_you_agree()
+Notification -[#0000FF]-> Bob : do_you_agree()
 Bob -> Notification : agree()
 Alice -> Notification : agree()
-Notification -> Matching : match_accepted
-Matching -> Tracking : create_tracking()
+Notification -[#00DD00]> Matching : match_accepted
+activate Matching
+Matching -[#00DD00]> Tracking : create_tracking
+deactivate Matching
+activate Tracking
 Tracking -> Tracking : tracking()
+deactivate Tracking
+Bob -> Notification : course_done()
+Notification -[#00DD00]> Announcement : change_status
+Notification -[#0000FF]-> Alice : course_done()
+Alice -> Announcement : confim_course()
+Announcement -[#00DD00]> Billing : course_finish
+activate Billing
+Billing -[#00DD00]> Accounting : money_time
+deactivate Billing
+Billing -[#00DD00]> Notification : money_time
+Notification -[#0000FF]-> Bob : you_has_been_paid()
 @enduml
 
