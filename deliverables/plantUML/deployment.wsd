@@ -1,0 +1,52 @@
+!include <font-awesome/common>
+
+@startuml Deployment
+
+skinparam backgroundColor 224,224,224
+skinparam node {
+  StartColor MediumBlue
+  EndColor Blue
+  BackgroundColor 221,17,68
+  BackgroundColor<<KubeMaster>> CornflowerBlue
+  BackgroundColor<<Tracking>> Red
+  BackgroundColor<<Account>> LightGreen
+  BackgroundColor<<Announcement>> LightSteelBlue
+  BackgroundColor<<Notification>> LightSkyBlue
+  BackgroundColor<<Matching>> LightCyan
+  BackgroundColor<<Billing>> LightSalmon
+  
+  FontName FiraCode
+}
+
+cloud "IBM Cloud" {
+
+    node "Kubernetes Master" as KubeMaster <<KubeMaster>>
+    
+    node TrackingReplica1 <<Tracking>>
+    node TrackingReplica2 <<Tracking>>
+    node TrackingReplica3 <<Tracking>> 
+    
+    node BillingReplica1 <<Billing>>
+
+    node AccountingReplica1 <<Account>>
+
+    node NotificationReplica1 <<Notification>>
+    node NotificationReplica2 <<Notification>>
+
+    node AnnouncementReplica1 <<Announcement>>
+
+    node MatchingReplica1 <<Matching>>
+
+    
+    KubeMaster -- TrackingReplica1
+    KubeMaster -- TrackingReplica2
+    KubeMaster -- TrackingReplica3
+    KubeMaster -- AccountingReplica1
+    KubeMaster -- AnnouncementReplica1
+    KubeMaster -- NotificationReplica1
+    KubeMaster -- NotificationReplica2
+    KubeMaster -- MatchingReplica1
+    KubeMaster -- BillingReplica1
+}
+
+@enduml
