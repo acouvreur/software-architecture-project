@@ -1,15 +1,17 @@
 package fr.unice.polytech.al.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.State;
 import fr.unice.polytech.al.assembler.TrackingResourceAssembler;
-import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
+import fr.unice.polytech.al.kafka.KafkaHelperClass;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import static fr.unice.polytech.al.State.DELIVERED;
@@ -21,7 +23,7 @@ public class TrackingController {
     private TrackingResourceAssembler assembler;
 
     @Autowired
-    AnnouncementKafkaSender kafkaSender;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
     public TrackingController(TrackingRepository repository, TrackingResourceAssembler assembler) {
@@ -64,15 +66,26 @@ public class TrackingController {
     @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) throws JsonProcessingException {
         Announcement a = repository.findById( idGoodAnnouncement ).get();
-        a.setState(State.valueOf(state));
+        State stateAnnouncement = DELIVERED;
+        try {
+            stateAnnouncement = State.valueOf(state);
+            System.out.println("patching tracking -> state fine");
+        } catch (Error e) {
+
+        }
+        a.setState(stateAnnouncement);
         repository.save(a);
 
         //KAFKA --> BILLING
-        if (state.equals(DELIVERED)) {
+        if (stateAnnouncement.equals(DELIVERED)) {
             Long idGood = a.getIdGoodAnnouncement();
             Long driverId = a.getIdDriverAnnouncement();
-            String data = idGood + ";" + driverId;
-            kafkaSender.send("tracking-finished", data);
+            KafkaHelperClass data = new KafkaHelperClass(idGood,driverId);
+
+            //String data = idGood + ";" + driverId;
+            ObjectMapper mapper = new ObjectMapper();
+            System.out.println("send tracking finished message : ");
+            kafkaTemplate.send("tracking-finished", mapper.writeValueAsString(data));
         }
 
 
