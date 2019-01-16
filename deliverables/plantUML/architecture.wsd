@@ -1,47 +1,43 @@
 @startuml Server
 
-
 package "Server" {
-    [Accounting]
-    [Announcement]
-    [Billing]
-    [Matching]
-    [Notification]
-    [Tracking]
-    [VolumeAssessment]
 
-    node "Chaos Broker" {
-        queue Kafka
-        Kafka <.. [Chaos Broker] : use
+    folder "Mocked" {
+        [Accounting] #LightGreen
+        [Billing] #LightSalmon
+        [Matching] #LightCyan
     }
 
-    note right of [Chaos Broker]
+    folder "Implemented" {
+        [Announcement] #LightSteelBlue
+        [Notification] #LightSkyBlue
+        [Tracking] #Red
+    }
+    
+    node "Chaos Broker" {
+        queue Kafka
+        Kafka <.. [Chaos Broker] : modify
+    }
+
+    note left of [Chaos Broker]
     'ChaosBroker' act
     as a proxy
     in front of the
     real message
     broker 'kafka'
     end note
-    Message - [Chaos Broker]
+
+    [Chaos Broker] - Message
 
     [Accounting] ..> Message : account creation
     [Announcement] ..> Message : annoucement creation
-    Kafka ..> [Billing] : billing deduction
-    Message <.. [Matching] : test
-    [Matching] <.. Kafka
-    [Notification] <.> Message
-    [Tracking] <.> Message
-    [VolumeAssessment] <.> Message
+    [Matching]  ..> Message : match detected
+    [Tracking] ..> Message : tracking update
+    [Billing] ..> Message : billing update
 
-}
-
-node "Other Groups" {
-    FTP - [Second Component]
-    [First Component] --> FTP
-}
-
-
-cloud {
-    [Example 1]
+    Kafka ..> [Billing] : billing events
+    Kafka ..> [Tracking]
+    Kafka ..> [Notification] : notification events
+    Kafka ..> [Matching] : listens "account creation"
 }
 @enduml
