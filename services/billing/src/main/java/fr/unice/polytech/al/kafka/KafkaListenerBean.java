@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.unice.polytech.al.model.Billing;
 import fr.unice.polytech.al.repository.BillingRepository;
 import fr.unice.polytech.al.service.BillingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class KafkaListenerBean {
 
     @Autowired
     private BillingService service;
+
+    private BillingRepository repository;
+
 
     /*@Autowired
     private KafkaSender sender;*/
@@ -52,7 +56,7 @@ public class KafkaListenerBean {
 
 
     @KafkaListener(topics = "tracking-finished")
-    public void modificationOfNumberOfPoints(String message, Acknowledgment acknowledgment) throws IOException {
+    public void modifyBalanceOnceTrackingFinished(String message, Acknowledgment acknowledgment) throws IOException {
         System.out.println("tracking has finished .... " );
 
         Object json0 = deSerializedData(message);
@@ -77,6 +81,28 @@ public class KafkaListenerBean {
         service.setNewBallanceForClient(driverId);
     }
 
+
+    @KafkaListener(topics = "account_created")
+    public void createBillingOnceAccountCreated(String message, Acknowledgment acknowledgment) throws IOException {
+        System.out.println("account created -> creation of billing .... " );
+
+        Object json0 = deSerializedData(message);
+        String json = (String) json0;
+
+
+        System.out.println("object message value : " + json);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+        JsonNode jsonNode = objectMapper.readTree(json);
+        System.out.println("jsonNode : " + jsonNode);
+
+        String id = jsonNode.get("id").asText();
+        System.out.println("id : " + id);
+
+        long accountId = Long.valueOf(id);
+        Billing billing = new Billing(accountId,200);
+        repository.save(billing);
+    }
 
 }
 

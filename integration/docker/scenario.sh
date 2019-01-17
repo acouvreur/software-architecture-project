@@ -1,14 +1,23 @@
 #!/bin/sh
 
+
+
 # Lucas id
 lucas=1
+echo "Lucas creats an account"
+curl -s -d '{"id":1, "email":"lucas@gmail.com", "username":"lucas07", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+
+# Hope id
+hope=2
+echo "Hope creats an account"
+curl -s -d '{"id":1, "email":"hope@gmail.com", "username":"hope_a", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+
+
 echo "Lucas creates an announcement for his bike to be transported from Sophia to Paris"
 curl -s -d '{"idTransmitter":1, "nameTransmitter":"Lucas", "startPoint":"Sophia", "endPoint":"Paris","startDate":"2018-10-12", "endDate":"2018-12-24", "type" :"GOOD"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements > annonce_lucas.json
 
 lucas_announcement=$(cat annonce_lucas.json | jq -r '.id')
 
-# Hope id
-hope=2
 echo "Hope creates an announcement stating she travels from Nice to Paris on the 2018-10-12."
 curl -s -d '{"idTransmitter":1, "nameTransmitter":"Lucas", "startPoint":"Sophia", "endPoint":"Paris","startDate":"2018-10-12", "endDate":"2018-12-24", "type" :"COURSE"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements > annonce_hope.json
 
