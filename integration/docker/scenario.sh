@@ -5,12 +5,12 @@
 # Lucas id
 lucas=1
 echo "Lucas creats an account"
-curl -s -d '{"id":1, "email":"lucas@gmail.com", "username":"lucas07", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+curl -s -d '{"email":"lucas1@gmail.com", "username":"lucas071", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
 
 # Hope id
 hope=2
 echo "Hope creats an account"
-curl -s -d '{"id":1, "email":"hope@gmail.com", "username":"hope_a", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+curl -s -d '{"email":"hope1@gmail.com", "username":"hope_a1", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
 
 
 echo "Lucas creates an announcement for his bike to be transported from Sophia to Paris"

@@ -57,13 +57,12 @@ public class AccountController {
     @PostMapping(value = "/accounts",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Resource<Account>> create(@RequestBody Account account) throws JsonProcessingException {
-
-        repository.save(account);
-
         //KAFKA -> BILLING
         ObjectMapper mapper = new ObjectMapper();
         System.out.println("account created -> creation of billing .... " );
         kafkaTemplate.send("account_created", mapper.writeValueAsString(account));
+
+        repository.save(account);
 
         return ResponseEntity
                         .created(linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())

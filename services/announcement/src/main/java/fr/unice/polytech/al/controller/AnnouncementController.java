@@ -67,8 +67,12 @@ public class AnnouncementController {
         kafkaSender.send("announcement_created",  mapper.writeValueAsString(announcement));
         System.out.println("announcement_created -> matching .... " );
 
-        return ResponseEntity.created(
+        /*return ResponseEntity.created(
                 linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())
+                .body(assembler.toResource(announcement));*/
+
+        return ResponseEntity
+                .created(linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())
                 .body(assembler.toResource(announcement));
     }
 

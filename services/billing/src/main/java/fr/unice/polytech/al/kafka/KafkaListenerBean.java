@@ -89,7 +89,6 @@ public class KafkaListenerBean {
         Object json0 = deSerializedData(message);
         String json = (String) json0;
 
-
         System.out.println("object message value : " + json);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
@@ -97,11 +96,11 @@ public class KafkaListenerBean {
         System.out.println("jsonNode : " + jsonNode);
 
         String id = jsonNode.get("id").asText();
-        System.out.println("id : " + id);
-
         long accountId = Long.valueOf(id);
-        Billing billing = new Billing(accountId,200);
-        repository.save(billing);
+        System.out.println("accountId : " + accountId);
+
+        //Billing billing = new Billing(accountId,200);
+        //repository.save(billing);
     }
 
 }

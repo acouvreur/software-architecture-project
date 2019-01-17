@@ -27,7 +27,15 @@ public class Account implements Serializable {
     @Column(nullable = false)
     private String lastName;
 
+    public Account(String email,String username, String firstName, String lastName ) {
+        this.email = email;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Account() {}
+
 
     public Long getId() {
         return id;
