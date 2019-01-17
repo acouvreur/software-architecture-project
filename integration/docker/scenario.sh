@@ -3,14 +3,22 @@
 
 
 # Lucas id
-lucas=1
 echo "Lucas creats an account"
-curl -s -d '{"email":"lucas1@gmail.com", "username":"lucas071", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+curl -s -d '{"email":"lucc@gmail.com", "username":"luc", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements > account_lucas.json
+lucas=$(cat annonce_lucas.json | jq -r '.id')
+echo $(lucas)
+echo lucas
 
 # Hope id
 hope=2
 echo "Hope creats an account"
-curl -s -d '{"email":"hope1@gmail.com", "username":"hope_a1", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+curl -s -d '{"email":"hopee@gmail.com", "username":"hope", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+
+
+####### CREATING BILLING
+#curl -s -d -H "Content-Type: application/json" -X POST http://localhost:8082/billing/1
+#curl -s -d -H "Content-Type: application/json" -X POST http://localhost:8082/billing/2
+#######
 
 
 echo "Lucas creates an announcement for his bike to be transported from Sophia to Paris"
@@ -26,9 +34,6 @@ echo "The good is assigned to Hope for delivery through a course"
 
 # Irrelevant ? Obviously he know she received it, but maybe it is need on the app
 echo "Hope notifies that she received the good"
-
-
-#curl -s -d '{"idGoodAnnouncement":2,"idDriverAnnouncement":2,"state":"STARTED"}' -H "Content-Type: application/json" -X POST http://localhost:8085/tracking > tracking_lucas.json
 
 curl -s -d RECEIVED -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
@@ -57,5 +62,7 @@ echo "Charles confirms that he received the good"
 curl -s -d CONFIRMED -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
 
 echo "Hope check that he has been credited"
-curl http://localhost:8082/tracking/2
+curl -s -d CONFIRMED -H "Content-Type: application/json" -X GET http://localhost:8082/billing/2
 
+echo "Lucas also check the billing"
+curl -s -d CONFIRMED -H "Content-Type: application/json" -X GET http://localhost:8082/billing/1

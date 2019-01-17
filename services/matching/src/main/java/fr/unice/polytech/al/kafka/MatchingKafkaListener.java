@@ -19,7 +19,8 @@ public class MatchingKafkaListener
     @Autowired
     MatchingKafkaSender kafkaSender;
 
-    private Match matchList = new Match();
+    @Autowired
+    private Match matchList;
 
 
     public Object deSerializedData(String str) {

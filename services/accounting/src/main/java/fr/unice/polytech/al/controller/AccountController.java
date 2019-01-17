@@ -58,14 +58,23 @@ public class AccountController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Resource<Account>> create(@RequestBody Account account) throws JsonProcessingException {
         //KAFKA -> BILLING
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println("account created -> creation of billing .... " );
-        kafkaTemplate.send("account_created", mapper.writeValueAsString(account));
 
         repository.save(account);
 
-        return ResponseEntity
+
+        System.out.println("account .............. " + account);
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println("account created -> creation of billing .... " );
+        //kafkaTemplate.send("account_created", String.valueOf(account.getId()));
+        kafkaTemplate.send("account_created", mapper.writeValueAsString(account));
+
+
+        /*return ResponseEntity
                         .created(linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())
+                .body(assembler.toResource(account));*/
+
+        return ResponseEntity.created(
+                linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())
                 .body(assembler.toResource(account));
     }
 

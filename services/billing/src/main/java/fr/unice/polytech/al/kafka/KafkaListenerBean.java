@@ -26,6 +26,7 @@ public class KafkaListenerBean {
     @Autowired
     private BillingService service;
 
+    @Autowired
     private BillingRepository repository;
 
 
@@ -84,7 +85,9 @@ public class KafkaListenerBean {
 
     @KafkaListener(topics = "account_created")
     public void createBillingOnceAccountCreated(String message, Acknowledgment acknowledgment) throws IOException {
-        System.out.println("account created -> creation of billing .... " );
+        System.out.println("account created -> creation of billing .... " + message );
+
+
 
         Object json0 = deSerializedData(message);
         String json = (String) json0;
@@ -99,8 +102,8 @@ public class KafkaListenerBean {
         long accountId = Long.valueOf(id);
         System.out.println("accountId : " + accountId);
 
-        //Billing billing = new Billing(accountId,200);
-        //repository.save(billing);
+        Billing billing = new Billing(accountId,200);
+        repository.save(billing);
     }
 
 }
