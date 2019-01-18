@@ -1,3 +1,12 @@
 language: java
 jdk:
 - oraclejdk8
+
+addons:
+  sonarcloud:
+    organization: "acouvreur-github" # the key of the org you chose at step #3
+    token:
+      secure: "z2r8Ykf4t7v3Jcs+jdbCeyzg8ZDPYSC7MB2TUr63+coei0IZKZDFJzfMhrZs6n8GsbD+MSExYS3qkAJ4eFc+/i1PWGSlbEo02swenfDeYRa0ZcK2gKA1ZNIDrEMZX6C94MdyCDIicMQDHx+C/lm0PSMRiJ7rovUkIjzIjpmG6ULl5OlVAR5Vke6fD6jyy9w1WPS75Zjv0l1NozYLEAvvwwCBtW6WvRSK/YJ2ZYQ7zEDl8/ohWoYcJPRDzmVkltqYFaDD0aSeZp/hXtH3wx+GY2MdA3VmGsv6eLphkGmvuopBIkgtulDMjcYeP6zZgZsHrKzakiQtIr6CP1E3UZB3eH5/tQ+Wbx/zrn6181QFKxOy7OI86WcLTSYiN2ZuDWv1YBwZ9OHsWTe2mrFoykb2BGmfj0i+erqmCQnkkrS2X7HXSQMrCIMjfQg8PMOxkElTGYYps/BsdcVN+XZ19IRIhIqk1isF3+idCpUVZRiPReTLwSIfEzGjL0v+O/hsrR+DPAIzooR0Cbon5sho5cxBLdZUYbKqld76gt79x26ZAgymfP2tHv1sYw0KUzs2Nn80GOzR5VvBHXHmmfo8xSAIM5fEaOkRl768sGDoX3GQHPPN5h3bZ2eyGMmVpYHI9S99Qc/OiNUYqoUpbpvsxUOIw8Icr6290Xn7RXs1UhPOQJI=" # encrypted value of your token
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
