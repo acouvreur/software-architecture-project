@@ -1,11 +1,12 @@
-# Use Ubuntu 'trusty' distribution
-sudo: required
 dist: trusty
+sudo: required
+language: java
 
-cache:
-  directories:
-  - .autoconf
-  - $HOME/.m2
+services:
+- docker
+
+env:
+  COMPOSE_VERSION: 1.5.2
 
 addons:
   sonarcloud:
@@ -14,21 +15,10 @@ addons:
       secure: "z2r8Ykf4t7v3Jcs+jdbCeyzg8ZDPYSC7MB2TUr63+coei0IZKZDFJzfMhrZs6n8GsbD+MSExYS3qkAJ4eFc+/i1PWGSlbEo02swenfDeYRa0ZcK2gKA1ZNIDrEMZX6C94MdyCDIicMQDHx+C/lm0PSMRiJ7rovUkIjzIjpmG6ULl5OlVAR5Vke6fD6jyy9w1WPS75Zjv0l1NozYLEAvvwwCBtW6WvRSK/YJ2ZYQ7zEDl8/ohWoYcJPRDzmVkltqYFaDD0aSeZp/hXtH3wx+GY2MdA3VmGsv6eLphkGmvuopBIkgtulDMjcYeP6zZgZsHrKzakiQtIr6CP1E3UZB3eH5/tQ+Wbx/zrn6181QFKxOy7OI86WcLTSYiN2ZuDWv1YBwZ9OHsWTe2mrFoykb2BGmfj0i+erqmCQnkkrS2X7HXSQMrCIMjfQg8PMOxkElTGYYps/BsdcVN+XZ19IRIhIqk1isF3+idCpUVZRiPReTLwSIfEzGjL0v+O/hsrR+DPAIzooR0Cbon5sho5cxBLdZUYbKqld76gt79x26ZAgymfP2tHv1sYw0KUzs2Nn80GOzR5VvBHXHmmfo8xSAIM5fEaOkRl768sGDoX3GQHPPN5h3bZ2eyGMmVpYHI9S99Qc/OiNUYqoUpbpvsxUOIw8Icr6290Xn7RXs1UhPOQJI=" # encrypted value of your token
 
 install:
-  # Update docker-engine using Ubuntu 'trusty' apt repo
-  - >
-    curl -sSL "https://get.docker.com/gpg" |
-      sudo -E apt-key add -
-  - >
-    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" |
-      sudo tee -a /etc/apt/sources.list
-  - sudo apt-get update
-  - >
-    sudo apt-get -o Dpkg::Options::="--force-confdef" \
-      -o Dpkg::Options::="--force-confold" --assume-yes install docker-engine
-  - docker version
-  # Update docker-compose via pip
-  - sudo pip install docker-compose
-  - docker-compose version
+  # Docker Compose Install 
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 
 before_script:
   - ./install.sh
