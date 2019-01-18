@@ -28,7 +28,6 @@ public class TrackingKafkaListener {
     private Random rand = new Random();
 
 
-
     public TrackingKafkaListener() {
     }
 
