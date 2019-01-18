@@ -4,15 +4,14 @@
 
 # Lucas id
 echo "Lucas creats an account"
-curl -s -d '{"email":"lucc@gmail.com", "username":"luc", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements > account_lucas.json
-lucas=$(cat annonce_lucas.json | jq -r '.id')
+curl -s -d '{"email":"lucc1@gmail.com", "username":"luc1", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8081/accounts > account_lucas.json
+lucas=$(cat account_lucas.json | jq -r '.id')
 echo $(lucas)
-echo lucas
 
 # Hope id
 hope=2
 echo "Hope creats an account"
-curl -s -d '{"email":"hopee@gmail.com", "username":"hope", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements
+curl -s -d '{"email":"hopee1@gmail.com", "username1":"hope", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8081/accounts
 
 
 ####### CREATING BILLING
