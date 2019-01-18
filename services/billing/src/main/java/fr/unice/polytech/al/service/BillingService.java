@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 @Service("BillingService")
@@ -20,9 +21,9 @@ public class BillingService {
     private Random rand = new Random();
 
 
-    public int estimateBilling(LinkedList<Course> courses) {
+    public int estimateBilling(int [] announcementIds) {
         int res = 0;
-        for(Course course : courses) {
+        for(int id : announcementIds) {
             res += (rand.nextInt() * 60) + 20;
         }
         return res;

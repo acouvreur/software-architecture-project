@@ -8,23 +8,22 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email",unique = true)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "username",unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "firstName")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "lastName")
     private String lastName;
 
     public Account(String email,String username, String firstName, String lastName ) {

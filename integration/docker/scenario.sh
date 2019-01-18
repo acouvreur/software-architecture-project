@@ -1,11 +1,22 @@
 #!/bin/sh
 
 
+# Lucas id
+echo "Lucas creats an account"
+curl -s -d '{"email":"lucc1@gmail.com", "username":"luc1", "firstName":"Lucas", "lastName":"Bond"}' -H "Content-Type: application/json" -X POST http://localhost:8081/accounts #> account_lucas.json
+#lucas=$(cat account_lucas.json | jq -r '.id')
+#echo $(lucas)
+
+
+# Hope id
+hope=2
+echo "Hope creats an account"
+curl -s -d '{"email":"hopee1@gmail.com", "username":"hope1", "firstName":"Hope", "lastName":"Jones"}' -H "Content-Type: application/json" -X POST http://localhost:8081/accounts
 
 
 ####### CREATING BILLING
-curl -s -d -H "Content-Type: application/json" -X POST http://localhost:8082/billing/1
-curl -s -d -H "Content-Type: application/json" -X POST http://localhost:8082/billing/2
+#curl -s -d -H "Content-Type: application/json" -X POST http://localhost:8082/billing/1
+#curl -s -d -H "Content-Type: application/json" -X POST http://localhost:8082/billing/2
 #######
 
 
@@ -15,10 +26,13 @@ curl -s -d '{"idTransmitter":1, "nameTransmitter":"Lucas", "startPoint":"Sophia"
 lucas_announcement=$(cat annonce_lucas.json | jq -r '.id')
 
 echo "Hope creates an announcement stating she travels from Nice to Paris on the 2018-10-12."
-curl -s -d '{"idTransmitter":1, "nameTransmitter":"Lucas", "startPoint":"Sophia", "endPoint":"Paris","startDate":"2018-10-12", "endDate":"2018-12-24", "type" :"COURSE"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements > annonce_hope.json
+curl -s -d '{"idTransmitter":2, "nameTransmitter":"Lucas", "startPoint":"Sophia", "endPoint":"Paris","startDate":"2018-10-12", "endDate":"2018-12-24", "type" :"COURSE"}' -H "Content-Type: application/json" -X POST http://localhost:8080/announcements > annonce_hope.json
 
 echo "The matching service founds a match with Lucas and Hope."
 echo "The good is assigned to Hope for delivery through a course"
+
+#echo "Estimated billing for the course"
+#curl -s -d  -H "Content-Type: application/json" -X GET http://localhost:8082/billing/estimate
 
 # Irrelevant ? Obviously he know she received it, but maybe it is need on the app
 echo "Hope notifies that she received the good"
@@ -52,5 +66,3 @@ curl -s -d CONFIRMED -H "Content-Type: application/json" -X PATCH http://localho
 echo "Hope check that he has been credited"
 curl -s -d CONFIRMED -H "Content-Type: application/json" -X GET http://localhost:8082/billing/2
 
-echo "Lucas also check the billing"
-curl -s -d CONFIRMED -H "Content-Type: application/json" -X GET http://localhost:8082/billing/1

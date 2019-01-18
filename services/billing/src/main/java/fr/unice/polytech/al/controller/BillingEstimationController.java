@@ -32,8 +32,8 @@ public class BillingEstimationController {
 
 
         @PostMapping("/billing/estimate")
-        public ResponseEntity<Integer> estimate(@RequestBody LinkedList<Course> courses) {
-            int res = service.estimateBilling(courses);
+        public ResponseEntity<Integer> estimate(@RequestBody int[] announcementIds) {
+            int res = service.estimateBilling(announcementIds);
             return new ResponseEntity<Integer>(res, HttpStatus.OK);
         }
 
