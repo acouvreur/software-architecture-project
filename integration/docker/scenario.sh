@@ -31,8 +31,9 @@ curl -s -d '{"idTransmitter":2, "nameTransmitter":"Lucas", "startPoint":"Sophia"
 echo "The matching service founds a match with Lucas and Hope."
 echo "The good is assigned to Hope for delivery through a course"
 
-#echo "Estimated billing for the course"
-#curl -s -d  -H "Content-Type: application/json" -X GET http://localhost:8082/billing/estimate
+echo "Estimated billing for the course"
+curl -s -d ['{"id": 1,"startPoint":"Sophia","endPoint":"Pris"}','{"id":2,"startPoint":"Sophia","endPoint":"Paris"}'] -H "Content-Type: application/json" -X POST http://localhost:8082/billing/estimate
+
 
 # Irrelevant ? Obviously he know she received it, but maybe it is need on the app
 echo "Hope notifies that she received the good"
@@ -62,6 +63,9 @@ curl -s -d DELIVERED -H "Content-Type: application/json" -X PATCH http://localho
 
 echo "Charles confirms that he received the good"
 curl -s -d CONFIRMED -H "Content-Type: application/json" -X PATCH http://localhost:8085/tracking/2
+
+echo "Lucas also check the billing"
+curl -s -d CONFIRMED -H "Content-Type: application/json" -X GET http://localhost:8082/billing/1
 
 echo "Hope check that he has been credited"
 curl -s -d CONFIRMED -H "Content-Type: application/json" -X GET http://localhost:8082/billing/2

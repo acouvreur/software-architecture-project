@@ -18,19 +18,20 @@ public class BillingService {
     @Autowired
     private BillingRepository repository;
 
-    private Random rand = new Random();
 
-
-    public int estimateBilling(int [] announcementIds) {
+    public int estimateBilling(Course[] announcementIds) {
         int res = 0;
-        for(int id : announcementIds) {
-            res += (rand.nextInt() * 60) + 20;
+        Random rand = new Random();
+        for(Course id : announcementIds) {
+            res += (rand.nextInt(60) + 20);
+            System.out.println("res......." + res);
         }
         return res;
     }
 
     public Billing setNewBallanceForClient(long clientId) {
         Billing billingTmp = null;
+        Random rand = new Random();
         try {
             billingTmp = repository.findById( clientId ).get();
             billingTmp.setPoints( rand.nextInt( 100 ) + 10 );
