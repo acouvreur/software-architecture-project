@@ -23,7 +23,7 @@ public class MatchingController
     @GetMapping("/match/{idAnnonce}")
     public String match(@PathVariable String idAnnonce)
     {
-        kafkaSender.send("announcement_created", idAnnonce);
+        //kafkaSender.send("announcement_created", idAnnonce);
 
         //kafkaSender.send("announcement_created", (new JSONObject().put("announcementId", 10)).toString());
 

@@ -59,6 +59,7 @@ public class AccountController {
 
         repository.save(account);
 
+        //KAFKA -> MATCHING
         kafkaTemplate.send("account_created", account);
 
         return ResponseEntity
