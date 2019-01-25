@@ -9,20 +9,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import static fr.unice.polytech.al.State.STARTED;
 
 @Component
-public class KafkaListener {
+public class TrackingKafkaListener {
 
     @Autowired
     private TrackingRepository repository;
@@ -30,8 +28,7 @@ public class KafkaListener {
     private Random rand = new Random();
 
 
-
-    public KafkaListener() {
+    public TrackingKafkaListener() {
     }
 
     public Announcement transformJsonToAnnouncement(Object jsonO) throws IOException, ParseException {
@@ -93,7 +90,7 @@ public class KafkaListener {
     }
 
 
-    @org.springframework.kafka.annotation.KafkaListener(topics = "announcement_matched")
+    @KafkaListener(topics = "announcement_matched")
     public void getIdsOfGoodAndCarAnnouncement(String message, Acknowledgment acknowledgment) throws IOException, ParseException {
         Object json = deSerializedData(message);
         Announcement announcement = transformJsonToAnnouncement(json);

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import static fr.unice.polytech.al.State.CONFIRMED;
 import static fr.unice.polytech.al.State.DELIVERED;
 
 @RestController
@@ -77,7 +78,7 @@ public class TrackingController {
         repository.save(a);
 
         //KAFKA --> BILLING
-        if (stateAnnouncement.equals(DELIVERED)) {
+        if (stateAnnouncement.equals(CONFIRMED)) {
             Long idGood = a.getIdGoodAnnouncement();
             Long driverId = a.getIdDriverAnnouncement();
             KafkaHelperClass data = new KafkaHelperClass(idGood,driverId);

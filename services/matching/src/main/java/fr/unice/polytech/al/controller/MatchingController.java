@@ -14,7 +14,8 @@ public class MatchingController
     @Autowired
     MatchingKafkaSender kafkaSender;
 
-    private Match matchList = new Match();
+    @Autowired
+    private Match matchList;
 
     /*
      * Input: Id of the announcement created

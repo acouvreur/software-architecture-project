@@ -19,7 +19,8 @@ public class MatchingKafkaListener
     @Autowired
     MatchingKafkaSender kafkaSender;
 
-    private Match matchList = new Match();
+    @Autowired
+    private Match matchList;
 
 
     public Object deSerializedData(String str) {
@@ -48,7 +49,7 @@ public class MatchingKafkaListener
         matchList.add(data);
         //String result = matchList.toString();
 
-        if (matchList.size() > 1) {
+        //if (matchList.size() > 1) {
             System.out.println("\n\nService Matching. Course Matched " +  data);
              /*for(int i=0; i < matchList.size(); i++) {
                  JSONObject status = new JSONObject().put("announcementId", matchList.get(i)).put("status", "matched");
@@ -63,7 +64,7 @@ public class MatchingKafkaListener
 
             kafkaSender.send("announcement_matched", json);
 
-        }
+        //}
 
         if (matchList.size() == 3) {
             matchList.empty();

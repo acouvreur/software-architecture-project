@@ -17,6 +17,9 @@ public class Announcement implements Serializable {
     @Column(name = "idTransmistter", nullable = false)
     private int idTransmitter;
 
+   // @Column(name = "idAnother")
+    //private int idAnother;
+
     @Column(name = "nameTransmistter", nullable = false)
     private String nameTransmitter;
 
@@ -40,6 +43,7 @@ public class Announcement implements Serializable {
 
     public Announcement(int idTransmitter, String nameTransmitter, String startPoint, String endPoint, Date startDate, Date endDate, AnnouncementType type){
         this.setIdTransmitter(idTransmitter);
+        //this.idAnother = -1;
         this.setNameTransmitter(nameTransmitter);
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -48,6 +52,14 @@ public class Announcement implements Serializable {
         this.endDate = dateFormat.format(endDate);
         this.type = type;
     }
+
+    /*public int getIdAnother() {
+        return idAnother;
+    }*/
+
+    /*public void setIdAnother(int idAnother) {
+        this.idAnother = idAnother;
+    }*/
 
     public Long getId() {
         return id;
