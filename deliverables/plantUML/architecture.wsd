@@ -1,0 +1,43 @@
+@startuml Server
+
+package "Server" {
+
+    folder "Mocked" {
+        [Accounting] #LightGreen
+        [Billing] #LightSalmon
+        [Matching] #LightCyan
+    }
+
+    folder "Implemented" {
+        [Announcement] #LightSteelBlue
+        [Notification] #LightSkyBlue
+        [Tracking] #Red
+    }
+    
+    node "Chaos Broker" {
+        queue Kafka
+        Kafka <.. [Chaos Broker] : modify
+    }
+
+    note left of [Chaos Broker]
+    'ChaosBroker' act
+    as a proxy
+    in front of the
+    real message
+    broker 'kafka'
+    end note
+
+    [Chaos Broker] - Message
+
+    [Accounting] ..> Message : account creation
+    [Announcement] ..> Message : annoucement creation
+    [Matching]  ..> Message : match detected
+    [Tracking] ..> Message : tracking update
+    [Billing] ..> Message : billing update
+
+    Kafka ..> [Billing] : billing events
+    Kafka ..> [Tracking]
+    Kafka ..> [Notification] : notification events
+    Kafka ..> [Matching] : listens "account creation"
+}
+@enduml
