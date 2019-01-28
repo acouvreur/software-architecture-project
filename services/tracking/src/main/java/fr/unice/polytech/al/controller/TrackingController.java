@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.State;
 import fr.unice.polytech.al.assembler.TrackingResourceAssembler;
+import fr.unice.polytech.al.kafka.ChaosBroker;
 import fr.unice.polytech.al.kafka.KafkaHelperClass;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
@@ -25,6 +26,9 @@ public class TrackingController {
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    private ChaosBroker chaosBroker;
 
     @Autowired
     public TrackingController(TrackingRepository repository, TrackingResourceAssembler assembler) {
@@ -65,7 +69,7 @@ public class TrackingController {
 
 
     @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) throws JsonProcessingException {
+    public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) throws JsonProcessingException, InterruptedException {
         Announcement a = repository.findById( idGoodAnnouncement ).get();
         State stateAnnouncement = DELIVERED;
         try {
@@ -84,9 +88,9 @@ public class TrackingController {
             KafkaHelperClass data = new KafkaHelperClass(idGood,driverId);
 
             //String data = idGood + ";" + driverId;
-            ObjectMapper mapper = new ObjectMapper();
             System.out.println("send tracking finished message : ");
-            kafkaTemplate.send("tracking-finished", mapper.writeValueAsString(data));
+            chaosBroker.broke("tracking-finished", data, kafkaTemplate);
+            //kafkaTemplate.send("tracking-finished", mapper.writeValueAsString(data));
         }
 
 

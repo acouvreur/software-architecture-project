@@ -3,6 +3,7 @@ package fr.unice.polytech.al.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.assembler.AccountResourceAssembler;
+import fr.unice.polytech.al.kafka.ChaosBroker;
 import fr.unice.polytech.al.model.Account;
 import fr.unice.polytech.al.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,17 @@ public class AccountController {
 
     private AccountRepository repository;
     private AccountResourceAssembler assembler;
-    private KafkaTemplate<Object, String> kafkaTemplate;
 
     @Autowired
-    public AccountController(AccountRepository repository, AccountResourceAssembler assembler, KafkaTemplate<Object, String> kafkaTemplate) {
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    private ChaosBroker chaosBroker;
+
+    @Autowired
+    public AccountController(AccountRepository repository, AccountResourceAssembler assembler) {
         this.repository = repository;
         this.assembler = assembler;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @GetMapping(value = "/accounts", 
@@ -56,7 +61,7 @@ public class AccountController {
 
     @PostMapping(value = "/accounts",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Resource<Account>> create(@RequestBody Account account) throws JsonProcessingException {
+    public ResponseEntity<Resource<Account>> create(@RequestBody Account account) throws JsonProcessingException, InterruptedException {
         //KAFKA -> BILLING
 
         repository.save(account);
@@ -66,7 +71,8 @@ public class AccountController {
         ObjectMapper mapper = new ObjectMapper();
         System.out.println("account created -> creation of billing .... " );
         //kafkaTemplate.send("account_created", String.valueOf(account.getId()));
-        kafkaTemplate.send("account_created", mapper.writeValueAsString(account));
+
+        chaosBroker.broke( "account_created", account, kafkaTemplate);
 
 
         /*return ResponseEntity
