@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+
 @Component
 public class ChaosBroker {
 
@@ -21,6 +22,7 @@ public class ChaosBroker {
 
     private static int compt = 0;
     private static int changeBrokerFeature = 0;
+
 
     public ChaosBroker() {
         pDuplicate = 20.;

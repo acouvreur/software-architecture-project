@@ -18,6 +18,7 @@ public class AnnouncementKafkaSender
     public void send(String topic, Announcement announcement) throws JsonProcessingException, InterruptedException {
 
         chaosBroker.broke(topic, announcement, kafkaTemplate);
+
         /*kafkaTemplate.send(topic, data);
         System.out.println("\n\nService Announcement. Send Message. Topic: " + topic + " - Message: " + data);*/
     }
