@@ -42,7 +42,7 @@ public class MatchingKafkaListener
     }
 
     @KafkaListener(topics = "announcement_created")
-    public void receiveAnnouncementCreated(String data) throws IOException {
+    public void receiveAnnouncementCreated(String data) throws IOException, InterruptedException {
         //String announcementId = (new JSONObject(data)).getString("announcementId");
         System.out.println("\nService Matching. Received Message. Topic: announcement_created  - Message: " + data);
 
@@ -61,6 +61,7 @@ public class MatchingKafkaListener
             Object obj = deSerializedData(data);
             String json = (String)obj;
             System.out.println("object message value : " + obj);
+
 
             kafkaSender.send("announcement_matched", json);
 
