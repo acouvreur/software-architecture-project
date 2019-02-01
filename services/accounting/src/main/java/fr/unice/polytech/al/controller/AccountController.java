@@ -1,9 +1,11 @@
 package fr.unice.polytech.al.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.assembler.AccountResourceAssembler;
+import fr.unice.polytech.al.kafka.ChaosBroker;
 import fr.unice.polytech.al.model.Account;
 import fr.unice.polytech.al.repository.AccountRepository;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -24,13 +26,17 @@ public class AccountController {
 
     private AccountRepository repository;
     private AccountResourceAssembler assembler;
-    private KafkaTemplate<String, Account> kafkaTemplate;
 
     @Autowired
-    public AccountController(AccountRepository repository, AccountResourceAssembler assembler, KafkaTemplate<String, Account> kafkaTemplate) {
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    private ChaosBroker chaosBroker;
+
+    @Autowired
+    public AccountController(AccountRepository repository, AccountResourceAssembler assembler) {
         this.repository = repository;
         this.assembler = assembler;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @GetMapping(value = "/accounts", 
@@ -55,14 +61,26 @@ public class AccountController {
 
     @PostMapping(value = "/accounts",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Resource<Account>> create(@RequestBody Account account) {
+    public ResponseEntity<Resource<Account>> create(@RequestBody Account account) throws JsonProcessingException, InterruptedException {
+        //KAFKA -> BILLING
 
         repository.save(account);
 
-        kafkaTemplate.send("account_created", account);
 
-        return ResponseEntity
+        System.out.println("account .............. " + account);
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println("account created -> creation of billing .... " );
+        //kafkaTemplate.send("account_created", String.valueOf(account.getId()));
+
+        chaosBroker.broke( "account_created", account, kafkaTemplate);
+
+
+        /*return ResponseEntity
                         .created(linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())
+                .body(assembler.toResource(account));*/
+
+        return ResponseEntity.created(
+                linkTo(methodOn(AccountController.class).find(account.getUsername())).toUri())
                 .body(assembler.toResource(account));
     }
 

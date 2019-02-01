@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 @Service("BillingService")
@@ -17,20 +18,25 @@ public class BillingService {
     @Autowired
     private BillingRepository repository;
 
-    private Random rand = new Random();
 
-
-    public int estimateBilling(LinkedList<Course> courses) {
+    public int estimateBilling(Course[] announcementIds) {
         int res = 0;
-        for(Course course : courses) {
-            res += (rand.nextInt() * 60) + 20;
+        Random rand = new Random();
+        for(Course id : announcementIds) {
+            res += (rand.nextInt(60) + 20);
+            System.out.println("res......." + res);
         }
         return res;
     }
 
     public Billing setNewBallanceForClient(long clientId) {
-        Billing billingTmp = repository.findById(clientId).get();
-        billingTmp.setPoints(rand.nextInt(100) + 10);
+        Billing billingTmp = null;
+        Random rand = new Random();
+        try {
+            billingTmp = repository.findById( clientId ).get();
+            billingTmp.setPoints( rand.nextInt( 100 ) + 10 );
+        } catch (Error e) {}
+        if ( billingTmp == null) {billingTmp = new Billing(clientId, 300);}
         repository.save(billingTmp);
         return billingTmp;
     }

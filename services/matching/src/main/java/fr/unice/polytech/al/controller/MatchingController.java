@@ -14,7 +14,8 @@ public class MatchingController
     @Autowired
     MatchingKafkaSender kafkaSender;
 
-    private Match matchList = new Match();
+    @Autowired
+    private Match matchList;
 
     /*
      * Input: Id of the announcement created
@@ -23,7 +24,7 @@ public class MatchingController
     @GetMapping("/match/{idAnnonce}")
     public String match(@PathVariable String idAnnonce)
     {
-        kafkaSender.send("announcement_created", idAnnonce);
+        //kafkaSender.send("announcement_created", idAnnonce);
 
         //kafkaSender.send("announcement_created", (new JSONObject().put("announcementId", 10)).toString());
 

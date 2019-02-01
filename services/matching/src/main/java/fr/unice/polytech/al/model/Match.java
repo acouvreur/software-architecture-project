@@ -2,8 +2,18 @@ package fr.unice.polytech.al.model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.LinkedList;
 
+
+@Component
 public class Match {
 
     private LinkedList<String> listMatch;

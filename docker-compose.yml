@@ -54,19 +54,6 @@ services:
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
-  blablamove-course:
-    build:
-      context: services/course
-      dockerfile: docker/Dockerfile
-    image: al-blablamove-course
-    container_name: blablamove-course
-    ports:
-    - "127.0.0.1:8083:8080"
-    links:
-    - kafka
-    environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-
   blablamove-matching:
     build:
       context: services/matching

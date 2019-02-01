@@ -1,5 +1,6 @@
 package fr.unice.polytech.al.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.assembler.BillingResourceAssembler;
 import fr.unice.polytech.al.model.Billing;
 import fr.unice.polytech.al.model.Course;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -32,8 +34,11 @@ public class BillingEstimationController {
 
 
         @PostMapping("/billing/estimate")
-        public ResponseEntity<Integer> estimate(@RequestBody LinkedList<Course> courses) {
-            int res = service.estimateBilling(courses);
+        public ResponseEntity<Integer> estimate(@RequestBody String listCourses) throws IOException {
+            ObjectMapper mapper = new ObjectMapper();
+            Course[] arrayCourses = mapper.readValue(listCourses, Course[].class);
+
+            int res = service.estimateBilling(arrayCourses);
             return new ResponseEntity<Integer>(res, HttpStatus.OK);
         }
 
