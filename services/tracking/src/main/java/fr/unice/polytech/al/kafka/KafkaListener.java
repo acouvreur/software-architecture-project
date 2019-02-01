@@ -41,7 +41,11 @@ public class KafkaListener {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         //json = json.replaceAll( '\\',"" );
-        JsonNode jsonNode = objectMapper.readTree(json);
+        JsonNode temp = objectMapper.readTree(json);
+
+        JsonNode jsonNode = (new ObjectMapper()).readTree(temp.get("good").asText());
+
+
         System.out.println("jsonNode : " + jsonNode);
 
         String id = jsonNode.get("id").asText();

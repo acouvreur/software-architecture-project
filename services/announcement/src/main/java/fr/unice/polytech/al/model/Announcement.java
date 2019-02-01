@@ -32,6 +32,9 @@ public class Announcement implements Serializable {
     @Column(name = "endDate", nullable = false)
     private String endDate;
 
+    @Column(name = "idAnnouncementMatched", nullable = false)
+    private String idAnnouncementMatched;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private AnnouncementType type;
@@ -113,11 +116,19 @@ public class Announcement implements Serializable {
         this.type = type;
     }
 
+    public String getIdAnnouncementMatched() {
+        return idAnnouncementMatched;
+    }
+
+    public void setIdAnnouncementMatched(String idAnnouncementMatched) {
+        this.idAnnouncementMatched = idAnnouncementMatched;
+    }
+
     @Override
     public String toString() {
         return String.format(
-                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate);
+                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s', idAnnouncementMatched='%s']",
+                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate, this.idAnnouncementMatched);
     }
 
 
