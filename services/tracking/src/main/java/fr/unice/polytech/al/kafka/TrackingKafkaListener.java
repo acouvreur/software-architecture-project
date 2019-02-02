@@ -31,16 +31,8 @@ public class TrackingKafkaListener {
     public TrackingKafkaListener() {
     }
 
-    public Announcement transformJsonToAnnouncement(Object jsonO) throws IOException, ParseException {
-        String json = (String)jsonO;
-        System.out.println("object message value : " + jsonO);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-        //json = json.replaceAll( '\\',"" );
-        JsonNode jsonNode = objectMapper.readTree(json);
-        System.out.println("jsonNode : " + jsonNode);
-
+    public Announcement transformJsonToAnnouncement(JsonNode jsonNode) throws IOException, ParseException 
+    {
         String id = jsonNode.get("id").asText();
         System.out.println("class announcement id : " + id);
 
@@ -92,8 +84,15 @@ public class TrackingKafkaListener {
 
     @KafkaListener(topics = "announcement_matched")
     public void getIdsOfGoodAndCarAnnouncement(String message, Acknowledgment acknowledgment) throws IOException, ParseException {
-        Object json = deSerializedData(message);
-        Announcement announcement = transformJsonToAnnouncement(json);
+        Object obj = deSerializedData(message);
+        String json = (String)obj;
+        System.out.println("\nService Tracking. Received Message. Topic: announcement_matched  - Message: " + json);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+        
+        JsonNode jsonNode = objectMapper.readTree(json);
+        Announcement announcement = transformJsonToAnnouncement(jsonNode.get("course"));
         repository.save( announcement );
     }
 

@@ -35,6 +35,9 @@ public class Announcement implements Serializable {
     @Column(name = "endDate", nullable = false)
     private String endDate;
 
+    @Column(name = "idAnnouncementMatched")
+    private Long idAnnouncementMatched;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private AnnouncementType type;
@@ -51,6 +54,8 @@ public class Announcement implements Serializable {
         this.startDate = dateFormat.format(startDate);
         this.endDate = dateFormat.format(endDate);
         this.type = type;
+
+        this.idAnnouncementMatched = -1L;
     }
 
     /*public int getIdAnother() {
@@ -125,11 +130,19 @@ public class Announcement implements Serializable {
         this.type = type;
     }
 
+    public Long getIdAnnouncementMatched() {
+        return idAnnouncementMatched;
+    }
+
+    public void setIdAnnouncementMatched(Long idAnnouncementMatched) {
+        this.idAnnouncementMatched = idAnnouncementMatched;
+    }
+
     @Override
     public String toString() {
         return String.format(
-                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate);
+                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s', idAnnouncementMatched=%d]",
+                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate, this.idAnnouncementMatched);
     }
 
 

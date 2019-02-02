@@ -58,7 +58,7 @@ public class AnnouncementController {
     @PostMapping(value = "/announcements",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) throws JsonProcessingException, InterruptedException {
-
+        announcement.setIdAnnouncementMatched(-1L);
         repository.save(announcement);
 
         //KAFKA -> MATCHING
