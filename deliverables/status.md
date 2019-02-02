@@ -4,8 +4,30 @@ Last updated : *Wednesday, January 23*
 
 ## Summary
 
+- [Week 3](#week-3)
 - [Week 2](#week-2)
 - [Week 1](#week-1)
+
+## Week 3
+
+### What was done
+
+- Chaos Broker implementation
+- Gatling test
+- Calculation of resources required for a user
+- Study for database change
+
+### What is planned for next week
+
+- Integrate the most adapted database
+- Integrate chaos broker in gatling test
+- Explain the database change for the presentation
+- Load tests on the new database
+- rooting two diffrent computers in case to lower the charge (one computer produce the data and second one process it)
+
+### Issues
+
+docker error 137 OOM due to galting tests
 
 ## Week 2
 

@@ -57,13 +57,14 @@ public class AnnouncementController {
 
     @PostMapping(value = "/announcements",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) throws JsonProcessingException {
+    public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) throws JsonProcessingException, InterruptedException {
 
         repository.save(announcement);
 
+        //KAFKA -> MATCHING
         // Send message to matching service
-        ObjectMapper mapper = new ObjectMapper();
-        kafkaSender.send("announcement_created",  mapper.writeValueAsString(announcement));
+        kafkaSender.send("announcement_created", announcement);
+        System.out.println("announcement_created -> matching .... " );
 
         return ResponseEntity.created(
                 linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())

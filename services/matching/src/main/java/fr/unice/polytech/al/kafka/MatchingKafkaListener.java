@@ -20,7 +20,8 @@ public class MatchingKafkaListener
     @Autowired
     MatchingKafkaSender kafkaSender;
 
-    private Match matchList = new Match();
+    @Autowired
+    private Match matchList;
 
     private LinkedList<String> announcementCourse = new LinkedList<String>();
     private LinkedList<String> announcementGoods  = new LinkedList<String>();
