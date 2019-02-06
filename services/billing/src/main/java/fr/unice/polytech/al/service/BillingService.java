@@ -29,8 +29,12 @@ public class BillingService {
     }
 
     public Billing setNewBallanceForClient(long clientId) {
-        Billing billingTmp = repository.findById(clientId).get();
-        billingTmp.setPoints(rand.nextInt(100) + 10);
+        Billing billingTmp = null;
+        try {
+            billingTmp = repository.findById( clientId ).get();
+            billingTmp.setPoints( rand.nextInt( 100 ) + 10 );
+        } catch (Error e) {}
+        if ( billingTmp == null) {billingTmp = new Billing(clientId, 300);}
         repository.save(billingTmp);
         return billingTmp;
     }
