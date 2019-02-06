@@ -1,12 +1,30 @@
 # Project's status
 
-Last updated : *Wednesday, January 23*
+Last updated : *Wednesday, February 6*
 
 ## Summary
 
+- [Week 4](#week-4)
 - [Week 3](#week-3)
 - [Week 2](#week-2)
 - [Week 1](#week-1)
+
+## Week 4
+
+### What was done
+
+- Chaos Broker testing
+- Database discussions about which type (CAP Theorem) to use
+- Gatling test with new database
+
+### What is planned for next week
+
+- Database integration PostgreSQL
+- Integrate chaos broker in gatling test !
+- Load tests on the new database !
+- rooting two different computers in case to lower the charge (one computer produce the data and second one process it) !
+
+### Issues
 
 ## Week 3
 
