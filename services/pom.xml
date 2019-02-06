@@ -21,7 +21,6 @@
         <module>accounting</module>
         <module>announcement</module>
         <module>billing</module>
-        <module>course</module>
         <module>matching</module>
         <module>tracking</module>
     </modules>

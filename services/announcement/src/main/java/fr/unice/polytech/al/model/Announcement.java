@@ -17,6 +17,9 @@ public class Announcement implements Serializable {
     @Column(name = "idTransmistter", nullable = false)
     private int idTransmitter;
 
+   // @Column(name = "idAnother")
+    //private int idAnother;
+
     @Column(name = "nameTransmistter", nullable = false)
     private String nameTransmitter;
 
@@ -32,6 +35,9 @@ public class Announcement implements Serializable {
     @Column(name = "endDate", nullable = false)
     private String endDate;
 
+    @Column(name = "idAnnouncementMatched")
+    private Long idAnnouncementMatched;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private AnnouncementType type;
@@ -40,6 +46,7 @@ public class Announcement implements Serializable {
 
     public Announcement(int idTransmitter, String nameTransmitter, String startPoint, String endPoint, Date startDate, Date endDate, AnnouncementType type){
         this.setIdTransmitter(idTransmitter);
+        //this.idAnother = -1;
         this.setNameTransmitter(nameTransmitter);
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -47,7 +54,17 @@ public class Announcement implements Serializable {
         this.startDate = dateFormat.format(startDate);
         this.endDate = dateFormat.format(endDate);
         this.type = type;
+
+        this.idAnnouncementMatched = -1L;
     }
+
+    /*public int getIdAnother() {
+        return idAnother;
+    }*/
+
+    /*public void setIdAnother(int idAnother) {
+        this.idAnother = idAnother;
+    }*/
 
     public Long getId() {
         return id;
@@ -113,11 +130,19 @@ public class Announcement implements Serializable {
         this.type = type;
     }
 
+    public Long getIdAnnouncementMatched() {
+        return idAnnouncementMatched;
+    }
+
+    public void setIdAnnouncementMatched(Long idAnnouncementMatched) {
+        this.idAnnouncementMatched = idAnnouncementMatched;
+    }
+
     @Override
     public String toString() {
         return String.format(
-                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s']",
-                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate);
+                "Announcement[id=%d, idTransmitter='%d', nameTransmitter='%s', startPoint='%s', endPoint='%s', startDate='%s', endDate='%s', idAnnouncementMatched=%d]",
+                this.id, this.idTransmitter, this.nameTransmitter, this.startPoint, this.endPoint, this.startDate, this.endDate, this.idAnnouncementMatched);
     }
 
 
