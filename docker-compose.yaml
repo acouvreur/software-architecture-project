@@ -15,6 +15,21 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
 
+
+  mysql:
+    container_name: mysql-database
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: db_blablamove
+      MYSQL_ROOT_HOST: 'localhost'
+      MYSQL_USER: 'springuser'
+      MYSQL_PASSWORD: 'password'
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    restart: always
+
   blablamove-announcement:
     build:
       context: services/announcement
@@ -25,6 +40,7 @@ services:
     - "127.0.0.1:8080:8080"
     links:
     - kafka
+    - mysql
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
