@@ -36,3 +36,6 @@ buildNumber.properties
 # Visaul Paradigm project
 **/*.vpp.bak*
 **/*.vpp.lck
+*.prefs
+.classpath
+.project
