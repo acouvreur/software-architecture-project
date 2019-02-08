@@ -24,12 +24,14 @@ class AnnouncementSimulation extends Simulation{
               .check(status.is(201))
           )
           .pause(1 seconds)
+          /*
           .exec(
             http("Consult_Announcement")
               .get("announcements?transmitter=69")
               .check(status.is(200))
           )
           .pause(1 seconds)
+          */
       }
 
   def buildAnnouncement(session: Session): String = {

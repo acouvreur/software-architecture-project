@@ -54,7 +54,7 @@ public class AnnouncementControllerTest {
                 .andExpect(jsonPath("$.endDate")   .value("2018-11-02"))
                 .andExpect(jsonPath("$.type")   .value("GOOD"));
     }
-
+    /*
     @Test
     public void findByIdTransmitter() throws Exception {
         mockMvc.perform(post("/announcements")
@@ -88,5 +88,6 @@ public class AnnouncementControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.announcements", hasSize(1)));
     }
+    */
 
 }
