@@ -30,6 +30,11 @@ public class TrackingController {
     @Autowired
     private ChaosBroker chaosBroker;
 
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity ok() {
+        return new ResponseEntity<>("{\"status\":\"OK\"}", HttpStatus.OK);
+    }
+
     @Autowired
     public TrackingController(TrackingRepository repository, TrackingResourceAssembler assembler) {
         this.repository = repository;
