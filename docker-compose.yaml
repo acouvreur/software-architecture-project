@@ -14,15 +14,15 @@ services:
             KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
             KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
 
-    postgre:
-        container_name: postgre-db
+    postgres-announcement:
+        container_name: postgres-db-announcement
         image: postgres:9.5
         volumes:
             - /postgresql/data
         environment:
-            - POSTGRES_PASSWORD=sample
-            - POSTGRES_USER=sample
-            - POSTGRES_DB=sample
+            - POSTGRES_PASSWORD=announcement
+            - POSTGRES_USER=announcementservice
+            - POSTGRES_DB=announcement
             - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
             - 5432:5432
@@ -37,9 +37,22 @@ services:
             - '127.0.0.1:8080:8080'
         links:
             - kafka
-            - postgre
+            - postgres-announcement
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+
+    postgres-accounting:
+        container_name: postgres-db-accounting
+        image: postgres:9.5
+        volumes:
+            - /postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=accounting
+            - POSTGRES_USER=accountingservice
+            - POSTGRES_DB=accounting
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5433:5432
 
     blablamove-accounting:
         build:
@@ -51,7 +64,7 @@ services:
             - '127.0.0.1:8081:8080'
         links:
             - kafka
-            - postgre
+            - postgres-accounting
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
 
@@ -65,9 +78,22 @@ services:
             - '127.0.0.1:8082:8080'
         links:
             - kafka
-            - postgre
+            - postgres-billing
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+
+    postgres-billing:
+        container_name: postgres-db-billing
+        image: postgres:9.5
+        volumes:
+            - /postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=billing
+            - POSTGRES_USER=billingservice
+            - POSTGRES_DB=billing
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5434:5432
 
     blablamove-matching:
         build:
@@ -92,9 +118,25 @@ services:
             - '127.0.0.1:8085:8080'
         links:
             - kafka
-            - postgre
+            - postgres-tracking
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
 
+    postgres-tracking:
+        container_name: postgres-db-tracking
+        image: postgres:9.5
+        volumes:
+            - /postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=tracking
+            - POSTGRES_USER=trackingservice
+            - POSTGRES_DB=tracking
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5435:5432
+
 volumes:
-    postgre-db: {}
+    postgres-db-announcement: {}
+    postgres-db-accounting: {}
+    postgres-db-billing: {}
+    postgres-db-tracking: {}
