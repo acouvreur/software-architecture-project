@@ -14,19 +14,18 @@ services:
             KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
             KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
 
-    mysql:
-        container_name: mysql-database
-        build:
-            context: services/database
-            dockerfile: Dockerfile
-        image: al-blablamove-database
+    postgre:
+        container_name: postgre-db
+        image: postgres:9.5
         volumes:
-            - db-data:/var/lib/mysql
+            - /postgresql/data
         environment:
-            MYSQL_USER: springuser
-            MYSQL_ROOT_PASSWORD: password
+            - POSTGRES_PASSWORD=sample
+            - POSTGRES_USER=sample
+            - POSTGRES_DB=sample
+            - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
-            - '3306:3306'
+            - 5432:5432
 
     blablamove-announcement:
         build:
@@ -38,9 +37,10 @@ services:
             - '127.0.0.1:8080:8080'
         links:
             - kafka
-            - mysql
+            - postgre
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+
     blablamove-accounting:
         build:
             context: services/accounting
@@ -51,9 +51,10 @@ services:
             - '127.0.0.1:8081:8080'
         links:
             - kafka
-            - mysql
+            - postgre
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+
     blablamove-billing:
         build:
             context: services/billing
@@ -64,9 +65,10 @@ services:
             - '127.0.0.1:8082:8080'
         links:
             - kafka
-            - mysql
+            - postgre
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+
     blablamove-matching:
         build:
             context: services/matching
@@ -77,9 +79,9 @@ services:
             - '127.0.0.1:8084:8080'
         links:
             - kafka
-            - mysql
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+
     blablamove-tracking:
         build:
             context: services/tracking
@@ -90,9 +92,9 @@ services:
             - '127.0.0.1:8085:8080'
         links:
             - kafka
-            - mysql
+            - postgre
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
 
 volumes:
-    db-data: {}
+    postgre-db: {}
