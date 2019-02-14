@@ -47,5 +47,5 @@ class AnnouncementSimulation extends Simulation{
   }
 
   setUp(stressSample.inject(constantConcurrentUsers(100) during (10 seconds), // 1
-    rampConcurrentUsers(100) to (200) during (10 seconds)).protocols(httpProtocol))
+    rampConcurrentUsers(100) to (500) during (80 seconds)).protocols(httpProtocol))
 }

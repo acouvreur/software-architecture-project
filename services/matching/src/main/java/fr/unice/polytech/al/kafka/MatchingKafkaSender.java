@@ -15,8 +15,8 @@ public class MatchingKafkaSender
     private ChaosBroker chaosBroker;
 
     public void send(String topic, String data) throws JsonProcessingException, InterruptedException {
-        chaosBroker.broke(topic, data, kafkaTemplate);
-        //kafkaTemplate.send(topic, data);
+        //chaosBroker.broke(topic, data, kafkaTemplate);
+        kafkaTemplate.send(topic, data);
         System.out.println("Service Matching. Send Message. Topic: " + topic + " - Message: " + data);
     }
 }
