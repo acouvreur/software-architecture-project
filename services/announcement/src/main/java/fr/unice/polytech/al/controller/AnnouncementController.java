@@ -8,17 +8,19 @@ import fr.unice.polytech.al.repository.AnnouncementRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.stream.Collectors;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@Controller
+@RestController
 public class AnnouncementController {
 
     @Autowired
@@ -33,21 +35,18 @@ public class AnnouncementController {
         this.assembler = assembler;
     }
 
-    /*
+
     @GetMapping(value = "/announcements", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resource<Announcement> findAll(
+    public Resources<Resource<Announcement>> findAll(
             @RequestParam(value = "transmitter", required = false) Long idTransmitter) {
-        return assembler.toResource(
-                (Announcement) repository.findAll());
+        return new Resources<>(
+                repository.findAll().stream().filter(c -> idTransmitter == null || c.getIdTransmitter() == idTransmitter)
+                        .map(assembler::toResource)
+                        .collect(Collectors.toList()),
+                linkTo(methodOn(AnnouncementController.class).findAll(null)).withSelfRel()
+        );
     }
-    */
-
-    @GetMapping(path="/announcements")
-    public @ResponseBody Iterable<Announcement> findAll() {
-        // This returns a JSON or XML with the users
-        return repository.findAll();
-    }
-
+    
     @GetMapping(value = "/announcements/{id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resource<Announcement> find(@PathVariable Long id) {
