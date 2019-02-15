@@ -24,12 +24,14 @@ class AnnouncementSimulation extends Simulation{
               .check(status.is(201))
           )
           .pause(1 seconds)
+          /*
           .exec(
             http("Consult_Announcement")
               .get("announcements?transmitter=69")
               .check(status.is(200))
           )
           .pause(1 seconds)
+          */
       }
 
   def buildAnnouncement(session: Session): String = {
@@ -45,5 +47,5 @@ class AnnouncementSimulation extends Simulation{
   }
 
   setUp(stressSample.inject(constantConcurrentUsers(100) during (10 seconds), // 1
-    rampConcurrentUsers(100) to (200) during (10 seconds)).protocols(httpProtocol))
+    rampConcurrentUsers(100) to (500) during (80 seconds)).protocols(httpProtocol))
 }

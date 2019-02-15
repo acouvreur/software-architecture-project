@@ -1,7 +1,6 @@
 package fr.unice.polytech.al.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.assembler.AnnouncementResourceAssembler;
 import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
 import fr.unice.polytech.al.model.Announcement;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -35,6 +35,7 @@ public class AnnouncementController {
         this.assembler = assembler;
     }
 
+
     @GetMapping(value = "/announcements", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resources<Resource<Announcement>> findAll(
             @RequestParam(value = "transmitter", required = false) Long idTransmitter) {
@@ -45,7 +46,7 @@ public class AnnouncementController {
                 linkTo(methodOn(AnnouncementController.class).findAll(null)).withSelfRel()
         );
     }
-
+    
     @GetMapping(value = "/announcements/{id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resource<Announcement> find(@PathVariable Long id) {

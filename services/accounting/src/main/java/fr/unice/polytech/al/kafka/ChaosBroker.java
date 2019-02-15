@@ -7,7 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Component
 public class ChaosBroker {
@@ -67,8 +67,15 @@ public class ChaosBroker {
                 break;
             case 3: //pSlow
                 System.out.println("Chaos broker slow down message");
-                TimeUnit.SECONDS.sleep(5);
-                template.send(topic,  mapper.writeValueAsString(account));
+                new Thread(() -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                        template.send(topic,  mapper.writeValueAsString(account));
+                    } catch (InterruptedException | JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+
                 if (compt == (int)pSlow/10-1) {
                     compt = -1;
                     changeBrokerFeature = 4;
@@ -90,8 +97,6 @@ public class ChaosBroker {
         System.out.println("*****************");
         compt++;
     }
-
-
 
     public double getpDuplicate() {
         return pDuplicate;
