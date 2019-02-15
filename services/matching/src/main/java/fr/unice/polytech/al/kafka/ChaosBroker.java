@@ -66,8 +66,14 @@ public class ChaosBroker {
                 break;
             case 3: //pSlow
                 System.out.println("Chaos broker slow down message");
-                TimeUnit.SECONDS.sleep(5);
-                template.send(topic,  announcement);
+                new Thread(() -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                        template.send(topic,  announcement);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 if (compt == (int)pSlow/10-1) {
                     compt = -1;
                     changeBrokerFeature = 4;

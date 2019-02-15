@@ -18,9 +18,9 @@ public class AnnouncementKafkaSender
 
     public void send(String topic, Announcement announcement) throws JsonProcessingException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
-        //chaosBroker.broke(topic, announcement, kafkaTemplate);
+        chaosBroker.broke(topic, announcement, kafkaTemplate);
 
-        kafkaTemplate.send(topic, mapper.writeValueAsString(announcement));
+        //kafkaTemplate.send(topic, mapper.writeValueAsString(announcement));
         //System.out.println("\n\nService Announcement. Send Message. Topic: " + topic + " - Message: " + data);
     }
 }

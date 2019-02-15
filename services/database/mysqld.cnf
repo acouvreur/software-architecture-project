@@ -1,5 +1,0 @@
-[mysqld]
-# Where the database files are stored inside the container
-datadir		            = /var/lib/mysql
-
-bind-address	            = 0.0.0.0
