@@ -35,7 +35,7 @@ public class ChaosBroker {
     public void broke(String topic, String announcement, KafkaTemplate<String, String> template) throws JsonProcessingException, InterruptedException {
         switch (changeBrokerFeature) {
             case 0: //pDuplicate
-                logger.info("CHAOS BROKER FEATURE : DUPLICATES MESSAGE :");
+                logger.info("CHAOS BROKER FEATURE : DUPLICATE MESSAGE ");
                 template.send(topic,  announcement);
                 //announcement.setId(announcement.getId()*2 );
                 template.send(topic,  announcement);
@@ -46,7 +46,7 @@ public class ChaosBroker {
                 }
                 break;
             case 1: //pDelete
-                logger.info("CHAOS BROKER FEATURE : DELTES MESSAGE :");
+                logger.info("CHAOS BROKER FEATURE : DELTE MESSAGE ");
                 if (compt == (int) pDelete/10-1) {
                     compt = -1;
                     changeBrokerFeature = 2;
@@ -54,7 +54,7 @@ public class ChaosBroker {
                 }
                 break;
             case 2: //pSalt
-                logger.info("CHAOS BROKER FEATURE : MAKES A MESS IN ANNOUNCEMENT MESSAGE :");
+                logger.info("CHAOS BROKER FEATURE : MAKE A MESS IN ANNOUNCEMENT MESSAGE ");
                 Random rand = new Random();
                 //announcement.setIdTransmitter((rand.nextInt(60) + 5));
                 //announcement.setId( (long) (rand.nextInt(30) + 1) );
@@ -66,7 +66,7 @@ public class ChaosBroker {
                 }
                 break;
             case 3: //pSlow
-                logger.info("CHAOS BROKER FEATURE : SLOWS DOWN THE MESSAGE");
+                logger.info("CHAOS BROKER FEATURE : SLOW DOWN THE MESSAGE");
                 new Thread(() -> {
                     try {
                         TimeUnit.SECONDS.sleep(5);
@@ -82,7 +82,7 @@ public class ChaosBroker {
                 }
                 break;
             case 4: //pNothing
-                logger.info("CHAOS BROKER FEATURE : DOESN'T INTRODUCE ANY CHAGMENTS");
+                logger.info("CHAOS BROKER NO FEATURE ");
                 template.send(topic,  announcement);
                 if (compt == (int)pNothing/10-1) {
                     compt = -1;
