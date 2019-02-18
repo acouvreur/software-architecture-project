@@ -3,7 +3,7 @@ package fr.unice.polytech.al.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.model.Announcement;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.Logger;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +23,9 @@ public class ChaosBroker {
     private static int compt = 0;
     private static int changeBrokerFeature = 0;
 
+    private final Logger logger = Logger.getLogger(this.getClass());
+
+
 
     public ChaosBroker() {
         pDuplicate = 20.;
@@ -33,13 +36,10 @@ public class ChaosBroker {
     }
 
     public void broke(String topic, Announcement announcement, KafkaTemplate<String, String> template) throws JsonProcessingException, InterruptedException {
-        System.out.println("*****************");
-        System.out.println("changeBrokerFeature : " + changeBrokerFeature);
-        System.out.println("compt : " + compt);
         ObjectMapper mapper = new ObjectMapper();
         switch (changeBrokerFeature) {
             case 0: //pDuplicate
-                System.out.println("Chaos broker duplicate message");
+                logger.info("CHAOS BROKER FEATURE : DUPLICATES MESSAGE :");
                 template.send(topic,  mapper.writeValueAsString(announcement));
                 //announcement.setId(announcement.getId()*2 );
                 template.send(topic,  mapper.writeValueAsString(announcement));
@@ -50,7 +50,7 @@ public class ChaosBroker {
                 }
                 break;
             case 1: //pDelete
-                System.out.println("Chaos broker delete message");
+                logger.info("CHAOS BROKER FEATURE : DELTES MESSAGE :");
                 if (compt == (int) pDelete/10-1) {
                     compt = -1;
                     changeBrokerFeature = 2;
@@ -58,7 +58,7 @@ public class ChaosBroker {
                 }
                 break;
             case 2: //pSalt
-                System.out.println("Chaos broker make a mess in announcement message");
+                logger.info("CHAOS BROKER FEATURE : MAKES A MESS IN ANNOUNCEMENT MESSAGE :");
                 Random rand = new Random();
                 announcement.setIdTransmitter((rand.nextInt(60) + 5));
                 announcement.setId( (long) (rand.nextInt(30) + 1) );
@@ -70,7 +70,7 @@ public class ChaosBroker {
                 }
                 break;
             case 3: //pSlow
-                System.out.println("Chaos broker slow down message");
+                logger.info("CHAOS BROKER FEATURE : SLOWS DOWN THE MESSAGE");
                 new Thread(() -> {
                     try {
                         TimeUnit.SECONDS.sleep(5);
@@ -86,7 +86,7 @@ public class ChaosBroker {
                 }
                 break;
             case 4: //pNothing
-                System.out.println("Chaos broker send a message ordinarly");
+                logger.info("CHAOS BROKER FEATURE : DOESN'T INTRODUCE ANY CHAGMENTS");
                 template.send(topic,  mapper.writeValueAsString(announcement));
                 if (compt == (int)pNothing/10-1) {
                     compt = -1;
@@ -95,9 +95,7 @@ public class ChaosBroker {
                 }
                 break;
         }
-        System.out.println("*****************");
-        System.out.println("*****************");
-        System.out.println("*****************");
+
         compt++;
     }
 

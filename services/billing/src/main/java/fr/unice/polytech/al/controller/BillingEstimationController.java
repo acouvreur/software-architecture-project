@@ -6,6 +6,7 @@ import fr.unice.polytech.al.model.Billing;
 import fr.unice.polytech.al.model.Course;
 import fr.unice.polytech.al.repository.BillingRepository;
 import fr.unice.polytech.al.service.BillingService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,10 @@ public class BillingEstimationController {
         private BillingService service;
 
 
-        @Autowired
+
+
+
+    @Autowired
         public BillingEstimationController(BillingService service) {
             this.service = service;
         }

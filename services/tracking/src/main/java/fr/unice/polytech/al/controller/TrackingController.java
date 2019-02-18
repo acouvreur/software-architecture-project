@@ -8,6 +8,7 @@ import fr.unice.polytech.al.kafka.ChaosBroker;
 import fr.unice.polytech.al.kafka.KafkaHelperClass;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +31,9 @@ public class TrackingController {
     @Autowired
     private ChaosBroker chaosBroker;
 
+    private final Logger logger = Logger.getLogger(this.getClass());
+
+
     @Autowired
     public TrackingController(TrackingRepository repository, TrackingResourceAssembler assembler) {
         this.repository = repository;
@@ -41,12 +45,14 @@ public class TrackingController {
     @GetMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> getTrackingInformations(@PathVariable Long idGoodAnnouncement) {
         Announcement a = repository.findById( idGoodAnnouncement ).get();
+        logger.info("CHECKING THE STATUS OF THE ANNOUNCEMENT : " );
         return new ResponseEntity<Announcement>( a, HttpStatus.OK );
     }
 
     @PostMapping(value = "/tracking", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> ChangeTrackingStatus(@RequestBody Announcement announcement) {
         repository.save(announcement);
+        logger.info("TRACKING CREATED");
         return new ResponseEntity<Announcement>( announcement, HttpStatus.OK );
     }
 
@@ -74,11 +80,13 @@ public class TrackingController {
         State stateAnnouncement = DELIVERED;
         try {
             stateAnnouncement = State.valueOf(state);
-            System.out.println("patching tracking -> state fine");
+            //System.out.println("patching tracking -> state fine");
         } catch (Error e) {
 
         }
         a.setState(stateAnnouncement);
+        logger.info("CHANGING STATE OF TRACKING TO : " + state);
+
         repository.save(a);
 
         //KAFKA --> BILLING
@@ -88,7 +96,8 @@ public class TrackingController {
             KafkaHelperClass data = new KafkaHelperClass(idGood,driverId);
 
             //String data = idGood + ";" + driverId;
-            System.out.println("send tracking finished message : ");
+            logger.info("TRACKING IS FINISHED");
+            logger.info("SENDING MESSAGE TO BILLING SERVICE TO PERFORM EXCHANGE OF POINTS BETWEEN DRIVER AND STUDENT");
             chaosBroker.broke("tracking-finished", data, kafkaTemplate);
             //kafkaTemplate.send("tracking-finished", mapper.writeValueAsString(data));
         }
