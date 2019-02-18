@@ -5,6 +5,7 @@ import fr.unice.polytech.al.assembler.AnnouncementResourceAssembler;
 import fr.unice.polytech.al.kafka.AnnouncementKafkaSender;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.AnnouncementRepository;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -28,6 +29,8 @@ public class AnnouncementController {
 
     private AnnouncementRepository repository;
     private AnnouncementResourceAssembler assembler;
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     @Autowired
     public AnnouncementController(AnnouncementRepository repository, AnnouncementResourceAssembler assembler) {
@@ -64,8 +67,9 @@ public class AnnouncementController {
 
         //KAFKA -> MATCHING
         // Send message to matching service
+        logger.info("OBJECT ANNOUNCEMENT WITH ID " +announcement.getId() + " OF TYPE " + announcement.getType() +" CREATED");
+        logger.info("SENDING MESSAGE TO SERVICE MATCHING TO FIND THE MATCH");
         kafkaSender.send("announcement_created", announcement);
-        System.out.println("announcement_created -> matching .... " );
 
         return ResponseEntity.created(
                 linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())

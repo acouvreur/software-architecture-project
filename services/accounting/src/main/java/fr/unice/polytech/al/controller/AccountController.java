@@ -6,6 +6,7 @@ import fr.unice.polytech.al.assembler.AccountResourceAssembler;
 import fr.unice.polytech.al.kafka.ChaosBroker;
 import fr.unice.polytech.al.model.Account;
 import fr.unice.polytech.al.repository.AccountRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -26,6 +27,8 @@ public class AccountController {
 
     private AccountRepository repository;
     private AccountResourceAssembler assembler;
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -66,10 +69,10 @@ public class AccountController {
 
         repository.save(account);
 
+        logger.info("OBJECT ACCOUNT WITH ID " + account.getId() + " AND EMAIL " + account.getEmail() +  " CREATED");
 
-        System.out.println("account .............. " + account);
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println("account created -> creation of billing .... " );
+        System.out.println("SENDING MESSAGE TO SERVICE BILLING WITH TOPIC ACCOUNT_CREATED (TO CREATE OBJECT BILLING ASSOCIATED WITH THIS ACCOUNT)" );
         //kafkaTemplate.send("account_created", String.valueOf(account.getId()));
 
         chaosBroker.broke( "account_created", account, kafkaTemplate);
