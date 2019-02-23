@@ -4,11 +4,17 @@ services:
         image: 'wurstmeister/zookeeper:latest'
         ports:
             - '2181:2181'
+        networks:
+            - kafka-net
         
     kafka:
         image: 'wurstmeister/kafka:latest'
         links:
             - zookeeper
+        ports:
+            - '9092:9092'
+        networks:
+            - kafka-net
         environment:
             KAFKA_ADVERTISED_HOST_NAME: blablamove_kafka
             KAFKA_ADVERTISED_PORT: 9092
@@ -19,6 +25,8 @@ services:
     postgres-announcement:
         container_name: postgres-db-announcement
         image: postgres:9.5
+        networks:
+            - kafka-net
         volumes:
             - /postgresql/data
         environment:
@@ -35,9 +43,11 @@ services:
             context: services/announcement
             dockerfile: docker/Dockerfile
         image: al-blablamove-announcement
-        container_name: blablamove-announcement
+        container_name: blablamove-announcement 
         ports:
             - '8080:8080'
+        networks:
+            - kafka-net
         links:
             - kafka
             - postgres-announcement
@@ -50,6 +60,8 @@ services:
         image: postgres:9.5
         volumes:
             - /postgresql/data
+        networks:
+            - kafka-net
         environment:
             - POSTGRES_PASSWORD=accounting
             - POSTGRES_USER=accountingservice
@@ -64,6 +76,8 @@ services:
             dockerfile: docker/Dockerfile
         image: al-blablamove-accounting
         container_name: blablamove-accounting
+        networks:
+            - kafka-net
         ports:
             - '8081:8080'
         links:
@@ -79,6 +93,8 @@ services:
             dockerfile: docker/Dockerfile
         image: al-blablamove-billing
         container_name: blablamove-billing
+        networks:
+            - kafka-net
         ports:
             - '8082:8080'
         links:
@@ -91,6 +107,8 @@ services:
     postgres-billing:
         container_name: postgres-db-billing
         image: postgres:9.5
+        networks:
+            - kafka-net
         volumes:
             - /postgresql/data
         environment:
@@ -106,6 +124,8 @@ services:
             context: services/matching
             dockerfile: docker/Dockerfile
         image: al-blablamove-matching
+        networks:
+            - kafka-net
         container_name: blablamove-matching
         ports:
             - '8084:8080'
@@ -121,6 +141,8 @@ services:
             dockerfile: docker/Dockerfile
         image: al-blablamove-tracking
         container_name: blablamove-tracking
+        networks:
+            - kafka-net
         ports:
             - '8085:8080'
         links:
@@ -135,6 +157,8 @@ services:
         image: postgres:9.5
         volumes:
             - /postgresql/data
+        networks:
+            - kafka-net
         environment:
             - POSTGRES_PASSWORD=tracking
             - POSTGRES_USER=trackingservice
@@ -148,3 +172,7 @@ volumes:
     postgres-db-accounting: {}
     postgres-db-billing: {}
     postgres-db-tracking: {}
+
+networks:
+    kafka-net:
+        external: true

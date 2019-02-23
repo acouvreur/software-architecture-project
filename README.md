@@ -24,3 +24,10 @@ Teacher in charge : *Guilhem Molines* - [guilhem.molines@unice.fr](mailto:guilhe
 * Semester 1 Project Kanban [here](https://github.com/acouvreur/software-architecture-project/projects/1)
 * Issues Project [here](https://github.com/acouvreur/software-architecture-project/projects/3)
 
+## Commands
+
+Visualize the swarm cluster :
+
+```bash
+docker run -it -d -p 5000:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
+```
