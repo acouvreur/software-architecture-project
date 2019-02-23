@@ -6,6 +6,7 @@ import fr.unice.polytech.al.assembler.AccountResourceAssembler;
 import fr.unice.polytech.al.kafka.ChaosBroker;
 import fr.unice.polytech.al.model.Account;
 import fr.unice.polytech.al.repository.AccountRepository;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -53,6 +54,7 @@ public class AccountController {
     @GetMapping(value = "/accounts/{username}", 
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resource<Account> find(@PathVariable String username) {
+
         return assembler.toResource(
                 repository.findByUsername(username)
                         .orElseThrow(() -> new EntityNotFoundException(username))
