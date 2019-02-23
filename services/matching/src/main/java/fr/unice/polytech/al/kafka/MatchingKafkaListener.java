@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ public class MatchingKafkaListener
     private LinkedList<String> announcementCourse = new LinkedList<String>();
     private LinkedList<String> announcementGoods  = new LinkedList<String>();
 
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     @KafkaListener(topics = "announcement_created")
     public void receiveAnnouncementCreated(String data) throws IOException, InterruptedException
@@ -27,8 +30,8 @@ public class MatchingKafkaListener
         // data in json format but it's just a string
         Object obj = deSerializedData(data);
         String dataInJsonFormat = (String)obj;
-        
-        System.out.println("\nService Matching. Received Message. Topic: announcement_created  - Message: " + dataInJsonFormat);
+
+        logger.info("RECEIVED THE MESSAGE WITH TOPIC ANNOUNCEMENT_CREATED");
 
         // data in object json
         ObjectMapper objectMapper = new ObjectMapper();
@@ -38,10 +41,14 @@ public class MatchingKafkaListener
 
         if(dataJson.get("type").asText().equals("GOOD")) {
             announcementGoods.add(dataInJsonFormat);
+            logger.info("ANNOUNCEMENT OF TYPE GOOD HAS BEEN CREATED");
 
         } else if(dataJson.get("type").asText().equals("COURSE")) {
             announcementCourse.add(dataInJsonFormat);
+            logger.info("ANNOUNCEMENT OF TYPE COURSE HAS BEEN CREATED");
+
         }
+
 
 
         // THERE IS A MATCH!
@@ -56,13 +63,15 @@ public class MatchingKafkaListener
             String msg = "{ \"good\" : " + good + ", \"course\" : " + course + " }";
             //System.out.println("\n AFTER list goods: " + announcementGoods.size() + "      list course: " + announcementCourse.size());
 
+            logger.info("MATCHING FOUND BETWEEN ANNOUNCEMENT OF TYPE GOOD : " + good + " AND ANNOUNCEMENT OF TYPE COURSE : " + course);
 
-            //KAFKA -> ANNOUNCEMENT & TRACKING
+
             kafkaSender.send("announcement_matched", msg);
-            System.out.println("announcement_matched -> announcement & tracking .... " );
+
+            logger.info("SENDING MESSAGE TO SERVICE TRACKING TO COMMUNICATE MATCHING ");
 
         } else {
-            System.out.println("\n\n NOOOO MATCH!!\n");
+            logger.info("NO MATCHING FOUND FOR THE MOMENT");
         }
     }
 

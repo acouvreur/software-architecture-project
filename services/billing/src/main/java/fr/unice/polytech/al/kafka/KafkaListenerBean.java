@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.model.Billing;
 import fr.unice.polytech.al.repository.BillingRepository;
 import fr.unice.polytech.al.service.BillingService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
@@ -28,6 +29,8 @@ public class KafkaListenerBean {
 
     @Autowired
     private BillingRepository repository;
+
+    private final Logger logger = Logger.getLogger(this.getClass());
 
 
     /*@Autowired
@@ -58,49 +61,52 @@ public class KafkaListenerBean {
 
     @KafkaListener(topics = "tracking-finished")
     public void modifyBalanceOnceTrackingFinished(String message, Acknowledgment acknowledgment) throws IOException {
-        System.out.println("tracking has finished .... " );
 
         Object json0 = deSerializedData(message);
         String json = (String) json0;
 
-
-        System.out.println("object message value : " + json);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         JsonNode jsonNode = objectMapper.readTree(json);
-        System.out.println("jsonNode : " + jsonNode);
 
         String idGood = jsonNode.get("idGood").asText();
-        System.out.println("idGood : " + idGood);
+        //System.out.println("idGood : " + idGood);
 
         String idDriver = jsonNode.get("idDriver").asText();
-        System.out.println("idDriver : " + idDriver);
+        //System.out.println("idDriver : " + idDriver);
 
         long goodId = Long.valueOf(idGood);
         long driverId = Long.valueOf(idDriver);
+
+        logger.info("TRACKING OF GOOD WITH ID : " + goodId + " HAS FINISHED (DRIVER : " + driverId + ")");
+
         service.setNewBallanceForClient(goodId);
         service.setNewBallanceForClient(driverId);
+
+        logger.info("SETTING THE BALANCE FOR CLIENTS WITH ID : " + goodId + " and " + driverId);
+
     }
 
 
     @KafkaListener(topics = "account_created")
     public void createBillingOnceAccountCreated(String message, Acknowledgment acknowledgment) throws IOException {
-        System.out.println("account created -> creation of billing .... " + message );
 
 
 
         Object json0 = deSerializedData(message);
         String json = (String) json0;
 
-        System.out.println("object message value : " + json);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         JsonNode jsonNode = objectMapper.readTree(json);
-        System.out.println("jsonNode : " + jsonNode);
+        //System.out.println("jsonNode : " + jsonNode);
 
         String id = jsonNode.get("id").asText();
         long accountId = Long.valueOf(id);
-        System.out.println("accountId : " + accountId);
+        //System.out.println("accountId : " + accountId);
+
+        logger.info("MESSAGE FROM SERVICE ACCOUNT RECEIVED. CREATING OBJECT BILLING FOR ACCOUNT WITH ID " + accountId );
+
 
         Billing billing = new Billing(accountId,200);
         repository.save(billing);

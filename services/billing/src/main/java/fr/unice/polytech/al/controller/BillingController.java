@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Random;
+import org.apache.log4j.Logger;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -27,6 +28,8 @@ public class BillingController {
     private BillingResourceAssembler assembler;
     private BillingService service;
     private Random rand = new Random();
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     @Autowired
     public BillingController(BillingRepository repository, BillingResourceAssembler assembler) {
@@ -65,13 +68,17 @@ public class BillingController {
     public ResponseEntity<Billing> createOne(@PathVariable long clientId) {
         Billing billing1 = new Billing(clientId,200);
         repository.save(billing1);
+        logger.info("CREATE OBJECT BILLING");
         return new ResponseEntity<Billing>(billing1, HttpStatus.OK);
+
+
     }
 
 
     @PatchMapping ("/billing/{clientId}/balance")
     public ResponseEntity<Billing> withdrawPointFromClientWithId(@PathVariable long clientId) {
         Billing billingTmp = service.setNewBallanceForClient(clientId);
+        logger.info("CHANGE THE BALANCE");
         return new ResponseEntity<Billing>(billingTmp, HttpStatus.OK);
     }
 

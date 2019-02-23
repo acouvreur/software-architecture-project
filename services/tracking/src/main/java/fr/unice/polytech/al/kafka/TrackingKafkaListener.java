@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.unice.polytech.al.model.Announcement;
 import fr.unice.polytech.al.repository.TrackingRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
@@ -30,6 +31,9 @@ public class TrackingKafkaListener {
 
     public TrackingKafkaListener() {
     }
+
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     public Announcement transformJsonToAnnouncement(JsonNode jsonNode) throws IOException, ParseException 
     {
@@ -86,7 +90,6 @@ public class TrackingKafkaListener {
     public void getIdsOfGoodAndCarAnnouncement(String message, Acknowledgment acknowledgment) throws IOException, ParseException {
         Object obj = deSerializedData(message);
         String json = (String)obj;
-        System.out.println("\nService Tracking. Received Message. Topic: announcement_matched  - Message: " + json);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
@@ -94,6 +97,13 @@ public class TrackingKafkaListener {
         JsonNode jsonNode = objectMapper.readTree(json);
         Announcement announcement = transformJsonToAnnouncement(jsonNode.get("course"));
         repository.save( announcement );
+
+        Long id1 = announcement.getIdGoodAnnouncement();
+        Long id2 = announcement.getIdDriverAnnouncement();
+
+
+        logger.info("RECEIVED MESSAGE OF MATCHING BETWEEN ANNOUNCEMENT WITH ID DRIVER : " + id1 + " AND ANNOUNCEMENT WITH ID GOOD" + id2);
+
     }
 
 }
