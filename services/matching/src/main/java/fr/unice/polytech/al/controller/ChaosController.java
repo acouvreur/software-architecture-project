@@ -1,21 +1,14 @@
 package fr.unice.polytech.al.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.unice.polytech.al.kafka.ChaosBroker;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-import java.io.IOException;
 
 // TODO: change to not rest
 @RestController
@@ -26,26 +19,39 @@ public class ChaosController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
-    @CrossOrigin
-    @GetMapping(value = "/broker", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ObjectNode> getBrokerValues() {
-        logger.info("Get request for broker");
-        return new ResponseEntity<ObjectNode>(broker.toJson(), HttpStatus.OK);
+
+    @PatchMapping(value = "/broker/slowdown/percentage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Resource<ChaosBroker>> changeSlow(@RequestBody double percentage) {
+        broker.setpSlow(percentage);
+        logger.info("CHANGE THE PERCENTAGE OF THE CHAOS BROKER'S FEATURE : SLOWDOWN");
+        return ResponseEntity.ok().build();
     }
 
-    @CrossOrigin
-    @PatchMapping(value = "/broker", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ObjectNode> patchBroker(@RequestBody String jsonFormat) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode dataJson = objectMapper.readTree(jsonFormat);
+    @PatchMapping(value = "/broker/delete/percentage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Resource<ChaosBroker>> changeDelete(@RequestBody double percentage) {
+        broker.setpDelete(percentage);
+        logger.info("CHANGE THE PERCENTAGE OF THE CHAOS BROKER'S FEATURE : DELETE");
+        return ResponseEntity.ok().build();
+    }
 
-        broker.setpDuplicate(dataJson.get("pDuplicate").asDouble());
-        broker.setpDelete(dataJson.get("pDelete").asDouble());
-        broker.setpNothing(dataJson.get("pNothing").asDouble());
-        broker.setpSalt(dataJson.get("pSalt").asDouble());
-        broker.setpSlow(dataJson.get("pSlow").asDouble());
+    @PatchMapping(value = "/broker/duplicate/percentage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Resource<ChaosBroker>> changeDuplicate(@RequestBody double percentage) {
+        broker.setpDuplicate(percentage);
+        logger.info("CHANGE THE PERCENTAGE OF THE CHAOS BROKER'S FEATURE : DUPLICATE");
+        return ResponseEntity.ok().build();
+    }
 
-        logger.info("Patch request for broker");
-        return new ResponseEntity<ObjectNode>(broker.toJson(), HttpStatus.OK);
+    @PatchMapping(value = "/broker/salt/percentage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Resource<ChaosBroker>> changeSalt(@RequestBody double percentage) {
+        broker.setpSalt(percentage);
+        logger.info("CHANGE THE PERCENTAGE OF THE CHAOS BROKER'S FEATURE : MESS");
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping(value = "/broker/nothing/percentage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Resource<ChaosBroker>> changeNothing(@RequestBody double percentage) {
+        broker.setpNothing(percentage);
+        logger.info("CHANGE THE PERCENTAGE OF THE CHAOS BROKER'S FEATURE : ORDINARY SENDING");
+        return ResponseEntity.ok().build();
     }
 }
