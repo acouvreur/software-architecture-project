@@ -50,3 +50,37 @@ Start blablamove services
 ```bash
 $ docker stack deploy --compose-file docker-compose-swarm.yaml blablamove
 ```
+
+If the last command doesn't work do this first:
+```bash
+$ docker network create --driver overlay kafka-net
+```
+
+Stop blablamove services
+
+```bash
+$ docker stack rm blablamove
+```
+
+Compile project:
+
+```bash
+$ ./install.sh
+```
+
+
+Stop and remove all containers:
+    docker stop $(docker ps -a -q)
+    docker rm $(docker ps -a -q)
+
+
+remove all images:
+	docker rmi $(docker images -a -q)
+
+
+
+mvn clean install -Dmaven.test.skip=true
+docker-compose up --build -
+
+
+curl -s -d "" -H "Content-Type: application/json" -X PATCH http://localhost:8084/broker
