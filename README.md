@@ -31,3 +31,22 @@ Visualize the swarm cluster :
 ```bash
 docker run -it -d -p 5000:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
 ```
+
+Start grafana stack
+
+> Docker Swarm must be running, if not : docker swarm init
+
+```bash
+$ cd monitoring/swarmprom
+$ ADMIN_USER=admin \
+ADMIN_PASSWORD=admin \
+docker stack deploy -c docker-compose.yml mon
+```
+
+> Docker Swarm must be running, if not : docker swarm init
+
+Start blablamove services
+
+```bash
+$ docker stack deploy --compose-file docker-compose-swarm.yaml blablamove
+```
