@@ -35,8 +35,8 @@ class MatchingSimulation extends Simulation {
               .check(status.is(201))
           )
           .exec(
-            http("Consult_Announcement")
-              .delete("/announcement")
+            http("delete_Announcement")
+              .delete("/announcements")
               .check(status.is(200))
           )
           .pause(1 seconds)
