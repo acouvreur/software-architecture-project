@@ -38,6 +38,8 @@ class MatchingSimulation extends Simulation {
 
       }
 
+
+
   def buildAnnouncementGood(session: Session): String = {
     val idStudent = session("idStudent").as[Integer]
     raw"""{

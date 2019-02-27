@@ -23,32 +23,93 @@ class EndToEndSimulation extends Simulation {
         exec(session =>
           session.set("idTransmitter", Random.nextInt(Integer.MAX_VALUE))
             .set("idStudent", Random.nextInt(Integer.MAX_VALUE))
+            .set("idTracking", 0)
         )
           .exec(
-            http("Create_Announcement_GOOD")
+            http("create_announcement_GOOD")
               .post("http://localhost:8080/announcements")
               .body(StringBody(session => buildAnnouncementGood(session)))
               .check(status.is(201))
           )
           .pause(1 seconds)
           .exec(
-            http("Create_Announcement_COURSE")
+            http("create_announcement_COURSE")
               .post("http://localhost:8080/announcements")
               .body(StringBody(session => buildAnnouncementCourse(session)))
               .check(status.is(201))
           )
           .pause(1 seconds)
           .exec(
-            http("Track_my_announcement")
-              .get("http://localhost:8085/tracking")
-              .body(StringBody(session => buildTrackingTest(session)))
-              .check(status.is(201)))
-          .pause(1 seconds)
+            http("Consult_Announcement_Tracking")
+              .get(StringBody(session => buildTracking(session)))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Change_Announcement_State_RECEIVED")
+              .patch(StringBody(session => buildTracking(session)))
+              .body(StringBody(raw"""RECEIVED"""))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Consult_Announcement_Tracking")
+              .get(StringBody(session => buildTracking(session)))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Change_Announcement_State_STARTED")
+              .patch(StringBody(session => buildTracking(session)))
+              .body(StringBody(raw"""STARTED"""))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Consult_Announcement_Tracking")
+              .get(StringBody(session => buildTracking(session)))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Change_Announcement_State_DELIVERING")
+              .patch(StringBody(session => buildTracking(session)))
+              .body(StringBody(raw"""DELIVERING"""))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Consult_Announcement_Tracking")
+              .get(StringBody(session => buildTracking(session)))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Change_Announcement_State_DELIVERED")
+              .patch(StringBody(session => buildTracking(session)))
+              .body(StringBody(raw"""DELIVERED"""))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Consult_Announcement_Tracking")
+              .get(StringBody(session => buildTracking(session)))
+              .check(status.is(200))
+          )
+          .pause(100 milliseconds)
+          .exec(
+            http("Change_Announcement_State_CONFIRMED")
+              .patch(StringBody(session => buildTracking(session)))
+              .body(StringBody(raw"""CONFIRMED"""))
+              .check(status.is(200))
+          )
       }
 
 
-  def buildTrackingTest(session: Session): String = {
-    val id = session("idTransmitter").as[String]
+
+
+  def buildTracking(session: Session): String = {
+    val id = session("idStudent").as[String]
     val announcement = Http("http://localhost:8080/announcements").param("transmitter", id).asString
     val parsed = announcement.body.toString().parseJson
     val tmp = parsed.asJsObject().getFields("_embedded")(0)
@@ -61,9 +122,8 @@ class EndToEndSimulation extends Simulation {
     println(idAnnouncement)
     println("--------------------------------------------------------")
     */
-    session.set("idTracking", idAnnouncement)
-
-    raw"""error"""
+    //session.set("idTracking", idAnnouncement)
+    raw"""http://localhost:8085/tracking/$idAnnouncement"""
   }
 
   def buildAnnouncementConsult(session: Session): String = {
