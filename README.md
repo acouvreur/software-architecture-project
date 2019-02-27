@@ -45,42 +45,39 @@ docker stack deploy -c docker-compose.yml mon
 
 > Docker Swarm must be running, if not : docker swarm init
 
-Start blablamove services
-
-```bash
-$ docker stack deploy --compose-file docker-compose-swarm.yaml blablamove
-```
-
-If the last command doesn't work do this first:
-```bash
-$ docker network create --driver overlay kafka-net
-```
-
-Stop blablamove services
-
-```bash
-$ docker stack rm blablamove
-```
-
-Compile project:
-
+Compile project
 ```bash
 $ ./install.sh
 ```
 
+Before starting services for the first time
+```bash
+$ docker network create --driver overlay kafka-net
+```
 
-Stop and remove all containers:
-    docker stop $(docker ps -a -q)
-    docker rm $(docker ps -a -q)
+Start blablamove services
+```bash
+$ docker stack deploy --compose-file docker-compose-swarm.yaml blablamove
+```
+
+Stop blablamove services
+```bash
+$ docker stack rm blablamove
+```
 
 
-remove all images:
-	docker rmi $(docker images -a -q)
+Front-end
 
+To install angular you need to already have installed Nodejs and npm and then do
+```bash
+$ sudo npm install -g @angular/cli
+```
 
+To use the front-end do
+```bash
+$ cd front-end
+$ npm install
+$ ng serve
+```
 
-mvn clean install -Dmaven.test.skip=true
-docker-compose up --build -
-
-
-curl -s -d "" -H "Content-Type: application/json" -X PATCH http://localhost:8084/broker
+Once the project is compiled you can go to the browser http://localhost:4200

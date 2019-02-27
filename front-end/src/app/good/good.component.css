@@ -1,0 +1,20 @@
+.content {
+    width: 24%;
+    margin: auto;
+}
+.button1 {
+    margin-right: 30px;
+}
+.msg {
+    height: 40px; 
+    margin-bottom: 50px;
+    margin-top: 12px;   
+}
+.buttons {
+    display: inline-flex;
+}
+.alert-processing {
+    color: gray;
+    background-color: #bdbdbd;
+    border-color: #a2a2a2;
+}
