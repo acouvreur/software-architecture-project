@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import static fr.unice.polytech.al.State.CONFIRMED;
 import static fr.unice.polytech.al.State.DELIVERED;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
+@CrossOrigin
 public class TrackingController {
 
     private TrackingRepository repository;

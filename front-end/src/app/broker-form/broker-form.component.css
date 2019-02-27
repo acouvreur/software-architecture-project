@@ -1,7 +1,8 @@
+.wrapper {
+    padding: 20px 20px;
+    display: table-cell;
+}
 .content {
-    width: 20%;
-    margin: auto;
-    display: inline-block;
     padding: 20px 40px;
     padding-bottom: 10px;
 }
@@ -20,4 +21,17 @@
 }
 .evenSection {
     background-color: #9cc9d8;
+}
+.msg {
+    height: 40px;    
+}
+.alert {
+    padding: 0px;
+    padding-left: 10px;
+    margin-bottom: Opx;
+}
+.alert-processing {
+    color: gray;
+    background-color: #bdbdbd;
+    border-color: #a2a2a2;
 }

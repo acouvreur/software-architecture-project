@@ -2,6 +2,7 @@ package fr.unice.polytech.al.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.unice.polytech.al.model.Announcement;
 import org.apache.log4j.Logger;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -139,5 +140,18 @@ public class ChaosBroker {
 
     public void setpNothing(double pNothing) {
         this.pNothing = pNothing;
+    }
+
+    public ObjectNode toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode obj = objectMapper.createObjectNode();
+
+        obj.put("pDuplicate", this.pDuplicate);
+        obj.put("pNothing", this.pNothing);
+        obj.put("pSlow", this.pSlow);
+        obj.put("pSalt", this.pSalt);
+        obj.put("pDelete", this.pDelete);
+
+        return obj;
     }
 }

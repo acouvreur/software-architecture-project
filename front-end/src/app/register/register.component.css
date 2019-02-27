@@ -1,0 +1,9 @@
+.content {
+    width: 20%;
+    margin: auto;
+}
+.alert-processing {
+    color: gray;
+    background-color: #bdbdbd;
+    border-color: #a2a2a2;
+}

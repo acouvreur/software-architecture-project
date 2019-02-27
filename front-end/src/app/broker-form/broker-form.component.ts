@@ -16,8 +16,8 @@ export class BrokerFormComponent implements OnInit
   isLoading = false;
   submitted = false;
   message = null;
-  sectionList = ["Accounting", "Announcement", "Matching", "Tracking", "Billing"];
-  portList = ["8081", "8080", "8084", "8085", "8082"];
+  sectionList = ["Accounting", "Announcement", "Matching", "Tracking"];
+  portList = ["8081", "8080", "8084", "8085"];
   specificUrl = "/broker";
 
 
@@ -34,19 +34,13 @@ export class BrokerFormComponent implements OnInit
     });
 
     let url = environment.baseUrl + this.portList[this.numSection] + this.specificUrl;
+    console.log("I'm " + this.sectionList[this.numSection]);
 
-    console.log("I'm " + this.sectionList[this.numSection] + " ALLER CHERCHER GET");
-    console.log(url);
-    
     fetch(url)
         .then(data => {
-            console.log("Response 1");
-            console.log(data);
             return data.json();
         })
         .then(res => {
-            console.log("Response 2");
-            console.log(res);
             this.f.delete.setValue(res.pDelete);
             this.f.duplicate.setValue(res.pDuplicate);
             this.f.salt.setValue(res.pSalt);
@@ -67,12 +61,11 @@ export class BrokerFormComponent implements OnInit
     if (this.brokerForm.invalid) {
         return;
     }
-    this.isLoading = true;  
+    this.isLoading = true; 
+    this.message = { type: 'processing', text: "Processing..." };    
     
     let values = '{ "pSlow": ' + this.f.slowdown.value + ', "pDelete":' + this.f.delete.value + ', "pDuplicate": ' + this.f.duplicate.value + ', "pSalt": ' + this.f.salt.value + ', "pNothing": ' + this.f.nothing.value + '}';    
     let url = environment.baseUrl + this.portList[this.numSection] + this.specificUrl;
-
-    console.log(values);
 
     fetch(url, { 
         method: "PATCH", 
@@ -83,8 +76,6 @@ export class BrokerFormComponent implements OnInit
         body: values
     })
     .then(data => {
-        console.log("respuestaa");
-        console.log(data.json());
         this.message = { type: 'success', text: "Done!" };
         this.isLoading = false;
         this.submitted = false;

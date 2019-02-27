@@ -1,0 +1,10 @@
+<div class="content">
+  <div class="msg">
+      <div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error', 'alert-processing': message.type === 'processing' }">{{message.text}}</div>
+  </div>
+  <div class="buttons">
+    <div class="button1"><button class="btn btn-primary" (click)="estimateBilling()">Estimate Billing</button></div>
+    <div><button class="btn btn-primary" (click)="checkStatus()" >Check Good Status</button></div>
+  </div>
+</div>
+

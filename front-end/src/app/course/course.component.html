@@ -1,0 +1,22 @@
+<section class="register">
+  <div class="content">
+    <div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-danger': message.type === 'error', 'alert-processing': message.type === 'processing' }">{{message.text}}</div>
+      
+    <h4>Update Good Status</h4>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-group">
+          <select class="form-control" type="type" formControlName="type">
+            <option value="RECEIVED">Received</option>
+            <option value="STARTED">Started</option>
+            <option value="DELIVERING">Delivering</option>
+            <option value="DELIVERED">Delivered</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+            <button [disabled]="isLoading" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+  </div>
+</section>

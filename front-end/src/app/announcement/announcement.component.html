@@ -1,0 +1,47 @@
+<section class="register">
+  <div class="content">
+    <div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-danger': message.type === 'error', 'alert-processing': message.type === 'processing' }">{{message.text}}</div>
+      
+    <h4>Announcement</h4>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="startPoint">Start Point</label>
+            <input type="text" formControlName="startPoint" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.startPoint.errors }" />
+            <div *ngIf="submitted && f.startPoint.errors" class="invalid-feedback">
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="endPoint">End Point</label>
+          <input type="endPoint" formControlName="endPoint" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endPoint.errors }" />
+          <div *ngIf="submitted && f.endPoint.errors" class="invalid-feedback">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="startDate" formControlName="startDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" />
+          <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">End Point</label>
+            <input type="endDate" formControlName="endDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endDate.errors }" />
+            <div *ngIf="submitted && f.endDate.errors" class="invalid-feedback">
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select class="form-control" type="type" formControlName="type">
+            <option value="good">Good</option>
+            <option value="course">Course</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+            <button [disabled]="isLoading" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+  </div>
+</section>
