@@ -39,7 +39,6 @@ class AccountSimulation extends Simulation{
     raw"""{"email":"$mail", "username":"$name", "firstName":"Alexis", "lastName":"Couvreur"}""""
   }
 
-  setUp(stressSample.inject(constantConcurrentUsers(100) during (10 seconds), // 1
-    rampConcurrentUsers(100) to (200) during (10 seconds)).protocols(httpProtocol))
-
+  setUp(stressSample.inject(constantConcurrentUsers(10) during (5 seconds), // 1
+    rampConcurrentUsers(10) to (50) during (5 seconds)).protocols(httpProtocol))
 }
