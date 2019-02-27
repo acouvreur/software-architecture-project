@@ -8,14 +8,14 @@ sudo docker service create -p 5000:5000 --name registry \                       
   --mount type=volume,source=my-registry,destination=/var/lib/registry --constraint 'node.role==manager' \
   registry:2
 
+# 5. Create kafka-net network
+docker network create --driver overlay kafka-net
+
 # 3. Install, Tag and Push blablamove services
 install.sh
 
 # 4. Start the visualizer
 docker run -it -d -p 5050:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
-
-# 5. Create kafka-net network
-docker network create --driver overlay kafka-net
 
 # 6. Deploy the services
 docker stack deploy --compose-file docker-compose-swarm.yaml blablamove
