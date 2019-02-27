@@ -10,7 +10,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 @Component
 public class MatchingKafkaListener
@@ -22,6 +24,14 @@ public class MatchingKafkaListener
     private LinkedList<String> announcementGoods  = new LinkedList<String>();
 
     private final Logger logger = Logger.getLogger(this.getClass());
+
+    private Set<Long> idTransmitterSet = new HashSet<>();
+    private Set<Long> idSet = new HashSet<>();
+    private Set<String> matchedSet = new HashSet<>();
+
+
+
+    //(setIdTransmitter, id)
 
 
     @KafkaListener(topics = "announcement_created")
@@ -37,41 +47,49 @@ public class MatchingKafkaListener
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataJson = objectMapper.readTree(dataInJsonFormat);
 
-        //System.out.println("\n BEFORE list goods: " + announcementGoods.size() + "      list course: " + announcementCourse.size());
+        long incomingIdTransmitter = Integer.parseInt( String.valueOf( dataJson.get("idTransmistter") ) );
+        long incomingId = Long.parseLong( String.valueOf( dataJson.get("id")));
 
-        if(dataJson.get("type").asText().equals("GOOD")) {
-            announcementGoods.add(dataInJsonFormat);
-            logger.info("ANNOUNCEMENT OF TYPE GOOD HAS BEEN CREATED");
-
-        } else if(dataJson.get("type").asText().equals("COURSE")) {
-            announcementCourse.add(dataInJsonFormat);
-            logger.info("ANNOUNCEMENT OF TYPE COURSE HAS BEEN CREATED");
-
-        }
-
-
-
-        // THERE IS A MATCH!
-        if(!announcementCourse.isEmpty() && !announcementGoods.isEmpty()) {
-            String good = announcementGoods.poll();
-            JsonNode goodJson = (new ObjectMapper()).readTree(good);
-
-            String course = announcementCourse.poll();
-            JsonNode courseJson = (new ObjectMapper()).readTree(course);
-
-            //String msg = "{ \"idGood\" : \"" + goodJson.get("id").asText() + "\", \"idCourse\" : \"" + courseJson.get("id").asText() + "\" }";
-            String msg = "{ \"good\" : " + good + ", \"course\" : " + course + " }";
-            //System.out.println("\n AFTER list goods: " + announcementGoods.size() + "      list course: " + announcementCourse.size());
-
-            logger.info("MATCHING FOUND BETWEEN ANNOUNCEMENT OF TYPE GOOD : " + good + " AND ANNOUNCEMENT OF TYPE COURSE : " + course);
-
-
-            kafkaSender.send("announcement_matched", msg);
-
-            logger.info("SENDING MESSAGE TO SERVICE TRACKING TO COMMUNICATE MATCHING ");
-
+        //prevent receiving 2 times the same message
+        if (idTransmitterSet.contains( incomingIdTransmitter ) && idSet.contains( incomingId )) {
+            logger.info("THE ANNOUNCEMENT WITH ID " + incomingIdTransmitter +" AND ID TRANSMITTER " + incomingId + " WAS DUPLICATED" );
         } else {
-            logger.info("NO MATCHING FOUND FOR THE MOMENT");
+
+            if (dataJson.get( "type" ).asText().equals( "GOOD" )) {
+                announcementGoods.add( dataInJsonFormat );
+                logger.info( "ANNOUNCEMENT OF TYPE GOOD HAS BEEN CREATED" );
+
+            } else if (dataJson.get( "type" ).asText().equals( "COURSE" )) {
+                announcementCourse.add( dataInJsonFormat );
+                logger.info( "ANNOUNCEMENT OF TYPE COURSE HAS BEEN CREATED" );
+
+            }
+
+
+            // THERE IS A MATCH!
+            if (!announcementCourse.isEmpty() && !announcementGoods.isEmpty()) {
+                String good = announcementGoods.poll();
+                JsonNode goodJson = (new ObjectMapper()).readTree( good );
+
+                String course = announcementCourse.poll();
+                JsonNode courseJson = (new ObjectMapper()).readTree( course );
+
+                //String msg = "{ \"idGood\" : \"" + goodJson.get("id").asText() + "\", \"idCourse\" : \"" + courseJson.get("id").asText() + "\" }";
+                String msg = "{ \"good\" : " + good + ", \"course\" : " + course + " }";
+                //System.out.println("\n AFTER list goods: " + announcementGoods.size() + "      list course: " + announcementCourse.size());
+
+                logger.info( "MATCHING FOUND BETWEEN ANNOUNCEMENT OF TYPE GOOD : " + good + " AND ANNOUNCEMENT OF TYPE COURSE : " + course );
+
+
+                kafkaSender.send( "announcement_matched", msg );
+
+                logger.info( "SENDING MESSAGE TO SERVICE TRACKING TO COMMUNICATE MATCHING " );
+
+            } else {
+                logger.info( "NO MATCHING FOUND FOR THE MOMENT" );
+            }
+            idTransmitterSet.add( incomingIdTransmitter );
+            idTransmitterSet.add( incomingId );
         }
     }
 
