@@ -1,0 +1,69 @@
+# ANNOUNCEMENT
+image: localhost:5000/al-blablamove-announcement
+manifests:
+  -
+    image: localhost:5000/al-blablamove-announcement:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-announcement:armv7l
+    platform:
+      architecture: armv7l
+      os: linux
+
+# ACCOUNTING
+image: localhost:5000/al-blablamove-accounting
+manifests:
+  -
+    image: localhost:5000/al-blablamove-accounting:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-accounting:armv7l
+    platform:
+      architecture: armv7l
+      os: linux
+
+# BILLING
+image: localhost:5000/al-blablamove-billing
+manifests:
+  -
+    image: localhost:5000/al-blablamove-billing:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-billing:armv7l
+    platform:
+      architecture: armv7l
+      os: linux
+
+# MATCHING
+image: localhost:5000/al-blablamove-matching
+manifests:
+  -
+    image: localhost:5000/al-blablamove-matching:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-matching:armv7l
+    platform:
+      architecture: armv7l
+      os: linux
+
+# TRACKING
+image: localhost:5000/al-blablamove-tracking
+manifests:
+  -
+    image: localhost:5000/al-blablamove-tracking:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-tracking:armv7l
+    platform:
+      architecture: armv7l
+      os: linux

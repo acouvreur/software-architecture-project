@@ -1,0 +1,31 @@
+version: '3.6'
+services:
+    blablamove-announcement:
+        build:
+            context: services/announcement
+            dockerfile: docker/Dockerfile
+        image: localhost:5000/al-blablamove-announcement:armv7l
+
+    blablamove-accounting:
+        build:
+            context: services/accounting
+            dockerfile: docker/Dockerfile
+        image: localhost:5000/al-blablamove-accounting:armv7l
+
+    blablamove-billing:
+        build:
+            context: services/billing
+            dockerfile: docker/Dockerfile
+        image: localhost:5000/al-blablamove-billing:armv7l
+
+    blablamove-matching:
+        build:
+            context: services/matching
+            dockerfile: docker/Dockerfile
+        image: localhost:5000/al-blablamove-matching:armv7l
+
+    blablamove-tracking:
+        build:
+            context: services/tracking
+            dockerfile: docker/Dockerfile
+        image: localhost:5000/al-blablamove-tracking:armv7l
