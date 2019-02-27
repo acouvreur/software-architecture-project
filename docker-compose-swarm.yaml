@@ -42,6 +42,10 @@ services:
         deploy:
             placement:
                 constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
         
 
     blablamove-announcement:
@@ -70,6 +74,10 @@ services:
         deploy:
             placement:
                 constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
 
     blablamove-accounting:
         image: localhost:5000/al-blablamove-accounting:latest
@@ -79,6 +87,13 @@ services:
             - '8081:8080'
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
         
 
     blablamove-billing:
@@ -106,6 +121,10 @@ services:
         deploy:
             placement:
                 constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
 
     blablamove-matching:
         image: localhost:5000/al-blablamove-matching:latest
@@ -123,7 +142,12 @@ services:
         ports:
             - '8085:8080'
         environment:
-            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'    
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
 
     postgres-tracking:
         image: postgres:9.5
