@@ -1,5 +1,6 @@
 <div class="title">
-    <h3>Chaos Broker Management</h3>
+    <div><h3>{{title}}</h3></div>
+    <div *ngIf="username" class="user">I'm {{username}}!</div>
 </div>
 
 <router-outlet></router-outlet>
