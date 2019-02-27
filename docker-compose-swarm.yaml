@@ -31,7 +31,7 @@ services:
         networks:
             - kafka-net
         volumes:
-            - /postgresql/data
+            - postgres-db-announcement:/postgresql/data
         environment:
             - POSTGRES_PASSWORD=announcement
             - POSTGRES_USER=announcementservice
@@ -52,16 +52,12 @@ services:
             - kafka-net
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        deploy:
-            replicas: 2
-            placement:
-                constraints: [node.role == worker]
         
 
     postgres-accounting:
         image: postgres:9.5
         volumes:
-            - /postgresql/data
+            - postgres-db-accounting:/postgresql/data
         networks:
             - kafka-net
         environment:
@@ -83,10 +79,6 @@ services:
             - '8081:8080'
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        deploy:
-            placement:
-                constraints: [node.role == worker]
-            replicas: 1
         
 
     blablamove-billing:
@@ -97,17 +89,13 @@ services:
             - '8082:8080'
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        deploy:
-            placement:
-                constraints: [node.role == worker]
-            replicas: 1    
 
     postgres-billing:
         image: postgres:9.5
         networks:
             - kafka-net
         volumes:
-            - /postgresql/data
+            - postgres-db-billing:/postgresql/data
         environment:
             - POSTGRES_PASSWORD=billing
             - POSTGRES_USER=billingservice
@@ -135,16 +123,12 @@ services:
         ports:
             - '8085:8080'
         environment:
-            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        deploy:
-            replicas: 3
-            restart_policy:
-                condition: on-failure        
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'    
 
     postgres-tracking:
         image: postgres:9.5
         volumes:
-            - /postgresql/data
+            - postgres-db-tracking:/postgresql/data
         networks:
             - kafka-net
         environment:
