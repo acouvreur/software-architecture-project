@@ -1,3 +1,3 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jre
 ADD target/accounting-1.0-SNAPSHOT.jar /accounting.jar
 CMD java -jar /accounting.jar

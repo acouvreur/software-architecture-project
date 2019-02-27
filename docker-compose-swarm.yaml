@@ -6,11 +6,12 @@ services:
             - '2181:2181'
         networks:
             - kafka-net
+        deploy:
+            placement:
+                constraints: [node.role == manager]
         
     kafka:
         image: 'wurstmeister/kafka:latest'
-        links:
-            - zookeeper
         ports:
             - '9092:9092'
         networks:
@@ -20,10 +21,12 @@ services:
             KAFKA_ADVERTISED_PORT: 9092
             KAFKA_ZOOKEEPER_CONNECT: 'blablamove_zookeeper:2181'
             KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+        deploy:
+            placement:
+                constraints: [node.role == manager]
         
 
     postgres-announcement:
-        container_name: postgres-db-announcement
         image: postgres:9.5
         networks:
             - kafka-net
@@ -36,27 +39,26 @@ services:
             - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
             - 5432:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
         
 
     blablamove-announcement:
-        build:
-            context: services/announcement
-            dockerfile: docker/Dockerfile
-        image: al-blablamove-announcement
-        container_name: blablamove-announcement 
+        image: localhost:5000/al-blablamove-announcement:latest
         ports:
             - '8080:8080'
         networks:
             - kafka-net
-        links:
-            - kafka
-            - postgres-announcement
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            replicas: 2
+            placement:
+                constraints: [node.role == worker]
         
 
     postgres-accounting:
-        container_name: postgres-db-accounting
         image: postgres:9.5
         volumes:
             - /postgresql/data
@@ -69,43 +71,38 @@ services:
             - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
             - 5433:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
 
     blablamove-accounting:
-        build:
-            context: services/accounting
-            dockerfile: docker/Dockerfile
-        image: al-blablamove-accounting
-        container_name: blablamove-accounting
+        image: localhost:5000/al-blablamove-accounting:latest
         networks:
             - kafka-net
         ports:
             - '8081:8080'
-        links:
-            - kafka
-            - postgres-accounting
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            placement:
+                constraints: [node.role == worker]
+            replicas: 1
         
 
     blablamove-billing:
-        build:
-            context: services/billing
-            dockerfile: docker/Dockerfile
-        image: al-blablamove-billing
-        container_name: blablamove-billing
+        image: localhost:5000/al-blablamove-billing:latest
         networks:
             - kafka-net
         ports:
             - '8082:8080'
-        links:
-            - kafka
-            - postgres-billing
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        
+        deploy:
+            placement:
+                constraints: [node.role == worker]
+            replicas: 1    
 
     postgres-billing:
-        container_name: postgres-db-billing
         image: postgres:9.5
         networks:
             - kafka-net
@@ -118,42 +115,33 @@ services:
             - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
             - 5434:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
 
     blablamove-matching:
-        build:
-            context: services/matching
-            dockerfile: docker/Dockerfile
-        image: al-blablamove-matching
+        image: localhost:5000/al-blablamove-matching:latest
         networks:
             - kafka-net
-        container_name: blablamove-matching
         ports:
             - '8084:8080'
-        links:
-            - kafka
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        
 
     blablamove-tracking:
-        build:
-            context: services/tracking
-            dockerfile: docker/Dockerfile
-        image: al-blablamove-tracking
-        container_name: blablamove-tracking
+        image: localhost:5000/al-blablamove-tracking:latest
         networks:
             - kafka-net
         ports:
             - '8085:8080'
-        links:
-            - kafka
-            - postgres-tracking
         environment:
             SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
-        
+        deploy:
+            replicas: 3
+            restart_policy:
+                condition: on-failure        
 
     postgres-tracking:
-        container_name: postgres-db-tracking
         image: postgres:9.5
         volumes:
             - /postgresql/data
@@ -166,6 +154,9 @@ services:
             - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
             - 5435:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
 
 volumes:
     postgres-db-announcement: {}
