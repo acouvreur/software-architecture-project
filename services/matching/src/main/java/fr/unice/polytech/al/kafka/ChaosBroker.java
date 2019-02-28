@@ -47,9 +47,9 @@ public class ChaosBroker {
                 new Thread(() -> {
                     try {
                         TimeUnit.MILLISECONDS.sleep(200);
-                        template.send(topic,  mapper.writeValueAsString(announcement));
-                        template.send(topic,  mapper.writeValueAsString(announcement));
-                    } catch (InterruptedException | JsonProcessingException e) {
+                        template.send(topic,  announcement);
+                        template.send(topic,  announcement);
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }).start();
@@ -84,8 +84,8 @@ public class ChaosBroker {
                 new Thread(() -> {
                     try {
                         TimeUnit.SECONDS.sleep(5);
-                        template.send(topic,  mapper.writeValueAsString(announcement));
-                    } catch (InterruptedException | JsonProcessingException e) {
+                        template.send(topic,  announcement);
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }).start();
@@ -101,8 +101,8 @@ public class ChaosBroker {
                 new Thread(() -> {
                     try {
                         TimeUnit.MILLISECONDS.sleep(200);
-                        template.send(topic,  account);
-                    } catch (InterruptedException | JsonProcessingException e) {
+                        template.send(topic,  announcement);
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }).start();
