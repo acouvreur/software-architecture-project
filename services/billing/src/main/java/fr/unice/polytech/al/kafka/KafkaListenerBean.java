@@ -80,7 +80,7 @@ public class KafkaListenerBean {
         long goodId = Long.valueOf(idGood);
         long driverId = Long.valueOf(idDriver);
 
-        if (idTransmitterSet.contains( driverId ) && idSet.contains( goodId )) {
+        if (!idTransmitterSet.contains( driverId ) && !idSet.contains( goodId )) {
 
             logger.info( "TRACKING OF GOOD WITH ID : " + goodId + " HAS FINISHED (DRIVER : " + driverId + ")" );
 
@@ -88,6 +88,9 @@ public class KafkaListenerBean {
             service.setNewBallanceForClient( driverId );
 
             logger.info( "SETTING THE BALANCE FOR CLIENTS WITH ID : " + goodId + " and " + driverId );
+
+            idTransmitterSet.add( driverId );
+            accountsIdSet.add( goodId );
         }else {
             logger.info("THE ANNOUNCEMENT WITH ID " + goodId +" AND ID TRANSMITTER " + driverId + " WAS DUPLICATED" );
         }
