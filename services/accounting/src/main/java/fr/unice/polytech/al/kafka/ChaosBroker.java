@@ -46,12 +46,18 @@ public class ChaosBroker {
         switch (changeBrokerFeature) {
             case 0: //pDuplicate
                 logger.info("CHAOS BROKER FEATURE : DUPLICATE MESSAGE ");
-                template.send(topic,  mapper.writeValueAsString(account));
-                //announcement.setId(announcement.getId()*2 );
-                template.send(topic,  mapper.writeValueAsString(account));
+                new Thread(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                        template.send(topic,  mapper.writeValueAsString(account));
+                        template.send(topic,  mapper.writeValueAsString(account));
+                    } catch (InterruptedException | JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 if (compt == (int)pDuplicate/10-1) {
                     compt = -1;
-                    changeBrokerFeature = 1;
+                    changeBrokerFeature = 3;
                     //logger.info(  );("Inside if");
                 }
                 break;
@@ -93,7 +99,14 @@ public class ChaosBroker {
                 break;
             case 4: //pNothing
                 logger.info("CHAOS BROKER NO FEATURE ");
-                template.send(topic,  mapper.writeValueAsString(account));
+                new Thread(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                        template.send(topic,  mapper.writeValueAsString(account));
+                    } catch (InterruptedException | JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 if (compt == (int)pNothing/10-1) {
                     compt = -1;
                     changeBrokerFeature = 0;
