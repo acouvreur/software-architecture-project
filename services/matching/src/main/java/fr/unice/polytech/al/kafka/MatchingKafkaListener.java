@@ -63,7 +63,7 @@ public class MatchingKafkaListener
             String msg = "{ \"good\" : " + good + ", \"course\" : " + course + " }";
             //System.out.println("\n AFTER list goods: " + announcementGoods.size() + "      list course: " + announcementCourse.size());
 
-            logger.info("MATCHING FOUND BETWEEN ANNOUNCEMENT OF TYPE GOOD : " + good + " AND ANNOUNCEMENT OF TYPE COURSE : " + course);
+            logger.info("MATCHING FOUND BETWEEN ANNOUNCEMENT OF TYPE GOOD WITH ID " + good + " AND ANNOUNCEMENT OF TYPE COURSE WITH ID " + course);
 
 
             kafkaSender.send("announcement_matched", msg);

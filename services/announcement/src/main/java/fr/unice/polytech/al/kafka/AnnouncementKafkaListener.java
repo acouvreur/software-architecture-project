@@ -29,6 +29,8 @@ public class AnnouncementKafkaListener
         Object obj = deSerializedData(data);
         String dataInJsonFormat = (String)obj;
 
+        logger.info("RECEIVED MESSAGE WITH TOPIC : ANNOUNCEMENT_MATCHED, MESSAGE : " + dataInJsonFormat);
+
 
         // data in object json
         ObjectMapper objectMapper = new ObjectMapper();
@@ -37,8 +39,6 @@ public class AnnouncementKafkaListener
         // announcements ids
         Long idGood = dataJson.get("good").get("id").asLong();
         Long idCourse = dataJson.get("course").get("id").asLong();
-
-        logger.info("RECEIVED MESSAGE WITH TOPIC : ANNOUNCEMENT_MATCHED, BETWEEN ANNOUNCEMENTS WITH IDS : " + idGood + " AND " + idCourse);
 
 
         // set course announcement ID in good

@@ -37,7 +37,7 @@ public class ChaosBroker {
         ObjectMapper mapper = new ObjectMapper();
         switch (changeBrokerFeature) {
             case 0: //pDuplicate
-                logger.info("CHAOS BROKER FEATURE : DUPLICATE MESSAGE ");
+                logger.info("CHAOS BROKER FEATURE : DUPLICATES MESSAGE :");
                 template.send(topic,  mapper.writeValueAsString(data));
                 template.send(topic,  mapper.writeValueAsString(data));
                 if (compt == (int)pDuplicate/10-1) {
@@ -47,7 +47,7 @@ public class ChaosBroker {
                 }
                 break;
             case 1: //pDelete
-                logger.info("CHAOS BROKER FEATURE : DELTE MESSAGE ");
+                logger.info("CHAOS BROKER FEATURE : DELTES MESSAGE :");
                 if (compt == (int) pDelete/10-1) {
                     compt = -1;
                     changeBrokerFeature = 2;
@@ -55,7 +55,7 @@ public class ChaosBroker {
                 }
                 break;
             case 2: //pSalt
-                logger.info("CHAOS BROKER FEATURE : MAKE A MESS IN ANNOUNCEMENT MESSAGE ");
+                logger.info("CHAOS BROKER FEATURE : MAKES A MESS IN ANNOUNCEMENT MESSAGE :");
                 Random rand = new Random();
                 data.setIdDriver( (long) (rand.nextInt(30) + 5) );
                 data.setIdGood( (long) (rand.nextInt(30) + 5) );
@@ -67,7 +67,7 @@ public class ChaosBroker {
                 }
                 break;
             case 3: //pSlow
-                logger.info("CHAOS BROKER FEATURE : SLOW DOWN THE MESSAGE");
+                logger.info("CHAOS BROKER FEATURE : SLOWS DOWN THE MESSAGE");
                 new Thread(() -> {
                     try {
                         TimeUnit.SECONDS.sleep(5);
@@ -83,7 +83,7 @@ public class ChaosBroker {
                 }
                 break;
             case 4: //pNothing
-                logger.info("CHAOS BROKER NO FEATURE ");
+                logger.info("CHAOS BROKER FEATURE : DOESN'T INTRODUCE ANY CHAGMENTS");
                 template.send(topic,  mapper.writeValueAsString(data));
                 if (compt == (int)pNothing/10-1) {
                     compt = -1;

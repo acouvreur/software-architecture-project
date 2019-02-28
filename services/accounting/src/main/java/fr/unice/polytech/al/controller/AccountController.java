@@ -69,10 +69,10 @@ public class AccountController {
 
         repository.save(account);
 
-        logger.info("OBJECT ACCOUNT WITH ID " + account.getId() + " AND EMAIL " + account.getEmail() +  " CREATED");
+        logger.info("OBJECT ACCOUNT WITH ID " + account.getId() + "AND EMAIL " + account.getId() +  " CREATED");
 
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println("SENDING MESSAGE TO SERVICE BILLING WITH TOPIC ACCOUNT_CREATED (TO CREATE OBJECT BILLING ASSOCIATED WITH THIS ACCOUNT)" );
+        System.out.println("SENDING MESSAGE TO SERVICE BILLING WITH TOPIC ACCOUNT_CREATED IN ORDER TO CREATE OBJECT BILLING ASSOCIATED WITH THIS ACCOUNT" );
         //kafkaTemplate.send("account_created", String.valueOf(account.getId()));
 
         chaosBroker.broke( "account_created", account, kafkaTemplate);

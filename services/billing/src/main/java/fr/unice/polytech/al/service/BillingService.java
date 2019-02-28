@@ -32,25 +32,19 @@ public class BillingService {
             System.out.println("res......." + res);
             id_ = id.getId() ;
         }
-        logger.info("ESTIMATE THE NUMBER OF POINTS FOR COURSE BASED ON ANNOUNCEMENT WITH ID " + id_+ " : " + res);
+        logger.info("ESTIMATE THE NUMBER OF POINTS FOR COURSE BASED ON ANNOUNCEMENT WITH ID " + id_+ " : ");
         return res;
     }
 
     public Billing setNewBallanceForClient(long clientId) {
         Billing billingTmp = null;
         Random rand = new Random();
-        int res = 0;
         try {
             billingTmp = repository.findById( clientId ).get();
-            res = rand.nextInt( 100 ) + 10;
-            billingTmp.setPoints( res );
+            billingTmp.setPoints( rand.nextInt( 100 ) + 10 );
         } catch (Error e) {}
-        if ( billingTmp == null) {
-            res = 300;
-            billingTmp = new Billing(clientId, res);
-        }
+        if ( billingTmp == null) {billingTmp = new Billing(clientId, 300);}
         repository.save(billingTmp);
-        logger.info("CLIENT WITH ID " +clientId + " BALANCE : " + res);
         return billingTmp;
     }
 
