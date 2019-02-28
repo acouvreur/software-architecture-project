@@ -17,9 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class KafkaListenerBean {
@@ -31,6 +29,10 @@ public class KafkaListenerBean {
     private BillingRepository repository;
 
     private final Logger logger = Logger.getLogger(this.getClass());
+
+    private Set<Long> accountsIdSet = new HashSet<>();
+    private Set<Long> idTransmitterSet = new HashSet<>();
+    private Set<Long> idSet = new HashSet<>();
 
 
     /*@Autowired
@@ -78,12 +80,17 @@ public class KafkaListenerBean {
         long goodId = Long.valueOf(idGood);
         long driverId = Long.valueOf(idDriver);
 
-        logger.info("TRACKING OF GOOD WITH ID : " + goodId + " HAS FINISHED (DRIVER : " + driverId + ")");
+        if (idTransmitterSet.contains( driverId ) && idSet.contains( goodId )) {
 
-        service.setNewBallanceForClient(goodId);
-        service.setNewBallanceForClient(driverId);
+            logger.info( "TRACKING OF GOOD WITH ID : " + goodId + " HAS FINISHED (DRIVER : " + driverId + ")" );
 
-        logger.info("SETTING THE BALANCE FOR CLIENTS WITH ID : " + goodId + " and " + driverId);
+            service.setNewBallanceForClient( goodId );
+            service.setNewBallanceForClient( driverId );
+
+            logger.info( "SETTING THE BALANCE FOR CLIENTS WITH ID : " + goodId + " and " + driverId );
+        }else {
+            logger.info("THE ANNOUNCEMENT WITH ID " + goodId +" AND ID TRANSMITTER " + driverId + " WAS DUPLICATED" );
+        }
 
     }
 
@@ -92,24 +99,30 @@ public class KafkaListenerBean {
     public void createBillingOnceAccountCreated(String message, Acknowledgment acknowledgment) throws IOException {
 
 
-
         Object json0 = deSerializedData(message);
         String json = (String) json0;
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         JsonNode jsonNode = objectMapper.readTree(json);
-        //System.out.println("jsonNode : " + jsonNode);
 
         String id = jsonNode.get("id").asText();
         long accountId = Long.valueOf(id);
-        //System.out.println("accountId : " + accountId);
-
-        logger.info("MESSAGE FROM SERVICE ACCOUNT RECEIVED. CREATING OBJECT BILLING FOR ACCOUNT WITH ID " + accountId );
 
 
-        Billing billing = new Billing(accountId,200);
-        repository.save(billing);
+        if (!accountsIdSet.contains(accountId)) {
+            accountsIdSet.add( accountId );
+
+            logger.info("MESSAGE FROM SERVICE ACCOUNT RECEIVED. CREATING OBJECT BILLING FOR ACCOUNT WITH ID " + accountId );
+
+
+            Billing billing = new Billing(accountId,200);
+            repository.save(billing);
+        } else {
+            logger.info("THIS ACCOUNT EXISTS ALREADY, THIS MESSAGE IS A DUPLICATION" + accountId );
+
+        }
+
     }
 
 }

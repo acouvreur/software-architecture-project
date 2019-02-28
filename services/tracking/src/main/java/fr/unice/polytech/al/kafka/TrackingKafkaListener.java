@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static fr.unice.polytech.al.State.STARTED;
 
@@ -28,6 +30,8 @@ public class TrackingKafkaListener {
 
     private Random rand = new Random();
 
+    private Set<Long> idTransmitterSet = new HashSet<>();
+    private Set<Long> idSet = new HashSet<>();
 
     public TrackingKafkaListener() {
     }
@@ -95,14 +99,26 @@ public class TrackingKafkaListener {
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         
         JsonNode jsonNode = objectMapper.readTree(json);
+
         Announcement announcement = transformJsonToAnnouncement(jsonNode.get("course"));
-        repository.save( announcement );
 
-        Long id1 = announcement.getIdGoodAnnouncement();
-        Long id2 = announcement.getIdDriverAnnouncement();
+        Long incomingId = announcement.getIdGoodAnnouncement();
+        Long incomingIdTransmitter = announcement.getIdDriverAnnouncement();
 
+        //prevent receiving 2 times the same message
+        if (idTransmitterSet.contains( incomingIdTransmitter ) && idSet.contains( incomingId )) {
+            logger.info("THE ANNOUNCEMENT WITH ID " + incomingIdTransmitter +" AND ID TRANSMITTER " + incomingId + " WAS DUPLICATED" );
 
-        logger.info("RECEIVED MESSAGE OF MATCHING BETWEEN ANNOUNCEMENT WITH ID DRIVER : " + id1 + " AND ANNOUNCEMENT WITH ID GOOD" + id2);
+        } else {
+            repository.save( announcement );
+
+            logger.info("RECEIVED MESSAGE OF MATCHING BETWEEN ANNOUNCEMENT WITH ID DRIVER : " + incomingId + " AND ANNOUNCEMENT WITH ID GOOD" + incomingIdTransmitter);
+
+            idTransmitterSet.add( incomingIdTransmitter );
+            idTransmitterSet.add( incomingId );
+
+        }
+
 
     }
 
