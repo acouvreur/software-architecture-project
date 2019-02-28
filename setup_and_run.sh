@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 1. Create swarm cluster
-docker swarm init
+docker swarm init --advertise-addr 10.42.0.1
 
 # 2. Create a local registry
 sudo docker service create -p 5000:5000 --name registry --mount type=volume,source=my-registry,destination=/var/lib/registry --constraint 'node.role==manager' registry:2

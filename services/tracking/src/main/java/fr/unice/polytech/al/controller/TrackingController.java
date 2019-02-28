@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import static fr.unice.polytech.al.State.CONFIRMED;
 import static fr.unice.polytech.al.State.DELIVERED;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
@@ -46,9 +50,14 @@ public class TrackingController {
     //retrive the informations about tracking(in form of Announcement object) :
     @GetMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> getTrackingInformations(@PathVariable Long idGoodAnnouncement) {
-        Announcement a = repository.findById( idGoodAnnouncement ).get();
+
+        Optional<Announcement> a = repository.findById( idGoodAnnouncement );
+        if(! a.isPresent()) {
+            // Not existing
+            return new ResponseEntity<>( null, HttpStatus.NOT_FOUND );
+        }
         logger.info("CHECKING THE STATUS OF THE ANNOUNCEMENT : " );
-        return new ResponseEntity<Announcement>( a, HttpStatus.OK );
+        return new ResponseEntity<>( a.get(), HttpStatus.OK );
     }
 
     @PostMapping(value = "/tracking", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,27 +67,16 @@ public class TrackingController {
         return new ResponseEntity<Announcement>( announcement, HttpStatus.OK );
     }
 
-
-
-    /*@PostMapping(value = "/announcements",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Resource<Announcement>> create(@RequestBody Announcement announcement) throws JsonProcessingException {
-
-        repository.save(announcement);
-
-        // Send message to matching service
-        ObjectMapper mapper = new ObjectMapper();
-        kafkaSender.send("announcement_created",  mapper.writeValueAsString(announcement));
-
-        return ResponseEntity.created(
-                linkTo(methodOn(AnnouncementController.class).find(announcement.getId())).toUri())
-                .body(assembler.toResource(announcement));
-    }*/
-
-
     @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) throws JsonProcessingException, InterruptedException {
-        Announcement a = repository.findById( idGoodAnnouncement ).get();
+
+        Optional<Announcement> aOPT = repository.findById( idGoodAnnouncement );
+        if(! aOPT.isPresent()) {
+            // Not existing
+            return new ResponseEntity<>( null, HttpStatus.NOT_FOUND );
+        }
+
+        Announcement a = aOPT.get();
         State stateAnnouncement = DELIVERED;
         try {
             stateAnnouncement = State.valueOf(state);

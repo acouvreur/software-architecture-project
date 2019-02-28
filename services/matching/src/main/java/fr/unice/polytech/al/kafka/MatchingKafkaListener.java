@@ -46,7 +46,7 @@ public class MatchingKafkaListener
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataJson = objectMapper.readTree(dataInJsonFormat);
 
-        long incomingIdTransmitter = Integer.parseInt( String.valueOf( dataJson.get("idTransmistter") ) );
+        long incomingIdTransmitter = Integer.parseInt( String.valueOf( dataJson.get("idTransmitter") ) );
         long incomingId = Long.parseLong( String.valueOf( dataJson.get("id")));
 
         //prevent receiving 2 times the same message
