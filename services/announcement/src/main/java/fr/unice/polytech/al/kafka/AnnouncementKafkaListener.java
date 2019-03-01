@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class AnnouncementKafkaListener
@@ -40,19 +41,19 @@ public class AnnouncementKafkaListener
 
         logger.info("RECEIVED MESSAGE WITH TOPIC : ANNOUNCEMENT_MATCHED, BETWEEN ANNOUNCEMENTS WITH IDS : " + idGood + " AND " + idCourse);
 
+        Optional<Announcement> goodOpt = repository.findById(idGood);
+        if(goodOpt.isPresent()) {
+            Announcement announcementGood = goodOpt.get();
+            announcementGood.setIdAnnouncementMatched(idCourse);
+            repository.save(announcementGood);
+        }
 
-        // set course announcement ID in good
-        Announcement announcementGood = repository.findById(idGood).get();
-        announcementGood.setIdAnnouncementMatched(idCourse);
-        repository.save(announcementGood);
-
-        // set good announcement ID in course
-        Announcement announcementCourse = repository.findById(idCourse).get();
-        announcementCourse.setIdAnnouncementMatched(idGood);
-        repository.save(announcementCourse);
-
-        //System.out.println("\n\n ANNOUNCE good: " + announcementGood.toString());
-        //System.out.println("\n\n ANNOUNCE course: " + announcementCourse.toString());
+        Optional<Announcement> courseOpt = repository.findById(idCourse);
+        if(courseOpt.isPresent()) {
+            Announcement announcementCourse = courseOpt.get();
+            announcementCourse.setIdAnnouncementMatched(idCourse);
+            repository.save(announcementCourse);
+        }
     }
 
 

@@ -1,0 +1,14 @@
+# TRACKING
+image: localhost:5000/al-blablamove-tracking:latest
+manifests:
+  -
+    image: localhost:5000/al-blablamove-tracking:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-tracking:armv7l
+    platform:
+      architecture: arm
+      variant: v7
+      os: linux

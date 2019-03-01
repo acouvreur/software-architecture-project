@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
+@CrossOrigin
 public class AccountController {
 
     private AccountRepository repository;
@@ -56,6 +58,7 @@ public class AccountController {
     @GetMapping(value = "/accounts/{username}", 
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resource<Account> find(@PathVariable String username) {
+
         return assembler.toResource(
                 repository.findByUsername(username)
                         .orElseThrow(() -> new EntityNotFoundException(username))

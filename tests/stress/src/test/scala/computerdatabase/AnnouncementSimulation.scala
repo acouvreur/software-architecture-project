@@ -2,7 +2,7 @@ package computerdatabase
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import org.apache.commons.lang.RandomStringUtils
+import scala.util.Random
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
@@ -17,26 +17,34 @@ class AnnouncementSimulation extends Simulation{
     scenario("Announcement")
       .repeat(2)
       {
-        exec(
+        exec(session =>
+          session.set("idTransmitter", Random.nextInt(Integer.MAX_VALUE))
+        )
+          .exec(
             http("Create_Announcement")
               .post("announcements")
               .body(StringBody(session => buildAnnouncement(session)))
               .check(status.is(201))
           )
           .pause(1 seconds)
-          /*
           .exec(
             http("Consult_Announcement")
-              .get("announcements?transmitter=69")
+              .get(StringBody(session => buildAnnouncementConsult(session)))
               .check(status.is(200))
           )
           .pause(1 seconds)
-          */
       }
 
+
+  def buildAnnouncementConsult(session: Session): String = {
+    val id = session("idTransmitter").as[Integer]
+    raw"""announcements?transmitter=$id"""
+  }
+
   def buildAnnouncement(session: Session): String = {
+    val idTransmitter = session("idTransmitter").as[Integer]
     raw"""{
-         "idTransmitter": 69,
+         "idTransmitter": $idTransmitter,
          "nameTransmitter": "Jacky",
          "startPoint": "Marseille",
          "endPoint": "Nice",
@@ -46,6 +54,6 @@ class AnnouncementSimulation extends Simulation{
     }""""
   }
 
-  setUp(stressSample.inject(constantConcurrentUsers(100) during (10 seconds), // 1
-    rampConcurrentUsers(100) to (500) during (80 seconds)).protocols(httpProtocol))
+  setUp(stressSample.inject(constantConcurrentUsers(10) during (10 seconds), // 1
+    rampConcurrentUsers(10) to (50) during (30 seconds)).protocols(httpProtocol))
 }

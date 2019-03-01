@@ -1,0 +1,184 @@
+version: '3.6'
+services:
+    zookeeper:
+        image: 'wurstmeister/zookeeper:latest'
+        ports:
+            - '2181:2181'
+        networks:
+            - kafka-net
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+        
+    kafka:
+        image: 'wurstmeister/kafka:latest'
+        ports:
+            - '9092:9092'
+        networks:
+            - kafka-net
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: blablamove_kafka
+            KAFKA_ADVERTISED_PORT: 9092
+            KAFKA_ZOOKEEPER_CONNECT: 'blablamove_zookeeper:2181'
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+        
+
+    postgres-announcement:
+        image: postgres:9.5
+        networks:
+            - kafka-net
+        volumes:
+            - postgres-db-announcement:/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=announcement
+            - POSTGRES_USER=announcementservice
+            - POSTGRES_DB=announcement
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5432:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+            restart_policy:
+                delay: 10s
+                max_attempts: 5
+        
+
+    blablamove-announcement:
+        image: localhost:5000/al-blablamove-announcement:latest
+        ports:
+            - '8080:8080'
+        networks:
+            - kafka-net
+        environment:
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            restart_policy:
+                delay: 10s
+                max_attempts: 6
+        
+
+    postgres-accounting:
+        image: postgres:9.5
+        volumes:
+            - postgres-db-accounting:/postgresql/data
+        networks:
+            - kafka-net
+        environment:
+            - POSTGRES_PASSWORD=accounting
+            - POSTGRES_USER=accountingservice
+            - POSTGRES_DB=accounting
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5433:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+
+    blablamove-accounting:
+        image: localhost:5000/al-blablamove-accounting:latest
+        networks:
+            - kafka-net
+        ports:
+            - '8081:8080'
+        environment:
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            restart_policy:
+                delay: 10s
+                max_attempts: 6
+        
+
+    blablamove-billing:
+        image: localhost:5000/al-blablamove-billing:latest
+        networks:
+            - kafka-net
+        ports:
+            - '8082:8080'
+        environment:
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            restart_policy:
+                delay: 10s
+                max_attempts: 6
+
+    postgres-billing:
+        image: postgres:9.5
+        networks:
+            - kafka-net
+        volumes:
+            - postgres-db-billing:/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=billing
+            - POSTGRES_USER=billingservice
+            - POSTGRES_DB=billing
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5434:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+
+    blablamove-matching:
+        image: localhost:5000/al-blablamove-matching:latest
+        networks:
+            - kafka-net
+        ports:
+            - '8084:8080'
+        environment:
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            restart_policy:
+                delay: 10s
+                max_attempts: 6
+
+    blablamove-tracking:
+        image: localhost:5000/al-blablamove-tracking:latest
+        networks:
+            - kafka-net
+        ports:
+            - '8085:8080'
+        environment:
+            SPRING_KAFKA_BOOTSTRAP_SERVERS: 'blablamove_kafka:9092'
+        deploy:
+            restart_policy:
+                delay: 10s
+                max_attempts: 6
+
+    postgres-tracking:
+        image: postgres:9.5
+        volumes:
+            - postgres-db-tracking:/postgresql/data
+        networks:
+            - kafka-net
+        environment:
+            - POSTGRES_PASSWORD=tracking
+            - POSTGRES_USER=trackingservice
+            - POSTGRES_DB=tracking
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5435:5432
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+
+volumes:
+    postgres-db-announcement: {}
+    postgres-db-accounting: {}
+    postgres-db-billing: {}
+    postgres-db-tracking: {}
+
+networks:
+    kafka-net:
+        external: true

@@ -19,7 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import static fr.unice.polytech.al.State.CONFIRMED;
 import static fr.unice.polytech.al.State.DELIVERED;
 
+import java.util.NoSuchElementException;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 @RestController
+@CrossOrigin
 public class TrackingController {
 
     private TrackingRepository repository;
@@ -44,7 +49,12 @@ public class TrackingController {
     //retrive the informations about tracking(in form of Announcement object) :
     @GetMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> getTrackingInformations(@PathVariable Long idGoodAnnouncement) {
-        Announcement a = repository.findById( idGoodAnnouncement ).get();
+        Announcement a = null;
+        try {
+        a = repository.findById( idGoodAnnouncement ).get();
+        } catch(NoSuchElementException e) {
+            e.printStackTrace();
+        }
         logger.info("CHECKING THE STATUS OF THE ANNOUNCEMENT : " );
         return new ResponseEntity<Announcement>( a, HttpStatus.OK );
     }
@@ -76,6 +86,7 @@ public class TrackingController {
 
     @PatchMapping(value = "/tracking/{idGoodAnnouncement}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Announcement> ChangeTrackingStatus(@PathVariable Long idGoodAnnouncement, @RequestBody String state) throws JsonProcessingException, InterruptedException {
+        Thread.sleep(50);
         Announcement a = repository.findById( idGoodAnnouncement ).get();
         State stateAnnouncement = DELIVERED;
         try {
@@ -105,11 +116,5 @@ public class TrackingController {
 
         return new ResponseEntity<Announcement>( a, HttpStatus.OK );
     }
-
-
-
-
-
-
 
 }

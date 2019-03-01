@@ -1,0 +1,15 @@
+{
+  "name": "chaos-server",
+  "version": "1.0.0",
+  "description": "Chaos Broker Web page",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexis Couvreur",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "express": "^4.16.4"
+  }
+}

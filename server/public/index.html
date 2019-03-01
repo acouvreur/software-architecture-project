@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ChaosBroker UI</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Accounting
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Percentage is required">
+					<span class="label-input100">Slowdown</span>
+					<input class="input100" type="text" id="slowdown-accounting" name="slowdown-accounting" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Delete</span>
+					<input class="input100" type="text" id="delete-accounting" name="delete-accounting" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Duplicate</span>
+					<input class="input100" type="text" id="duplicate-accounting" name="duplicate-accounting" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Salt</span>
+					<input class="input100" type="text"  id="salt-accounting" name="salt-accounting" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Nothing</span>
+					<input class="input100" type="text" id="nothing-accounting" name="nothing-accounting" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" onclick="chaosAccounting();">
+							<span>
+								Send
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Announcement
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Percentage is required">
+					<span class="label-input100">Slowdown</span>
+					<input class="input100" type="text" id="slowdown-announcement" name="slowdown-announcement" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Delete</span>
+					<input class="input100" type="text" id="delete-announcement" name="delete-announcement" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Duplicate</span>
+					<input class="input100" type="text" id="duplicate-announcement" name="duplicate-announcement" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Salt</span>
+					<input class="input100" type="text" id="salt-announcement" name="salt-announcement" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Nothing</span>
+					<input class="input100" type="text" id="nothing-announcement" name="nothing-announcement" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" onclick="chaosAnnouncement();">
+							<span>
+								Send
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Tracking
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Percentage is required">
+					<span class="label-input100">Slowdown</span>
+					<input class="input100" type="text" id="slowdown-tracking" name="slowdown-tracking" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Delete</span>
+					<input class="input100" type="text" id="delete-tracking" name="delete-tracking" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Duplicate</span>
+					<input class="input100" type="text" id="duplicate-tracking" name="duplicate-tracking" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Salt</span>
+					<input class="input100" type="text" id="salt-tracking" name="salt-tracking" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Nothing</span>
+					<input class="input100" type="text" id="nothing-tracking" name="nothing-tracking" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" onclick="chaosTracking();">
+							<span>
+								Send
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Matching
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Percentage is required">
+					<span class="label-input100">Slowdown</span>
+					<input class="input100" type="text" id="slowdown-matching" name="slowdown-matching" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Delete</span>
+					<input class="input100" type="text" id="delete-matching" name="delete-matching" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Duplicate</span>
+					<input class="input100" type="text" id="duplicate-matching" name="duplicate-matching" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Salt</span>
+					<input class="input100" type="text" id="salt-matching" name="salt-matching" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Nothing</span>
+					<input class="input100" type="text" id="nothing-matching" name="nothing-matching" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" onclick="chaosMatching();">
+							<span>
+								Send
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Billing
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Percentage is required">
+					<span class="label-input100">Slowdown</span>
+					<input class="input100" type="text" id="slowdown-billing" name="slowdown-billing" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Delete</span>
+					<input class="input100" type="text" id="delete-billing" name="delete-billing" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Duplicate</span>
+					<input class="input100" type="text" id="duplicate-billing" name="duplicate-billing" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Salt</span>
+					<input class="input100" type="text" id="salt-billing" name="salt-billing" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 validate-input" data-validate = "Percentage is required">
+					<span class="label-input100">Nothing</span>
+					<input class="input100" type="text" id="nothing-billing" name="nothing-billing" value="0" placeholder="Enter a percentage">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" onclick="chaosBilling();">
+							<span>
+								Send
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<div id="dropDownSelect1"></div>
+
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+</body>
+</html>

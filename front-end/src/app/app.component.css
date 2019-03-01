@@ -1,0 +1,12 @@
+.title {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #425e6b;
+    position: relative;
+}
+.user {
+    top: 12px;
+    right: 51px;
+    position: absolute;
+}

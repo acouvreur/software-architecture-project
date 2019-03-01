@@ -2,6 +2,7 @@ package fr.unice.polytech.al.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.apache.log4j.Logger;
@@ -38,11 +39,18 @@ public class ChaosBroker {
         switch (changeBrokerFeature) {
             case 0: //pDuplicate
                 logger.info("CHAOS BROKER FEATURE : DUPLICATE MESSAGE ");
-                template.send(topic,  mapper.writeValueAsString(data));
-                template.send(topic,  mapper.writeValueAsString(data));
+                new Thread(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                        template.send(topic,  mapper.writeValueAsString(data));
+                        template.send(topic,  mapper.writeValueAsString(data));
+                    } catch (InterruptedException | JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 if (compt == (int)pDuplicate/10-1) {
                     compt = -1;
-                    changeBrokerFeature = 1;
+                    changeBrokerFeature = 3;
                     //System.out.println("Inside if");
                 }
                 break;
@@ -84,7 +92,14 @@ public class ChaosBroker {
                 break;
             case 4: //pNothing
                 logger.info("CHAOS BROKER NO FEATURE ");
-                template.send(topic,  mapper.writeValueAsString(data));
+                new Thread(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                        template.send(topic,  mapper.writeValueAsString(data));
+                    } catch (InterruptedException | JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 if (compt == (int)pNothing/10-1) {
                     compt = -1;
                     changeBrokerFeature = 0;
@@ -136,5 +151,18 @@ public class ChaosBroker {
 
     public void setpNothing(double pNothing) {
         this.pNothing = pNothing;
+    }
+
+    public ObjectNode toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode obj = objectMapper.createObjectNode();
+
+        obj.put("pDuplicate", this.pDuplicate);
+        obj.put("pNothing", this.pNothing);
+        obj.put("pSlow", this.pSlow);
+        obj.put("pSalt", this.pSalt);
+        obj.put("pDelete", this.pDelete);
+
+        return obj;
     }
 }

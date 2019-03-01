@@ -1,5 +1,5 @@
 #!/bin/bash
 
 mvn clean package -DskipTests=true
-docker-compose build
-docker build -t integration ./integration/docker
+docker-compose -f ./docker-compose-linux.yaml build
+docker-compose -f ./docker-compose-linux.yaml push

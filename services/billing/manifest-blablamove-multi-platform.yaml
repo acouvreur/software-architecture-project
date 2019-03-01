@@ -1,0 +1,14 @@
+# BILLING
+image: localhost:5000/al-blablamove-billing:latest
+manifests:
+  -
+    image: localhost:5000/al-blablamove-billing:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: localhost:5000/al-blablamove-billing:armv7l
+    platform:
+      architecture: arm
+      variant: v7
+      os: linux
