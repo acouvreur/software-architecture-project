@@ -23,7 +23,7 @@ class EndToEndSimulation extends Simulation {
         exec(session =>
           session.set("idTransmitter", Random.nextInt(Integer.MAX_VALUE))
             .set("idStudent", Random.nextInt(Integer.MAX_VALUE))
-            .set("idTracking", 0)
+            .set("idTracking", 1)
         )
           .exec(
             http("create_announcement_GOOD")
@@ -109,13 +109,13 @@ class EndToEndSimulation extends Simulation {
 
 
   def buildTracking(session: Session): String = {
-    val id = session("idStudent").as[String]
+/*    val id = session("idStudent").as[String]
     val announcement = Http("http://localhost:8080/announcements").param("transmitter", id).asString
     val parsed = announcement.body.toString().parseJson
     val tmp = parsed.asJsObject().getFields("_embedded")(0)
       .asJsObject().getFields("announcements")(0).toString()
       .replace("[", "").replace("]", "")
-    val idAnnouncement = tmp.parseJson.asJsObject.getFields("id")(0)
+    val idAnnouncement = tmp.parseJson.asJsObject.getFields("id")(0)*/
     /*
     println("--------------------------------------------------------")
     println(tmp)
@@ -123,7 +123,7 @@ class EndToEndSimulation extends Simulation {
     println("--------------------------------------------------------")
     */
     //session.set("idTracking", idAnnouncement)
-    raw"""http://localhost:8085/tracking/$idAnnouncement"""
+    raw"""http://localhost:8085/tracking/663"""
   }
 
   def buildAnnouncementConsult(session: Session): String = {
@@ -159,5 +159,5 @@ class EndToEndSimulation extends Simulation {
   }
 
   setUp(stressSample.inject(constantConcurrentUsers(10) during (10 seconds), // 1
-    rampConcurrentUsers(10) to (50) during (30 seconds)).protocols(httpProtocol))
+    rampConcurrentUsers(10) to (400) during (30 seconds)).protocols(httpProtocol))
 }
