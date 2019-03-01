@@ -24,15 +24,29 @@ Teacher in charge : *Guilhem Molines* - [guilhem.molines@unice.fr](mailto:guilhe
 * Semester 1 Project Kanban [here](https://github.com/acouvreur/software-architecture-project/projects/1)
 * Issues Project [here](https://github.com/acouvreur/software-architecture-project/projects/3)
 
-## Commands
+## Lancer le projet
 
-Visualize the swarm cluster :
+Il faut avoir installé **Docker** et **Docker-Compose**.
 
-```bash
-docker run -it -d -p 5000:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
-```
+### Pour lancer tous nos services dans Docker Swarm
 
-Start grafana stack
+lancer le script `setup_and_run.sh`
+
+Ce script effectue les instructions suivantes :
+
+1. Création d'un cluter swarm en tant que master
+2. Création d'un registre d'image local Docker pour les slaves (localhost:5000)
+3. Création d'un network overlay *kafka-net*
+4. Compilation, Dockerisation et envoie des images sur le registre local des services blablamove
+5. Création d'un visualiseur du cluster swarm (disponible à l'adresse localhost:5050)
+6. Déploiement des services par rapport au fichier de description *docker-compose-swarm.yaml*
+
+### Pour éteidre les services
+
+1. docker stack rm blablamove
+2. docker swarm leave -f
+
+### Visualiser les performances avec grafana
 
 > Docker Swarm must be running, if not : docker swarm init
 
@@ -43,41 +57,15 @@ ADMIN_PASSWORD=admin \
 docker stack deploy -c docker-compose.yml mon
 ```
 
-> Docker Swarm must be running, if not : docker swarm init
+Ensuite il faut se rendre à l'adresse *localhost:3000*
 
-Compile project
-```bash
-$ ./install.sh
-```
+### Lancer le scenario
 
-Before starting services for the first time
-```bash
-$ docker network create --driver overlay kafka-net
-```
+1. `docker build -t integration ./integration/docker`
+2. `docker run -i --net=host integration:latest`
 
-Start blablamove services
-```bash
-$ docker stack deploy --compose-file docker-compose-swarm.yaml blablamove
-```
+### Lancer les tests de charges
 
-Stop blablamove services
-```bash
-$ docker stack rm blablamove
-```
+`./run-stress.sh`
 
-
-Front-end
-
-To install angular you need to already have installed Nodejs and npm and then do
-```bash
-$ sudo npm install -g @angular/cli
-```
-
-To use the front-end do
-```bash
-$ cd front-end
-$ npm install
-$ ng serve
-```
-
-Once the project is compiled you can go to the browser http://localhost:4200
+Les liens vers les rapports gatling seront affichés dans les logs.
